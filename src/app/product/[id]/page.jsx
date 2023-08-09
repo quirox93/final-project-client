@@ -6,4 +6,4 @@ const productDetail = () => {
   )
 }
 
-export default page
+export default productDetail;
