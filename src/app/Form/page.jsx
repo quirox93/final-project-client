@@ -30,7 +30,6 @@ function Form() {
       setName('');
       setDescription('');
       setPrice(0);
-      setStock(0);
       setImage([]);
     } catch (error) {
       console.error(error);
