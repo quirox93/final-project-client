@@ -16,6 +16,14 @@ const productSchema = Schema(
       type: Number,
       default: 0,
     },
+    stock: {
+      type: Number,
+      default: 0,
+      validate: {
+        validator: Number.isInteger,
+        message: "must be interger number",
+      },
+    },
     imag: {
       public_id: {
         type: String,
@@ -23,7 +31,7 @@ const productSchema = Schema(
       },
       secure_url: {
         type: String,
-        default: "https://example.com/default_image.jpg",
+        default: "https://product-images.tcgplayer.com/fit-in/420x420/455949.jpg",
       },
     },
   },
