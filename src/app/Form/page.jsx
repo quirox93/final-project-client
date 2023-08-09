@@ -16,7 +16,7 @@ function Form() {
     formData.append('description', description);
     formData.append('price', price);
     formData.append('imag', image);
-    console.log(formData)
+    
     try {
       const response = await axios.post('https://restapicrud.ericksegura5.repl.co/products/', formData, {
         headers: {
