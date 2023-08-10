@@ -17,7 +17,6 @@ export async function POST(req) {
   try {
     connectDB();
     const data = await req.json();
-    console.log(data);
     const newProduct = await new Product(data);
     const savedProduct = await newProduct.save();
     return NextResponse.json(savedProduct, { status: 201 });

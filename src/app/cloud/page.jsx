@@ -1,4 +1,6 @@
 "use client";
+
+import { CLOUDINARY_CLOUD_NAME, CLOUDINARY_UPLOAD_PRESET } from "@/utils/config";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -29,12 +31,15 @@ export default function Cloud() {
       formData.append("file", file);
     }
 
-    formData.append("upload_preset", "wo8ssx61");
+    formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
 
-    const data = await fetch("https://api.cloudinary.com/v1_1/dpws83hey/image/upload", {
-      method: "POST",
-      body: formData,
-    }).then((r) => r.json());
+    const data = await fetch(
+      `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`,
+      {
+        method: "POST",
+        body: formData,
+      }
+    ).then((r) => r.json());
 
     setUploadData({ public_id: data.public_id, secure_url: data.secure_url });
   }
@@ -45,7 +50,7 @@ export default function Cloud() {
         <p>
           <input onChange={handleOnChange} type="file" name="file" />
         </p>
-        {imageSrc && <Image width={150} height={150} alt={uploadData.public_id} src={imageSrc} />}
+        {imageSrc && <Image width={150} height={150} alt={imageSrc} src={imageSrc} />}
 
         <p>
           <button>Add Product</button>
