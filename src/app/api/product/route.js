@@ -1,7 +1,6 @@
 const { NextRequest, NextResponse } = require("next/server");
 import { connectDB } from "@/utils/mongoose";
 import Product from "@/models/Product";
-import { uploadImag, deleteImag } from "@/utils/cloudinary.js";
 
 export async function GET() {
   try {
