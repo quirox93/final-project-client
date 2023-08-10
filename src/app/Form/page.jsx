@@ -3,23 +3,29 @@ import React, { useState } from 'react';
 import Image from "next/image"
 import axios from 'axios';
 
-function Form() {
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  const [price, setPrice] = useState(0);
-  const [stock, setStock] = useState(0);
-  const [image, setImage] = useState(null);
-  
+const inputStateInitial = {
+  name: "",
+  description: "",
+  price: "",
+  stock: "",
+  image: "",
+}
 
-  
+function Form() {
+  const [input, setInput] = useState(inputStateInitial);
+  const [image, setImage] = useState(null);
+
+  function handleInputChange(event) {
+    const { name, value } = event.target;
+    setInput(prevInput => ({ ...prevInput, [name]: value }));
+  }
+
   function handleOnChange(event) {
     const reader = new FileReader();
 
     reader.onload = function (onLoadEvent) {
       setImage(onLoadEvent.target.result);
-      
     };
-
     reader.readAsDataURL(event.target.files[0]);
   }
 
@@ -27,14 +33,14 @@ function Form() {
     e.preventDefault();
 
     const formData = new FormData();
-    formData.append('name', name);
-    formData.append('description', description);
-    formData.append('price', price);
-    formData.append('stock', stock);
-    formData.append('imag', image);
+    formData.append('name', input.name);
+    formData.append('description', input.description);
+    formData.append('price', input.price);
+    formData.append('stock', input.stock);
+    formData.append('imag', input.image);
     
     try {
-      const response = await axios.post('https://restapicrud.ericksegura5.repl.co/products/', formData, {
+      const response = await axios.post('/api/product', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -42,33 +48,32 @@ function Form() {
 
       console.log(response.data); 
       
-      setName('');
-      setDescription('');
-      setPrice(0);
-      setStock(0);
-      setImage(null);
+      setInput(inputStateInitial);
+     
     } catch (error) {
       console.error(error);
     }
   };
 
   return (
-    <form className="max-w-md mx-auto p-4 border rounded-md shadow-md" onSubmit={handleSubmit}>
+    <form autoComplete='off' className="max-w-md mx-auto p-4 border rounded-md shadow-md" onSubmit={handleSubmit}>
       <div className="mb-4">
         <label className="block font-bold mb-1">Name:</label>
         <input
           type="text"
           className="w-full p-2 border rounded-md"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          value={input.name}
+          name="name"
+          onChange={handleInputChange}
         />
       </div>
       <div className="mb-4">
         <label className="block font-bold mb-1">Description:</label>
         <textarea
           className="w-full p-2 border rounded-md"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          value={input.description}
+          name="description"
+          onChange={handleInputChange}
         />
       </div>
       <div className="mb-4">
@@ -76,8 +81,9 @@ function Form() {
         <input
           type="number"
           className="w-20 p-2 border rounded-md"
-          value={price}
-          onChange={(e) => setPrice(e.target.value)}
+          value={input.price}
+          name="price"
+          onChange={handleInputChange}
         />
       </div>
 
@@ -86,8 +92,9 @@ function Form() {
         <input
           type="number"
           className="w-20 p-2 border rounded-md"
-          value={stock}
-          onChange={(e) => setStock(e.target.value)}
+          value={input.stock}
+          name="stock"
+          onChange={handleInputChange}
         />
       </div>
   
@@ -100,7 +107,9 @@ function Form() {
           onChange={handleOnChange}
         />
       </div>
-      
+      <div className="flex justify-center">
+        {image && <Image width={150} height={150} src={image} />}
+      </div>
       <div className="flex justify-center">
         <div>
           <button
@@ -111,7 +120,6 @@ function Form() {
           </button>
         </div>
       </div>
-      {image && <Image width={150} height={150}  src={image} />}
     </form>
   );
 }
