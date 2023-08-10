@@ -9,7 +9,7 @@ export default function Products() {
 
   useEffect(() => {
     axios
-      .get("https://restapicrud.ericksegura5.repl.co/products/")
+      .get("api/product/")
       .then((response) => {
         setProducts(response.data);
       })
