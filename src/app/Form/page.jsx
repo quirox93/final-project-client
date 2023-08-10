@@ -1,12 +1,27 @@
 "use client"
 import React, { useState } from 'react';
+import Image from "next/image"
 import axios from 'axios';
 
 function Form() {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState(0);
-  const [image, setImage] = useState([]);
+  const [stock, setStock] = useState(0);
+  const [image, setImage] = useState(null);
+  
+
+  
+  function handleOnChange(event) {
+    const reader = new FileReader();
+
+    reader.onload = function (onLoadEvent) {
+      setImage(onLoadEvent.target.result);
+      
+    };
+
+    reader.readAsDataURL(event.target.files[0]);
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -15,6 +30,7 @@ function Form() {
     formData.append('name', name);
     formData.append('description', description);
     formData.append('price', price);
+    formData.append('stock', stock);
     formData.append('imag', image);
     
     try {
@@ -24,13 +40,13 @@ function Form() {
         },
       });
 
-      console.log(response.data); // New product data from the server
-
-      // Clear form after successful submission
+      console.log(response.data); 
+      
       setName('');
       setDescription('');
       setPrice(0);
-      setImage([]);
+      setStock(0);
+      setImage(null);
     } catch (error) {
       console.error(error);
     }
@@ -64,6 +80,16 @@ function Form() {
           onChange={(e) => setPrice(e.target.value)}
         />
       </div>
+
+      <div className="mb-4">
+        <label className="block font-bold mb-1">Stock:</label>
+        <input
+          type="number"
+          className="w-20 p-2 border rounded-md"
+          value={stock}
+          onChange={(e) => setStock(e.target.value)}
+        />
+      </div>
   
       <div className="mb-4">
         <label className="block font-bold mb-1">Image:</label>
@@ -71,7 +97,7 @@ function Form() {
           type="file"
           accept="image/*"
           className="w-full p-2 border rounded-md"
-          onChange={(e) => setImage(e.target.files[0])}
+          onChange={handleOnChange}
         />
       </div>
       
@@ -85,6 +111,7 @@ function Form() {
           </button>
         </div>
       </div>
+      {image && <Image width={150} height={150}  src={image} />}
     </form>
   );
 }
