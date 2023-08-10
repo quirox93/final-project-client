@@ -3,6 +3,7 @@ import { connectDB } from "@/utils/mongoose";
 import Product from "@/models/Product";
 
 export async function GET(req, { params }) {
+
   try {
     connectDB();
     const products = await Product.findById(params.id);
