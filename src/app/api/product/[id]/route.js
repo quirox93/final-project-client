@@ -1,9 +1,9 @@
 const { NextResponse } = require("next/server");
 import { connectDB } from "@/utils/mongoose";
 import Product from "@/models/Product";
+import { deleteImag } from "@/utils/cloudinary";
 
 export async function GET(req, { params }) {
-
   try {
     connectDB();
     const products = await Product.findById(params.id);
@@ -11,5 +11,30 @@ export async function GET(req, { params }) {
     return NextResponse.json(products);
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}
+
+export async function DELETE(_, { params }) {
+  connectDB();
+
+  try {
+    const productDeleted = await Product.findByIdAndDelete(params.id);
+
+    if (!productDeleted)
+      return NextResponse.json(
+        {
+          message: "Product not found",
+        },
+        {
+          status: 404,
+        }
+      );
+
+    const del = await deleteImag(productDeleted.imag.public_id);
+    return NextResponse.json(productDeleted);
+  } catch (error) {
+    return NextResponse.json(error.message, {
+      status: 400,
+    });
   }
 }
