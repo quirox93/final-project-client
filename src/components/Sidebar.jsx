@@ -1,6 +1,8 @@
+import MenuSvg from "@/assets/svg/MenuSvg";
+
 const Sidebar = () => {
   return (
-    <div className="w-64 h-screen relative bg-borderDash">
+    <div className="w-80 h-screen relative bg-borderDash">
       <div className="left-[32px] top-[208px] absolute flex-col justify-start items-start gap-10 inline-flex">
         <div className="w-24 justify-start items-center gap-6 inline-flex">
           <div className="w-6 h-6 relative" />
