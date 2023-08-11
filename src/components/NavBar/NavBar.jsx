@@ -11,11 +11,7 @@ export default function NavBar() {
           <Link href="/">Home</Link>
         </li>
         <li className="hover:text-primary-100">
-<<<<<<< HEAD
           <Link href="/prodForm">New Product</Link>
-=======
-          <Link href="/form">New Product</Link>
->>>>>>> f408932f9cd3852b93c2501c610cc7419cd95771
         </li>
       </ul>
     </div>
