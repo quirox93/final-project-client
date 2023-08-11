@@ -6,6 +6,13 @@ module.exports = {
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
+    colors: {
+      "twitter-blue" : "#1DA1F2",
+      "green" : "#32CD32",
+      "red" : "#f80000",
+      "black" : "#000000",
+      "white" : "#ffffff"
+    },
     extend: {
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',

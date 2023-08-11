@@ -1,3 +1,10 @@
+import Products from "@/components/Products";
+
 export default function Home() {
-  return <div>Homepage</div>;
+  return (
+    <>
+      Homepage
+      <Products />
+    </>
+  );
 }
