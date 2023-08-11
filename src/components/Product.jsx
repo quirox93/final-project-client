@@ -27,7 +27,7 @@ export default function Product(props) {
             <span className="text-green">{props.stock}</span>
           )}
         </p>
-        <button className="w-12 bg-twitter-blue rounded text-white py-2 px-4">
+        <button className="w-12 bg-main rounded text-white py-2 px-4">
           +
         </button>
       </div>
