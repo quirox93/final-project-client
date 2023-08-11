@@ -1,10 +1,9 @@
 import FormProduct from "@/components/FormProduct";
 
-
-export default function FormPage() {
+export default function prodForm() {
   return (
-   <div>
-    <FormProduct />
-   </div>
+    <div>
+      <FormProduct />
+    </div>
   );
 }
