@@ -1,10 +1,14 @@
 import Products from "@/components/Products";
+import SearchBar from "@/components/SearchBar";
 
 export default function Home() {
   return (
     <>
-      Homepage
+    <div className="m-8">
+      <SearchBar />
       <Products />
+
+    </div>
     </>
   );
 }
