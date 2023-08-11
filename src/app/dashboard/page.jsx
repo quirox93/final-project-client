@@ -14,6 +14,7 @@ export default function Dashboard() {
         <Filters />
         <div>
           {/* <DashProducts /> */}
+          {/* cambio */}
         </div>
       </div>
     </div>
