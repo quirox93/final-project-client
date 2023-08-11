@@ -10,7 +10,7 @@ const inputStateInitial = {
   stock: "",
   image: "",
 }
-
+ 
 function Form() {
   const [input, setInput] = useState(inputStateInitial);
   const [image, setImage] = useState(null);
