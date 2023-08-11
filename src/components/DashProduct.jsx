@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @next/next/no-img-element */
-"use_client";
-import DashButton from "./DashProduct/DashButton";
+import { Button, ButtonGroup} from "@nextui-org/react";
 import DashText from "./DashProduct/DashText";
 
 export default function DashProduct(props) {
@@ -14,11 +13,17 @@ export default function DashProduct(props) {
       <DashText info={props.price} />
       <DashText info={props.stock} />
       <DashText info={props.date} />
-      <div className="flex gap-1">
-        <DashButton type="UPDATE" color="success" />
-        <DashButton type="DISABLE" color="warning" />
-        <DashButton type="DELETE" color="danger" />
-      </div>
+      <ButtonGroup>
+        <Button className=" font-bold border-3 border-primary" color="success">
+          EDIT
+        </Button>
+        <Button className=" font-bold  border-3 border-primary" color="warning">
+          DISABLE
+        </Button>
+        <Button className=" font-bold border-3 border-primary" color="danger">
+          DELETE
+        </Button>
+      </ButtonGroup> 
     </>
   );
 }
