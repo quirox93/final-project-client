@@ -7,11 +7,15 @@ module.exports = {
   ],
   theme: {
     colors: {
+      mainDash:"#1da1f2",
+      secondDash:"#f26e1d",
+      borderDash:"#f7fafc",
       main: "#1da1f2",
       second: "#f26e1d",
+      border:"#32CD32",
       green: "#32CD32",
       red: "#f80000",
-      gray: "#f7fafc",
+      grey: "#f7fafc",
       black: "#000",
       white: "#fff",
       transparent: "transparent",
