@@ -13,9 +13,7 @@ export default function Product(props) {
           Price: <span className="text-green font-bold">${props.price}</span>
         </p>
         {props.stock === 0 ? (
-          <span className="bg-black rounded-2xl text-white p-1">
-            Out of Stock
-          </span>
+          <span className="bg-black rounded-2xl text-white p-1">Out of Stock</span>
         ) : (
           <span className="bg-green rounded-2xl text-white p-1">Available</span>
         )}
@@ -27,9 +25,7 @@ export default function Product(props) {
             <span className="text-green">{props.stock}</span>
           )}
         </p>
-        <button className="w-12 bg-twitter-blue rounded text-white py-2 px-4">
-          +
-        </button>
+        <button className="w-12 bg-twitter-blue rounded text-white py-2 px-4">+</button>
       </div>
     </div>
   );
