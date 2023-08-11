@@ -7,12 +7,12 @@ import axios from "axios";
 import DashText from "./DashProduct/DashText";
 
 export default function DashProducts() {
-  const items = 2;
+  const items = 5;
   const [dashProducts, setDashProducts] = useState([]);
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const map = dashProducts.map((product) => (
-    <li key={product._id} className="gap-1 grid grid-flow-col grid-cols-5">
+    <li key={product._id} className="gap-1 grid grid-flow-col grid-cols-4">
       <DashProduct
         id={product._id}
         name={product.name}
@@ -38,22 +38,21 @@ export default function DashProducts() {
   }, [page]);
 
   return (
-    <div>
-      <ul role="list" className="divide-y divide-default">
-        <div className="flex justify-center">
-          <Pagination onChange={setPage} total={total} page={page} initialPage={1} />
-          </div>
-        <li className="gap-1 grid grid-flow-col grid-cols-5">
-          <DashText info="Name" />
+    <ul role="list" className="w-[50vw] text-xs">
+      <div className="flex justify-center">
+        {total ? <Pagination onChange={setPage} total={total} page={page} initialPage={1} /> : ""}
+      </div>
+      <li className="gap-1 grid grid-flow-col grid-cols-4">
+        <DashText info="Name" />
+        <div className="gap-1 grid grid-flow-col grid-cols-2">
           <DashText info="Price" />
           <DashText info="Stock" />
-          <DashText info="Date" />
-          <DashText info="Actions" />
-        </li>
-        {map}
-        <li></li>
-      </ul>
-      <DetailDashProduct />
-    </div>
+        </div>
+        <DashText info="Date" />
+        <DashText info="Actions" />
+      </li>
+      {map}
+      {/*<DetailDashProduct /> */}
+    </ul>
   );
 }
