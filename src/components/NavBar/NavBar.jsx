@@ -2,15 +2,15 @@ import Link from "next/link";
 
 export default function NavBar() {
   return (
-    <div className="bg-grey py-4">
+    <div className="bg-primary text-primary-foreground py-4 ">
       <ul className="flex justify-center space-x-4">
-        <li className="text-white hover:text-grey">
+        <li className="hover:text-primary-100">
           <Link href="/dashboard">Dashboard</Link>
         </li>
-        <li className="text-white hover:text-grey">
+        <li className="hover:text-primary-100">
           <Link href="/">Home</Link>
         </li>
-        <li className="text-white hover:text-grey">
+        <li className="hover:text-primary-100">
           <Link href="/Form">New Product</Link>
         </li>
       </ul>
