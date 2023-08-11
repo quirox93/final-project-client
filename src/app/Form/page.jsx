@@ -40,12 +40,12 @@ function Form() {
     formData.append('imag', input.image);
     
     try {
-      const response = await axios.post('/api/product', formData, {
+      const response = await axios.post('api/product', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-
+      
       console.log(response.data); 
       
       setInput(inputStateInitial);
@@ -65,6 +65,7 @@ function Form() {
           value={input.name}
           name="name"
           onChange={handleInputChange}
+          required
         />
       </div>
       <div className="mb-4">
@@ -108,7 +109,7 @@ function Form() {
         />
       </div>
       <div className="flex justify-center">
-        {image && <Image width={150} height={150} src={image} />}
+        {image && <Image width={150} height={150} alt={input?.name} src={image} />}
       </div>
       <div className="flex justify-center">
         <div>
