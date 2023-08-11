@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import DashProduct from "./DashProduct";
 import DetailDashProduct from "./DetailDashProduct";
 import axios from "axios";
+import DashText from "./DashProduct/DashText";
 
 export default function DashProducts() {
   const [dashProducts, setDashProducts] = useState([]);
@@ -21,9 +22,16 @@ export default function DashProducts() {
 
   return (
     <div>
-      <ul role="list" className="divide-y divide-gray-100">
+      <ul role="list" className="divide-y divide-default">
+        <li className="gap-1 grid grid-flow-col grid-cols-5">
+          <DashText info="Name" />
+          <DashText info="Price" />
+          <DashText info="Stock" />
+          <DashText info="Date" />
+          <DashText info="Actions" />
+        </li>
         {dashProducts.map((product) => (
-          <li key={product._id} className="w-96 h-20 px-3.5 flex-col justify-center items-center gap-2.5 inline-flex">
+          <li key={product._id} className="gap-1 grid grid-flow-col grid-cols-5">
             <DashProduct
               id={product._id}
               name={product.name}
@@ -36,7 +44,7 @@ export default function DashProducts() {
           </li>
         ))}
       </ul>
-      <DetailDashProduct/>
+      <DetailDashProduct />
     </div>
   );
 }
