@@ -10,25 +10,41 @@ const inputStateInitial = {
   stock: "",
   image: "",
 }
- 
+
+// para validaciones real time
+const errrosStateInitial = {
+  name: "",
+  description: "",
+  price: "",
+  stock: "",
+  image: "",
+}
+
 function Form() {
   const [input, setInput] = useState(inputStateInitial);
   const [image, setImage] = useState(null);
+  const [created, setCreated] = useState(false)
+  const [errors, setErrors] = useState(errrosStateInitial)
 
+// cambio en el input
   function handleInputChange(event) {
+    if (created === true) setCreated(false) // linea para reiniciar created
     const { name, value } = event.target;
     setInput(prevInput => ({ ...prevInput, [name]: value }));
   }
-
+// carga de archivo a imagen 
   function handleOnChange(event) {
+    if (created === true) setCreated(false) // linea para reiniciar created
     const reader = new FileReader();
-
     reader.onload = function (onLoadEvent) {
       setImage(onLoadEvent.target.result);
     };
+    // para multicarga 
+    // reader.readAsDataURL(event.target.files);
     reader.readAsDataURL(event.target.files[0]);
   }
 
+// submit
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -37,25 +53,30 @@ function Form() {
     formData.append('description', input.description);
     formData.append('price', input.price);
     formData.append('stock', input.stock);
-    formData.append('imag', input.image);
+    formData.append('imag', image);
     
     try {
-      const response = await axios.post('api/product', formData, {
+      await axios.post('api/product', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
-      });
-      
-      console.log(response.data); 
-      
+      })
+
+      setCreated(true)
       setInput(inputStateInitial);
+      setImage(null)
      
     } catch (error) {
-      console.error(error);
+      console.error("Error Message:", error);
     }
   };
 
   return (
+    <div>
+        <div >
+          {created && <h1 className='flex justify-center font-bold'>Producto Creado</h1>}
+          {!created && <h1 className='flex justify-center font-bold'>Fomulario de Nuevo Producto :</h1>}
+        </div>
     <form autoComplete='off' className="max-w-md mx-auto p-4 border rounded-md shadow-md" onSubmit={handleSubmit}>
       <div className="mb-4">
         <label className="block font-bold mb-1">Name:</label>
@@ -105,6 +126,7 @@ function Form() {
           type="file"
           accept="image/*"
           className="w-full p-2 border rounded-md"
+          value={input.image}
           onChange={handleOnChange}
         />
       </div>
@@ -115,13 +137,14 @@ function Form() {
         <div>
           <button
             type="submit"
-            className="bg-blue-500 hover:bg-blue-600 text-black font-semibold py-2 px-6 rounded-full border-2 border-blue-500 hover:border-blue-600 transition duration-300 ease-in-out"
+            className="font-bold py-2 px-6 rounded-full border-2"
           >
             Submit
           </button>
         </div>
       </div>
     </form>
+    </div>
   );
 }
 
