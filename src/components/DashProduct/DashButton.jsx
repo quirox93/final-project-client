@@ -1,18 +1,11 @@
+"use_client";
+
 export default function DashButton(props) {
-console.log({props})
   return (
-    <button>
-        <div className={`h-20 bg-${props.color} flex-col justify-center items-center inline-flex`}>
-        <div className="h-16 pl-1 pr-px pt-px pb-0.5 justify-center items-center inline-flex">
-          <div className="w-20 self-stretch flex-col justify-start items-center gap-2 inline-flex">
-            <div className="w-6 h-6 p-0.5 justify-center items-center inline-flex">
-              <div className="w-5 h-5 relative">
-              </div>
-            </div>
-            <div className="text-white text-lg font-normal">{props.type}</div>
-          </div>
-        </div>
-      </div>
+    <button
+      className={`bg-${props.color} text-${props.color}-foreground text-sm font-bold flex place-items-center p-2`}
+    >
+      {props.type}
     </button>
-)
+  );
 }

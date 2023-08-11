@@ -13,8 +13,7 @@ export default function Dashboard() {
         <HeaderDash />
         <Filters />
         <div>
-          {/* <DashProducts /> */}
-          {/* cambio */}
+          <DashProducts />
         </div>
       </div>
     </div>
