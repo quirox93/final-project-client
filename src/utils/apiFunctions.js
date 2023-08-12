@@ -1,16 +1,16 @@
 export const filterItems = (items, query) => {
   const total = items.length;
+  if (query.sort) {
+    if (query.sort === "nameAsc" || query.sort === "nameDesc") {
+      items = sortByName(items, query.sort);
+    } else if (query.sort === "priceAsc" || query.sort === "priceDesc") {
+      items = sortByPrice(items, query.sort);
+    }
+  }
   if (query.stock) items = getAvailabeStock(items, query.stock);
   if (query.min) items = getMinPrice(items, query.min);
   if (query.max) items = getMaxPrice(items, query.max);
   if (query.page && query.limit) items = getPage(items, query.page, query.limit);
-  if (query.sort) {
-    if (query.sort === 'nameAsc' || query.sort === 'nameDesc') {
-      items = sortByName(items, query.sort);
-    } else if (query.sort === 'priceAsc' || query.sort === 'priceDesc') {
-      items = sortByPrice(items, query.sort);
-    }
-  };
   const results = { total, results: items };
   return results;
 };
@@ -35,17 +35,17 @@ const getPage = (items, page, limit) => {
   return items.slice(startIndex, endIndex);
 };
 
-const sortByName = (items, order = 'nameAsc') => {
+const sortByName = (items, order = "nameAsc") => {
   const sortedItems = [...items]; // Crear una copia del arreglo para no modificar el original
 
   sortedItems.sort((a, b) => {
     const nameA = a.name.toLowerCase();
     const nameB = b.name.toLowerCase();
 
-    if (order === 'nameAsc') {
+    if (order === "nameAsc") {
       if (nameA < nameB) return -1;
       if (nameA > nameB) return 1;
-    } else if (order === 'nameDesc') {
+    } else if (order === "nameDesc") {
       if (nameA > nameB) return -1;
       if (nameA < nameB) return 1;
     }
@@ -56,13 +56,13 @@ const sortByName = (items, order = 'nameAsc') => {
   return sortedItems;
 };
 
-const sortByPrice = (items, order = 'priceAsc') => {
+const sortByPrice = (items, order = "priceAsc") => {
   const sortedItems = [...items]; // Crear una copia del arreglo para no modificar el original
 
   sortedItems.sort((a, b) => {
-    if (order === 'priceAsc') {
+    if (order === "priceAsc") {
       return a.price - b.price;
-    } else if (order === 'priceDesc') {
+    } else if (order === "priceDesc") {
       return b.price - a.price;
     }
 
