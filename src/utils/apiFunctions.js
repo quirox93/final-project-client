@@ -24,7 +24,8 @@ const getMinPrice = (items, value) => {
 
 const getMaxPrice = (items, value) => {
   return items.filter((producto) => producto.price <= value);
-};
+}; 
+
 
 const getAvailabeStock = (items, value) => {
   //value inputs posibles: ["0", "1"]
