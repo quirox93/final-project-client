@@ -22,6 +22,13 @@ export async function POST(req) {
     connectDB();
     const data = await req.formData();
     const values = Object.fromEntries(data);
+    const finded = await Product.findOne({ name: values.name }).exec();
+    if (finded)
+      return NextResponse.json(
+        { error: "Product already exists", product: finded },
+        { status: 409 }
+      );
+
     const file = data.get("imag");
 
     if (file) {
