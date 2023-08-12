@@ -4,8 +4,7 @@ export const filterItems = (items, query) => {
   if (query.min) items = getMinPrice(items, query.min);
   if (query.max) items = getMaxPrice(items, query.max);
   if (query.page && query.limit) items = getPage(items, query.page, query.limit);
-  if (query.nameAsc) items = sortByName(items, query.nameAsc);
-  if (query.nameDesc) items = sortByName(items,query.nameDesc);
+  if (query.sort) items = sortByName(items, query.sort);
   const results = { total, results: items };
   return results;
 };
