@@ -45,9 +45,7 @@ export default function DashProducts() {
   const updateData = () => {
     //setDashProducts([]);
     axios
-      .get(
-        `https://restapicrud.ericksegura5.repl.co/products?page=${page}&count=${items}`
-      )
+      .get(`api/product?page=${page}&limit=${items}`)
       .then((response) => {
         setDashProducts(response.data.results);
         setTotal(Math.ceil(response.data.total / items));
