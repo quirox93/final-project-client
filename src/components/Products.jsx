@@ -11,7 +11,7 @@ export default function Products() {
     axios
       .get("api/product/")
       .then((response) => {
-        setProducts(response.data);
+        setProducts(response.data.results);
       })
       .catch((error) => {
         console.error("Error fetching products:", error);
