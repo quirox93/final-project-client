@@ -27,7 +27,7 @@ export default function DashProducts() {
   useEffect(() => {
     //setDashProducts([]);
     axios
-      .get(`api/products?page=${page}&limit=${items}`)
+      .get(`api/product?page=${page}&limit=${items}`)
       .then((response) => {
         setDashProducts(response.data.results);
         setTotal(Math.ceil(response.data.total / items));
