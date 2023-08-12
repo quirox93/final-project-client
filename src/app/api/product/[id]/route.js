@@ -19,6 +19,7 @@ export async function DELETE(_, { params }) {
 
   try {
     const productDeleted = await Product.findByIdAndDelete(params.id);
+    const products = await Product.find();
 
     if (!productDeleted)
       return NextResponse.json(
@@ -31,7 +32,7 @@ export async function DELETE(_, { params }) {
       );
 
     const del = await deleteImag(productDeleted.imag.public_id);
-    return NextResponse.json(productDeleted);
+    return NextResponse.json({ total: products.length, products, productDeleted });
   } catch (error) {
     return NextResponse.json(error.message, {
       status: 400,
