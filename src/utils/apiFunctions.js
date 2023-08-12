@@ -5,7 +5,7 @@ export const filterItems = (items, query) => {
   if (query.max) items = getMaxPrice(items, query.max);
   if (query.page && query.limit) items = getPage(items, query.page, query.limit);
   if (query.sort) {
-  if (query.sort === 'nameAsc' || query.sort === 'nameDesc') {
+    if (query.sort === 'nameAsc' || query.sort === 'nameDesc') {
       items = sortByName(items, query.sort);
     } else if (query.sort === 'priceAsc' || query.sort === 'priceDesc') {
       items = sortByPrice(items, query.sort);
