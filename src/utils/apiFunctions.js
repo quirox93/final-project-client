@@ -4,7 +4,13 @@ export const filterItems = (items, query) => {
   if (query.min) items = getMinPrice(items, query.min);
   if (query.max) items = getMaxPrice(items, query.max);
   if (query.page && query.limit) items = getPage(items, query.page, query.limit);
-  if (query.sort) items = sortByName(items, query.sort);
+  if (query.sort) {
+    if (query.sort === 'nameAsc' || query.sort === 'nameDesc') {
+      items = sortByName(items, query.sort);
+    } else if (query.sort === 'priceAsc' || query.sort === 'priceDesc') {
+      items = sortByPrice(items, query.sort);
+    }
+  };
   const results = { total, results: items };
   return results;
 };
@@ -42,6 +48,22 @@ const sortByName = (items, order = 'nameAsc') => {
     } else if (order === 'nameDesc') {
       if (nameA > nameB) return -1;
       if (nameA < nameB) return 1;
+    }
+
+    return 0;
+  });
+
+  return sortedItems;
+};
+
+const sortByPrice = (items, order = 'priceAsc') => {
+  const sortedItems = [...items]; // Crear una copia del arreglo para no modificar el original
+
+  sortedItems.sort((a, b) => {
+    if (order === 'priceAsc') {
+      return a.price - b.price;
+    } else if (order === 'priceDesc') {
+      return b.price - a.price;
     }
 
     return 0;
