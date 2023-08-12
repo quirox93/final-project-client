@@ -11,14 +11,18 @@ export default function Products() {
   const [products, setProducts] = useState([]);
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
+  const [sortType, setSortType] = useState("");
 
   const handleSortChange = (sortType) => {
+    setSortType(sortType);
+  };
+  
+  const getData = () => {
     const queryParams = {
       page: page,
       limit: items,
       sort: sortType,
     };
-
     axios
       .get("api/product", {
         params: queryParams,
@@ -32,31 +36,12 @@ export default function Products() {
       });
   };
 
-  useEffect(() => {
-    axios
-      .get(`api/product?page=${page}&limit=${items}`)
-      .then((response) => {
-        setProducts(response.data.results);
-        setTotal(Math.ceil(response.data.total / items));
-      })
-      .catch((error) => {
-        console.error("Error fetching products:", error);
-      });
-  }, [page]);
+  useEffect(getData, [page,sortType]);
 
   return (
     <div>
       <div className="flex justify-center">
-        {total ? (
-          <Pagination
-            onChange={setPage}
-            total={total}
-            page={page}
-            initialPage={1}
-          />
-        ) : (
-          ""
-        )}
+        {total ? <Pagination onChange={setPage} total={total} page={page} initialPage={1} /> : ""}
       </div>
       <div className="flex mt-10 justify-evenly">
         <SortPriceButton onSortChange={handleSortChange} />
