@@ -7,6 +7,9 @@ export const filterItems = (items, query) => {
       items = sortByPrice(items, query.sort);
     }
   }
+  if (query.name) {
+    items = filterByName(items, query.name);
+  }
   if (query.stock) items = getAvailabeStock(items, query.stock);
   if (query.min) items = getMinPrice(items, query.min);
   if (query.max) items = getMaxPrice(items, query.max);
@@ -33,6 +36,11 @@ const getPage = (items, page, limit) => {
   const startIndex = (page - 1) * limit;
   const endIndex = page * limit;
   return items.slice(startIndex, endIndex);
+};
+
+const filterByName = (items, value) => {
+  const searchTerm = value.toLowerCase();
+  return items.filter((producto) => producto.name.toLowerCase().includes(searchTerm));
 };
 
 const sortByName = (items, order = "nameAsc") => {
