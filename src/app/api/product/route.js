@@ -3,12 +3,14 @@ import { connectDB } from "@/utils/mongoose";
 import Product from "@/models/Product";
 import { CLOUDINARY_CLOUD_NAME, CLOUDINARY_UPLOAD_PRESET } from "@/utils/config";
 import { uploadImag } from "@/utils/cloudinary";
+import { filterItems } from "@/utils/apiFunctions";
 
 export async function GET(req) {
   try {
     connectDB();
-    //const queries = new URL(req.url).searchParams.get("id");
-    const products = await Product.find();
+    const query = Object.fromEntries(new URL(req.url).searchParams.entries());
+    const products = filterItems(await Product.find(), query);
+
     return NextResponse.json(products);
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
@@ -20,6 +22,13 @@ export async function POST(req) {
     connectDB();
     const data = await req.formData();
     const values = Object.fromEntries(data);
+    const finded = await Product.findOne({ name: values.name }).exec();
+    if (finded)
+      return NextResponse.json(
+        { error: "Product already exists", product: finded },
+        { status: 409 }
+      );
+
     const file = data.get("imag");
 
     if (file) {
