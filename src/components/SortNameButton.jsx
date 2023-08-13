@@ -15,7 +15,7 @@ const SortNameButton = ({ onSortChange }) => {
     <Dropdown>
       <DropdownTrigger>
         <Button color="primary" variant="solid">
-          Ordenar por Nombre
+          Order by Name
         </Button>
       </DropdownTrigger>
       <DropdownMenu aria-label="Static Actions">

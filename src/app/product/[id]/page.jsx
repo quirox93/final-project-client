@@ -21,17 +21,17 @@ export default function ProductDetail() {
 
   if (!product) {
     return (
-      <CircularProgress className=" mt-20" aria-label="Loading..." />
+      <CircularProgress className="absolute top-1/2 left-1/2" aria-label="Loading..." />
     );
   }
 
   return (
-    <div className='flex'>
-      <div>
+    <div className='flex items-center justify-center mt-20'>
+      <div className='flex justify-center flex-1 '>
       <img src={product.imag.secure_url} alt={product.name} />
 
       </div>
-      <div>
+      <div className='flex-1 '>
       <h1>{product.name}</h1>
       <p>{product.description}</p>
       <p>
