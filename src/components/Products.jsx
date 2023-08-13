@@ -6,6 +6,7 @@ import axios from "axios";
 import SortPriceButton from "./SortPriceButton";
 import SortNameButton from "./SortNameButton";
 import FilterModal from "./FilterModal";
+import SearchBar from "@/components/SearchBar";
 
 export default function Products() {
   const items = 3;
@@ -22,6 +23,7 @@ export default function Products() {
     products.map((product) => (
       <Product
         key={product._id}
+        id={product._id}
         name={product.name}
         description={product.description}
         price={product.price}
@@ -30,6 +32,10 @@ export default function Products() {
       />
     ))
   );
+  const handleSearch = (searchQuery) =>{
+    setFilters({...filters, name: searchQuery});
+    setPage(1);
+  }
   const handleSortChange = (sortType) => {
     setSortType(sortType);
   };
@@ -67,8 +73,18 @@ export default function Products() {
 
   return (
     <div>
+      <SearchBar onSearch={handleSearch}/>
       <div className="flex justify-center">
-        {total ? <Pagination onChange={setPage} total={total} page={page} initialPage={1} /> : ""}
+        {total ? (
+          <Pagination
+            onChange={setPage}
+            total={total}
+            page={page}
+            initialPage={1}
+          />
+        ) : (
+          ""
+        )}
       </div>
       <div className="flex mt-10 justify-evenly">
         <SortPriceButton onSortChange={handleSortChange} />
