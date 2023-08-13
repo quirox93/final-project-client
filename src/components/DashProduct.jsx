@@ -2,7 +2,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { Button, ButtonGroup } from "@nextui-org/react";
 import DashText from "./DashProduct/DashText";
-import Edit from "@/app/test/page";
+import Edit from "@/components/Edit";
 
 
 export default function DashProduct(props) {
