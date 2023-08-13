@@ -5,7 +5,14 @@ const SearchBar = ({ onSearch }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const handleSearch = () => {
     onSearch(searchQuery);
+  
   };
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+  };
+  
   return (
     <div className="mb-3 flex items-center justify-center">
       <div className="relative mb-4 w-1/3 flex flex-wrap items-stretch">
@@ -17,6 +24,7 @@ const SearchBar = ({ onSearch }) => {
           aria-describedby="button-addon1"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
+          onKeyDown={handleKeyPress}
         />
         <button
           className="relative z-[2] flex items-center rounded-r bg-primary px-6 py-2.5 text-xs font-medium uppercase leading-tight text-white shadow-md transition duration-150 ease-in-out hover:bg-primary-300 hover:shadow-lg focus:bg-second focus:shadow-lg focus:outline-none focus:ring-0 active:bg-second active:shadow-lg"
