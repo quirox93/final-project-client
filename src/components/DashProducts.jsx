@@ -1,16 +1,33 @@
 "use client";
-import { Pagination, PaginationItem, PaginationCursor } from "@nextui-org/react";
+import {
+  Pagination,
+  PaginationItem,
+  PaginationCursor,
+} from "@nextui-org/react";
 import React, { useState, useEffect } from "react";
 import DashProduct from "./DashProduct";
 import DetailDashProduct from "./DetailDashProduct";
 import axios from "axios";
 import DashText from "./DashProduct/DashText";
+import { useRouter } from "next/router";
 
 export default function DashProducts() {
   const items = 5;
   const [dashProducts, setDashProducts] = useState([]);
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
+
+  const handleDelete = async (id) => {
+    console.log(id);
+    const { data } = await axios.delete(`api/product/${id}`);
+    const newTotal = Math.ceil(data.total/ items);
+    if (newTotal !== total) {
+      setPage(newTotal);
+    } else {
+      updateData();
+    }
+  };
+
   const map = dashProducts.map((product) => (
     <li key={product._id} className="gap-1 grid grid-flow-col grid-cols-4">
       <DashProduct
@@ -21,10 +38,11 @@ export default function DashProducts() {
         stock={product.stock}
         image={product.imag.secure_url}
         date={product.createdAt}
+        handleDelete={handleDelete}
       />
     </li>
   ));
-  useEffect(() => {
+  const updateData = () => {
     //setDashProducts([]);
     axios
       .get(`api/product?page=${page}&limit=${items}`)
@@ -35,12 +53,22 @@ export default function DashProducts() {
       .catch((error) => {
         console.error("Error fetching products:", error);
       });
-  }, [page]);
+  };
+  useEffect(updateData, [page]);
 
   return (
     <ul role="list" className="w-[50vw] text-xs">
       <div className="flex justify-center">
-        {total ? <Pagination onChange={setPage} total={total} page={page} initialPage={1} /> : ""}
+        {total ? (
+          <Pagination
+            onChange={setPage}
+            total={total}
+            page={page}
+            initialPage={1}
+          />
+        ) : (
+          ""
+        )}
       </div>
       <li className="gap-1 grid grid-flow-col grid-cols-4">
         <DashText info="Name" />

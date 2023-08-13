@@ -2,11 +2,11 @@
 export default function Product(props) {
   //cargar datos desde Props
   return (
-    <div className="m-10 w-96 flex items-center  p-2 rounded-2xl shadow-lg">
+    <div className="bg-white m-10 w-80 flex items-center  p-2 rounded-2xl shadow-lg">
       <div className="flex-1">
         <img src={props.image} alt={props.name} width={200} height={200} />
       </div>
-      <div className="ml-5 flex-1 space-y-3">
+      <div className="text-black ml-5 flex-1 space-y-3">
         <h2 className="text-lg font-bold">{props.name}</h2>
         <p>{props.description}</p>
         <p>
@@ -15,7 +15,7 @@ export default function Product(props) {
         {props.stock === 0 ? (
           <span className="bg-black rounded-2xl text-white p-1">Out of Stock</span>
         ) : (
-          <span className="bg-green rounded-2xl text-white p-1">Available</span>
+          <span className="bg-success-500 rounded-2xl text-white p-1">Available</span>
         )}
         <p>
           Stock:{" "}
@@ -25,9 +25,7 @@ export default function Product(props) {
             <span className="text-green">{props.stock}</span>
           )}
         </p>
-        <button className="w-12 bg-primary rounded text-white py-2 px-4">
-        
-        </button>
+        <button className="w-12 bg-primary rounded text-white py-2 px-4">+</button>
       </div>
     </div>
   );
