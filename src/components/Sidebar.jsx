@@ -34,22 +34,22 @@ const Sidebar = () => {
         
         {/* Links */}
     
-        <Link href="#" color="Primary">
+        <Link href="/dashboard/products" color="Primary">
           <CgMenuGridO className="mr-4" />
-          <div className="max-md:hidden">Home</div>
+          <div className="max-md:hidden">Products</div>
         </Link>
 
-        <Link href="#" color="Primary">
+        <Link href="/dashboard/addProduct" color="Primary">
           <CgCardClubs className="mr-4" />
           <div className="max-md:hidden">Add Product</div>
         </Link>
 
-        <Link href="#" color="Primary">
+        <Link href="/dashboard/statistics" color="Primary">
           <TbChartInfographic className="mr-4" />
           <div className="max-md:hidden">Statistics</div>
         </Link>
 
-        <Link href="#" color="Primary">
+        <Link href="/" color="Primary">
           <BiLogOut className="mr-4" />
           <div className="max-md:hidden">Login Out</div>
         </Link>
