@@ -19,6 +19,7 @@ export async function PUT(req, { params }) {
     connectDB();
     const data = await req.formData();
     const values = Object.fromEntries(data);
+    delete values.imag;
     const file = data.get("imag");
     if (file) {
       const { public_id, secure_url } = await uploadImag(file);
