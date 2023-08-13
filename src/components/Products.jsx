@@ -18,7 +18,11 @@ export default function Products() {
   const [loading, setLoading] = useState(true);
 
   const map = loading ? (
-    <CircularProgress className=" mt-20" aria-label="Loading..." />
+    <CircularProgress className="mt-20" aria-label="Loading..." />
+  ) : products.length === 0 ? (
+    <div className="mt-20">
+      <h1 className="font-bold text-danger">No products found.</h1>
+    </div>
   ) : (
     products.map((product) => (
       <Product
@@ -41,10 +45,12 @@ export default function Products() {
   };
 
   const handleFilter = (values) => {
-    setFilters(values);
+   
+    setFilters({...values});
   };
 
   const getData = () => {
+    console.log(filters)
     setLoading(true);
     const fetchData = async () => {
       try {
@@ -60,6 +66,7 @@ export default function Products() {
         setProducts(data.results);
         const newTotal = Math.ceil(data.total / items);
         setTotal(newTotal);
+        if(page === 0 && newTotal > 0 ) setPage(1)
         if (page > newTotal) setPage(newTotal);
         else setLoading(false);
       } catch (error) {

@@ -28,21 +28,6 @@ export default function DashProducts() {
       updateData();
     }
   };
-
-  const map = dashProducts.map((product) => (
-    <li key={product._id} className="gap-1 grid grid-flow-col grid-cols-4">
-      <DashProduct
-        id={product._id}
-        name={product.name}
-        description={product.description}
-        price={product.price}
-        stock={product.stock}
-        image={product.imag.secure_url}
-        date={product.createdAt}
-        handleDelete={handleDelete}
-      />
-    </li>
-  ));
   const updateData = () => {
     //setDashProducts([]);
     api
@@ -55,6 +40,23 @@ export default function DashProducts() {
         console.error("Error fetching products:", error);
       });
   };
+
+  const map = dashProducts.map((product) => (
+    <li key={product._id} className="gap-1 grid grid-flow-col grid-cols-4">
+      <DashProduct
+        id={product._id}
+        name={product.name}
+        description={product.description}
+        price={product.price}
+        stock={product.stock}
+        imag={product.imag.secure_url}
+        date={product.createdAt}
+        handleDelete={handleDelete}
+        updateData = {updateData}
+        />
+    </li>
+  ));
+  
   useEffect(updateData, [page]);
 
   return (
