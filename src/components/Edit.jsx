@@ -34,7 +34,7 @@ export default function Edit(props) {
     const reader = new FileReader();
     reader.onload = function (onLoadEvent) {
       setImage(onLoadEvent.target.result);
-      setInput({ ...input, image: onLoadEvent.target.result })
+      setInput({ ...input, image: onLoadEvent.target.result });
     };
     // para multicarga
     // reader.readAsDataURL(event.target.files);
@@ -47,7 +47,6 @@ export default function Edit(props) {
         className=" text-1xs font-bold border-2 border-primary"
         color="success"
         onPress={onOpen}
-        color="primary"
       >
         EDIT
       </Button>
@@ -113,14 +112,7 @@ export default function Edit(props) {
                     onChange={handleImage}
                   />
                   <div className="flex justify-center">
-            
-                      <img
-                        width={150}
-                        height={150}
-                        alt={input?.name}
-                        src={input.image}
-                      />
-                   
+                    <img width={150} height={150} alt={input?.name} src={input.image} />
                   </div>
                 </ModalBody>
                 <ModalFooter>
