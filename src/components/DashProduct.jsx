@@ -2,6 +2,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { Button, ButtonGroup } from "@nextui-org/react";
 import DashText from "./DashProduct/DashText";
+import Edit from "@/app/test/page";
 
 
 export default function DashProduct(props) {
@@ -20,7 +21,12 @@ export default function DashProduct(props) {
       <DashText info={props.date} />
       <ButtonGroup>
         <Button className=" text-1xs font-bold border-2 border-primary" color="success">
-          EDIT
+          <Edit
+          id={props.id}
+          name={props.name}
+          description={props.description}
+          price={props.price}
+          stock={props.stock}/>
         </Button>
         <Button className=" text-1xs font-bold  border-2 border-primary" color="warning">
           DISABLE
