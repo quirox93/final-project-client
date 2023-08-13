@@ -5,7 +5,7 @@ export default function NavBar() {
     <div className="bg-primary text-primary-foreground py-4 ">
       <ul className="flex justify-center space-x-4">
         <li className="hover:text-primary-100">
-          <Link href="/dashboard">Dashboard</Link>
+          <Link href="/dashboard/products">Dashboard</Link>
         </li>
         <li className="hover:text-primary-100">
           <Link href="/">Home</Link>

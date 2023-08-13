@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
- 
+* {
+  scrollbar-gutter: stable;
+}
+
+span {
+  scrollbar-gutter: auto;
 }

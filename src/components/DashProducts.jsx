@@ -10,6 +10,7 @@ import DetailDashProduct from "./DetailDashProduct";
 import axios from "axios";
 import DashText from "./DashProduct/DashText";
 import { useRouter } from "next/router";
+import api from "@/utils/axios";
 
 export default function DashProducts() {
   const items = 5;
@@ -19,7 +20,7 @@ export default function DashProducts() {
 
   const handleDelete = async (id) => {
     console.log(id);
-    const { data } = await axios.delete(`api/product/${id}`);
+    const { data } = await api.delete(`product/${id}`);
     const newTotal = Math.ceil(data.total/ items);
     if (newTotal !== total) {
       setPage(newTotal);
@@ -44,10 +45,8 @@ export default function DashProducts() {
   ));
   const updateData = () => {
     //setDashProducts([]);
-    axios
-      .get(
-        `https://restapicrud.ericksegura5.repl.co/products?page=${page}&count=${items}`
-      )
+    api
+      .get(`product?page=${page}&limit=${items}`)
       .then((response) => {
         setDashProducts(response.data.results);
         setTotal(Math.ceil(response.data.total / items));
