@@ -1,9 +1,9 @@
 const { NextResponse } = require("next/server");
 import { connectDB } from "@/utils/mongoose";
 import Product from "@/models/Product";
-import { deleteImag } from "@/utils/cloudinary";
+import { deleteImag, uploadImag } from "@/utils/cloudinary";
 
-export async function GET(req, { params }) {
+export async function GET(_, { params }) {
   try {
     connectDB();
     const products = await Product.findById(params.id);
@@ -14,12 +14,28 @@ export async function GET(req, { params }) {
   }
 }
 
+export async function PUT(req, { params }) {
+  try {
+    connectDB();
+    const data = await req.formData();
+    const values = Object.fromEntries(data);
+    const file = data.get("imag");
+    if (file) {
+      const { public_id, secure_url } = await uploadImag(file);
+      values.imag = { public_id, secure_url };
+    }
+    const product = await Product.findByIdAndUpdate(params.id, values);
+    return NextResponse.json(product);
+  } catch (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}
+
 export async function DELETE(_, { params }) {
   connectDB();
 
   try {
     const productDeleted = await Product.findByIdAndDelete(params.id);
-    const products = await Product.find();
 
     if (!productDeleted)
       return NextResponse.json(
@@ -32,7 +48,7 @@ export async function DELETE(_, { params }) {
       );
 
     const del = await deleteImag(productDeleted.imag.public_id);
-    return NextResponse.json({ total: products.length, products, productDeleted });
+    return NextResponse.json(productDeleted);
   } catch (error) {
     return NextResponse.json(error.message, {
       status: 400,
