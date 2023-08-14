@@ -6,7 +6,6 @@ import {
 } from "@nextui-org/react";
 import React, { useState, useEffect } from "react";
 import DashProduct from "./DashProduct";
-import DetailDashProduct from "./DetailDashProduct";
 import axios from "axios";
 import DashText from "./DashProduct/DashText";
 import { useRouter } from "next/router";
@@ -28,6 +27,15 @@ export default function DashProducts() {
       updateData();
     }
   };
+
+  const handleDisable = async (id, enabled) => {
+    console.log(id);
+    const formData = new FormData();
+    formData.append("enabled", !enabled);
+    console.log(formData)
+    await api.put(`product/${id}`, formData);
+    updateData();
+  }
   const updateData = () => {
     //setDashProducts([]);
     api
@@ -42,7 +50,7 @@ export default function DashProducts() {
   };
 
   const map = dashProducts.map((product) => (
-    <li key={product._id} className="gap-1 grid grid-flow-col grid-cols-4">
+    <li key={product._id} className="gap-1 grid grid-flow-col grid-cols-4 h-20">
       <DashProduct
         id={product._id}
         name={product.name}
@@ -51,7 +59,9 @@ export default function DashProducts() {
         stock={product.stock}
         imag={product.imag.secure_url}
         date={product.createdAt}
+        enabled={product.enabled}
         handleDelete={handleDelete}
+        handleDisable={handleDisable}
         updateData = {updateData}
         />
     </li>
@@ -61,7 +71,7 @@ export default function DashProducts() {
 
   return (
     <ul role="list" className="w-[50vw] text-xs">
-      <div className="flex justify-center">
+      <div className="flex justify-center mb-5" >
         {total ? (
           <Pagination
             onChange={setPage}
@@ -83,7 +93,6 @@ export default function DashProducts() {
         <DashText info="Actions" />
       </li>
       {map}
-      {/*<DetailDashProduct /> */}
     </ul>
   );
 }

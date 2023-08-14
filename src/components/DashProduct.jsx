@@ -7,6 +7,8 @@ import Edit from "@/components/Edit";
 
 export default function DashProduct(props) {
 
+  const buttonText = props.enabled ? "DISABLE" : "ENABLE";
+  
   return (
     <>
       <div className="w-15 px-2.5  justify-center items-center inline-flex">
@@ -31,8 +33,8 @@ export default function DashProduct(props) {
           imag={props.imag}
           />
 
-        <Button className=" text-1xs font-bold  border-2 border-primary" color="warning">
-          DISABLE
+        <Button className=" text-1xs font-bold  border-2 border-primary" color="warning" onClick={()=>props.handleDisable(props.id, props.enabled)}>
+          {buttonText}
         </Button>
         <Button className=" text-1xs font-bold border-2 border-primary" color="danger" onClick={()=>props.handleDelete(props.id)}>
           DELETE
