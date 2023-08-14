@@ -1,6 +1,7 @@
 "use client";
 import { CgMenuGridO, CgCardClubs } from "react-icons/cg";
 import { Link, Avatar, User } from "@nextui-org/react";
+import DateTime from "./DateTime";
 
 const Sidebar = () => {
   return (
@@ -17,7 +18,9 @@ const Sidebar = () => {
         <Avatar isBordered color="primary" src="https://i.pravatar.cc/150?u=a04258a2462d826712d" />
         <div className="flex-col justify-start items-start inline-flex max-md:hidden">
           <div className="text-slate-900 text-base font-bold">Héctor Gómez</div>
-          <div className="text-lime-500 text-xs font-normal">Product Designer</div>
+          <div className="text-lime-500 text-xs font-normal">
+            <DateTime suppressHydrationWarning={true} />
+          </div>
         </div>
       </div>
 
