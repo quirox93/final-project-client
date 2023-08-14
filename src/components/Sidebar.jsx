@@ -20,9 +20,7 @@ const Sidebar = () => {
         <img className=" w-10 h-10 rounded-full" src={linkPerfil} />
         <div className="flex-col justify-start items-start inline-flex max-md:hidden">
           <div className="text-slate-900 text-base font-bold">Héctor Gómez</div>
-          <div className="text-lime-500 text-xs font-normal">
-            camiloduquee@gmail.com
-          </div>
+          <div className="text-lime-500 text-xs font-normal">camiloduquee@gmail.com</div>
         </div>
       </div>
 
@@ -31,27 +29,11 @@ const Sidebar = () => {
       <div className="w-48 h-px left-[32px] top-[179px] absolute bg-slate-300 max-md:w-6 transition-all" />
 
       <div className="left-[32px] top-[208px] absolute flex-col justify-start items-start gap-10 inline-flex transition-all">
-        
         {/* Links */}
-    
+
         <Link href="/dashboard/products" color="Primary">
           <CgMenuGridO className="mr-4" />
           <div className="max-md:hidden">Products</div>
-        </Link>
-
-        <Link href="/dashboard/addProduct" color="Primary">
-          <CgCardClubs className="mr-4" />
-          <div className="max-md:hidden">Add Product</div>
-        </Link>
-
-        <Link href="/dashboard/statistics" color="Primary">
-          <TbChartInfographic className="mr-4" />
-          <div className="max-md:hidden">Statistics</div>
-        </Link>
-
-        <Link href="/" color="Primary">
-          <BiLogOut className="mr-4" />
-          <div className="max-md:hidden">Login Out</div>
         </Link>
       </div>
     </div>
