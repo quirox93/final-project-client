@@ -11,9 +11,8 @@ import {
   Input,
 } from "@nextui-org/react";
 import api from "@/utils/axios";
-import Image from "next/image";
 
-export default function Edit(props) {
+export default function EditButton(props) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const [image, setImage] = useState("");
@@ -36,19 +35,19 @@ export default function Edit(props) {
       setImage(onLoadEvent.target.result);
       setInput({ ...input, image: onLoadEvent.target.result });
     };
-    // para multicarga
-    // reader.readAsDataURL(event.target.files);
     reader.readAsDataURL(event.target.files[0]);
   }
 
   return (
     <>
       <Button
-        className=" text-1xs font-bold border-2 border-primary"
+        className=" text-1xs font-bold"
         color="success"
         onPress={onOpen}
+        size="sm"
+        variant="flat"
       >
-        EDIT
+        Edit
       </Button>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="top-center">
         <ModalContent>

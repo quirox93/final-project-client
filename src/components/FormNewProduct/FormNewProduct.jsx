@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useState } from "react";
 import {
   Modal,
@@ -27,7 +27,7 @@ const errorsStateInitial = {
   stock: "",
 };
 
-export default function FormNewProduct() {
+export default function FormNewProduct({ cb }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [input, setInput] = useState(inputStateInitial);
   const [image, setImage] = useState(null);
@@ -37,7 +37,7 @@ export default function FormNewProduct() {
   const [loading, setLoading] = useState(false);
 
   function handleInputChange(event) {
-   // if (created === true) setCreated(false);
+    // if (created === true) setCreated(false);
     const { name, value } = event.target;
 
     let newErrors = { ...errors };
@@ -87,7 +87,7 @@ export default function FormNewProduct() {
   }
 
   function handleOnChange(event) {
-   // if (created === true) setCreated(false);
+    // if (created === true) setCreated(false);
     const reader = new FileReader();
     reader.onload = function (onLoadEvent) {
       setImage(onLoadEvent.target.result);
@@ -119,19 +119,19 @@ export default function FormNewProduct() {
           headers: {
             "Content-Type": "multipart/form-data",
           },
-        });         
-            console.log(response)
-            alert("Producto Creado!");
-            setCreated(true);
-            setInput(inputStateInitial);
-            setImage(null);
-            setErrors(errorsStateInitial);
-            setLoading(false);
+        });
+        cb();
+        alert("Producto Creado!");
+        setCreated(true);
+        setInput(inputStateInitial);
+        setImage(null);
+        setErrors(errorsStateInitial);
+        setLoading(false);
       }
     } catch (error) {
-      if (error.message === "Request failed with status code 409"){
-      alert("Error: Ese nombre de producto ya existe.")
-    } 
+      if (error.message === "Request failed with status code 409") {
+        alert("Error: Ese nombre de producto ya existe.");
+      }
       setInput(inputStateInitial);
       setErrors(errorsStateInitial);
       setLoading(false);
@@ -140,11 +140,7 @@ export default function FormNewProduct() {
 
   return (
     <>
-      <Button
-        className="font-bold"
-        color="primary"
-        onPress={onOpen}
-      >
+      <Button className="font-bold" color="primary" onPress={onOpen}>
         Add Product
       </Button>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="top-center">
@@ -188,12 +184,7 @@ export default function FormNewProduct() {
                 onChange={handleInputChange}
               />
               {errors.stock && <p className="text-danger">{errors.stock}</p>}
-              <input
-                type="file"
-                accept="image/*"
-                name="image"
-                onChange={handleOnChange}
-              />
+              <input type="file" accept="image/*" name="image" onChange={handleOnChange} />
               <div className="flex justify-center">
                 {image && <Image width={150} height={150} alt={input?.name} src={image} />}
               </div>
