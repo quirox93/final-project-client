@@ -11,7 +11,7 @@ yarn dev
 # or
 pnpm dev
 ```
-INVESTIGAR O AVERIGUAR @@@@@@@@@
+INVESTIGAR O AVERIGUAR   ***`EE`b***
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
