@@ -1,7 +1,9 @@
 "use client";
 import DashProducts from "@/components/DashProducts";
 import FilterModal from "@/components/FilterModal";
+import FormNewProduct from "@/components/FormNewProduct/FormNewProduct";
 import { Input } from "@nextui-org/react";
+
 
 const DashSection = () => {
   return (
@@ -11,6 +13,7 @@ const DashSection = () => {
         <FilterModal />
         <FilterModal />
         <FilterModal />
+        <FormNewProduct/>
       </div>
       <div className="flex mt-5 ml-20 w-auto">
         <DashProducts />

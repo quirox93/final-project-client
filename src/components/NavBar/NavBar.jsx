@@ -10,9 +10,7 @@ export default function NavBar() {
         <li className="hover:text-primary-100">
           <Link href="/">Home</Link>
         </li>
-        <li className="hover:text-primary-100">
-          <Link href="/prodForm">New Product</Link>
-        </li>
+
       </ul>
     </div>
   );
