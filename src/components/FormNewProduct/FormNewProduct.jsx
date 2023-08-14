@@ -119,24 +119,20 @@ export default function FormNewProduct() {
           headers: {
             "Content-Type": "multipart/form-data",
           },
-        });
-
-        if (response.data.error.length) {
-            alert(response.data.error);
-          } else {
+        });         
+            console.log(response)
             alert("Producto Creado!");
             setCreated(true);
             setInput(inputStateInitial);
             setImage(null);
             setErrors(errorsStateInitial);
             setLoading(false);
-          }
       }
     } catch (error) {
       if (error.message === "Request failed with status code 409"){
       alert("Error: Ese nombre de producto ya existe.")
-    } else alert("Error: ",error.message)
-    setInput(inputStateInitial);
+    } 
+      setInput(inputStateInitial);
       setErrors(errorsStateInitial);
       setLoading(false);
     }
