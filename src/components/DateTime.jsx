@@ -15,7 +15,7 @@ const DateTime = () => {
       clearInterval(intervalId);
     };
   }, []);
-
+ 
   return <>{currentTime}</>;
 };
 
