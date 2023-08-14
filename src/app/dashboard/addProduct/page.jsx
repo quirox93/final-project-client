@@ -1,9 +1,7 @@
-import React from 'react'
+import FormProduct from "@/components/FormProduct";
 
 const AddProductDash = () => {
-  return (
-    <div>agrega un producto</div>
-  )
-}
+  return <FormProduct />;
+};
 
-export default AddProductDash
+export default AddProductDash;
