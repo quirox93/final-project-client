@@ -23,26 +23,42 @@ import { SearchIcon } from "./SearchIcon";
 import { ChevronDownIcon } from "./ChevronDownIcon";
 import { columns, statusOptions } from "./data";
 import { capitalize } from "./utils";
-import api from "@/utils/axios";
+import FilterModal from "../FilterModal";
+import Edit from "./EditButton";
+import FormNewProduct from "../FormNewProduct/FormNewProduct";
+import DeleteButton from "./DeleteButton";
+import DisableButton from "./DisableButton";
 
 const statusColorMap = {
-  active: "success",
-  paused: "danger",
-  vacation: "warning",
+  true: "success",
+  false: "warning",
 };
 
-const INITIAL_VISIBLE_COLUMNS = ["name", "date", "stock", "price", "actions"];
+const INITIAL_VISIBLE_COLUMNS = ["name", "createdAt", "stock", "price"];
 
-export default function AdminProducts({ users }) {
+export default function AdminProducts({ users, updateData }) {
   const [filterValue, setFilterValue] = React.useState("");
   const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
   const [visibleColumns, setVisibleColumns] = React.useState(new Set(INITIAL_VISIBLE_COLUMNS));
   const [statusFilter, setStatusFilter] = React.useState("all");
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [sortDescriptor, setSortDescriptor] = React.useState({
-    column: "age",
+    column: "name",
     direction: "ascending",
   });
+
+  const SortFunc = {
+    nameascending: (a, b) => a.name.localeCompare(b.name),
+    namedescending: (a, b) => b.name.localeCompare(a.name),
+    priceascending: (a, b) => a.price - b.price,
+    pricedescending: (a, b) => b.price - a.price,
+    stockascending: (a, b) => a.stock - b.stock,
+    stockdescending: (a, b) => b.stock - a.stock,
+    createdAtascending: (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+    createdAtdescending: (a, b) =>
+      new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+  };
+
   const [page, setPage] = React.useState(1);
 
   const hasSearchFilter = Boolean(filterValue);
@@ -54,21 +70,22 @@ export default function AdminProducts({ users }) {
   }, [visibleColumns]);
 
   const filteredItems = React.useMemo(() => {
-    let filteredUsers = [...users];
-
+    const sortF = SortFunc[sortDescriptor.column + sortDescriptor.direction];
+    let filteredUsers = [...users].sort(sortF);
     if (hasSearchFilter) {
       filteredUsers = filteredUsers.filter((user) =>
         user.name.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
     if (statusFilter !== "all" && Array.from(statusFilter).length !== statusOptions.length) {
+      console.log(statusFilter);
       filteredUsers = filteredUsers.filter((user) =>
-        Array.from(statusFilter).includes(user.status)
+        Array.from(statusFilter).includes(user.enabled.toString())
       );
     }
 
     return filteredUsers;
-  }, [users, filterValue, statusFilter]);
+  }, [users, filterValue, statusFilter, sortDescriptor]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -79,29 +96,27 @@ export default function AdminProducts({ users }) {
     return filteredItems.slice(start, end);
   }, [page, filteredItems, rowsPerPage]);
 
-  const sortedItems = React.useMemo(() => {
-    return [...items].sort((a, b) => {
-      const first = a[sortDescriptor.column];
-      const second = b[sortDescriptor.column];
-      const cmp = first < second ? -1 : first > second ? 1 : 0;
-
-      return sortDescriptor.direction === "descending" ? -cmp : cmp;
-    });
-  }, [sortDescriptor, items]);
-
   const renderCell = React.useCallback((user, columnKey) => {
     const cellValue = user[columnKey];
 
+    console.log(columnKey);
     switch (columnKey) {
       case "name":
         return (
           <User
             avatarProps={{ radius: "lg", src: user.imag.secure_url }}
-            description={user.email}
-            name={cellValue}
-          >
-            {user.email}
-          </User>
+            description={
+              <Chip
+                className="capitalize"
+                color={statusColorMap[user.enabled.toString()]}
+                size="sm"
+                variant="flat"
+              >
+                {user.enabled ? "Active" : "Paused"}
+              </Chip>
+            }
+            name={<p className=" font-bold">{cellValue}</p>}
+          ></User>
         );
       case "role":
         return (
@@ -170,6 +185,35 @@ export default function AdminProducts({ users }) {
   }, []);
 
   const topContent = React.useMemo(() => {
+    const selected = Array.from(selectedKeys);
+    const product = users.find((e) => e._id === selected[0]);
+    const actions =
+      selected.length === 1 && product ? (
+        <>
+          <Edit
+            id={product._id}
+            name={product.name}
+            description={product.description}
+            price={product.price}
+            stock={product.stock}
+            updateData={updateData}
+            imag={product.imag.secure_url}
+          />
+          <DisableButton
+            id={product._id}
+            enabled={product.enabled}
+            cb={() => setSelectedKeys(new Set([]))}
+            updateData={updateData}
+          />
+          <DeleteButton
+            cb={() => setSelectedKeys(new Set([]))}
+            id={product._id}
+            updateData={updateData}
+          />
+        </>
+      ) : (
+        ""
+      );
     return (
       <div className="flex flex-col gap-4">
         <div className="flex justify-between gap-3 items-end">
@@ -225,13 +269,12 @@ export default function AdminProducts({ users }) {
                 ))}
               </DropdownMenu>
             </Dropdown>
-            <Button color="primary" endContent={<PlusIcon />}>
-              Add New
-            </Button>
+            <FormNewProduct cb={updateData} />
           </div>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-default-400 text-small">Total {users.length} users</span>
+          <span className="text-default-400 text-small">Total {users.length} products</span>
+          {actions}
           <label className="flex items-center text-default-400 text-small">
             Rows per page:
             <select
@@ -248,12 +291,13 @@ export default function AdminProducts({ users }) {
     );
   }, [
     filterValue,
+    onSearchChange,
     statusFilter,
     visibleColumns,
-    onRowsPerPageChange,
     users.length,
-    onSearchChange,
-    hasSearchFilter,
+    onRowsPerPageChange,
+    onClear,
+    selectedKeys,
   ]);
 
   const bottomContent = React.useMemo(() => {
@@ -292,7 +336,7 @@ export default function AdminProducts({ users }) {
       bottomContent={bottomContent}
       bottomContentPlacement="outside"
       classNames={{
-        wrapper: "max-h-[382px]",
+        wrapper: "max-h-[400px]",
       }}
       selectedKeys={selectedKeys}
       selectionMode="multiple"
@@ -313,7 +357,7 @@ export default function AdminProducts({ users }) {
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody emptyContent={"No users found"} items={sortedItems}>
+      <TableBody emptyContent={"No users found"} items={items}>
         {(item) => (
           <TableRow key={item._id}>
             {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
