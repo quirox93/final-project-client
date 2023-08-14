@@ -15,15 +15,15 @@ const SortPriceButton = ({ onSortChange }) => {
     <Dropdown>
       <DropdownTrigger>
         <Button color="primary" variant="solid">
-          Ordenar por Precio
+          Order by Price
         </Button>
       </DropdownTrigger>
       <DropdownMenu aria-label="Static Actions">
         <DropdownItem key="menor" onClick={() => handleSortChange("priceAsc")}>
-          Menor Precio
+          Low Price
         </DropdownItem>
         <DropdownItem key="mayor" onClick={() => handleSortChange("priceDesc")}>
-          Mayor Precio
+          High Price
         </DropdownItem>
       </DropdownMenu>
     </Dropdown>
