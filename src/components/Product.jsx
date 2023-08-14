@@ -5,7 +5,7 @@ export default function Product(props) {
   const router = useRouter();
   
   return (
-    <div className="bg-white m-10 w-80 flex items-center  p-2 rounded-2xl shadow-lg">
+    <div className="bg-white m-10 lg:w-3/12 md:w-1/3 flex items-center  p-2 rounded-2xl shadow-2xl">
       <div className="flex-1">
         <img
           className=" cursor-pointer"
@@ -25,7 +25,7 @@ export default function Product(props) {
         </h2>
         <p>{props.description}</p>
         <p>
-          Price: <span className="text-green font-bold">${props.price}</span>
+          Price: <span className="font-bold">${props.price}</span>
         </p>
         {props.stock === 0 ? (
           <span className="bg-black rounded-2xl text-white p-1">
