@@ -1,5 +1,5 @@
 "use client";
-import DashProducts from "@/components/DashProducts";
+import DashProducts from "@/components/DashProducts/DashProducts";
 import FilterModal from "@/components/FilterModal";
 import { Input } from "@nextui-org/react";
 
