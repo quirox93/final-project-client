@@ -121,7 +121,7 @@ export default function FormNewProduct() {
           },
         });
 
-        if (response.data.error) {
+        if (response.data.error.length) {
             alert(response.data.error);
           } else {
             alert("Producto Creado!");
