@@ -1,14 +1,12 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @next/next/no-img-element */
 import { Button, ButtonGroup } from "@nextui-org/react";
-import DashText from "./DashProduct/DashText";
+import DashText from "./DashText";
 import Edit from "@/components/Edit";
 
-
 export default function DashProduct(props) {
-
   const buttonText = props.enabled ? "DISABLE" : "ENABLE";
-  
+
   return (
     <>
       <div className="w-15 px-2.5  justify-center items-center inline-flex">
@@ -22,8 +20,7 @@ export default function DashProduct(props) {
 
       <DashText info={props.date} />
       <ButtonGroup>
-
-          <Edit
+        <Edit
           id={props.id}
           name={props.name}
           description={props.description}
@@ -31,12 +28,20 @@ export default function DashProduct(props) {
           stock={props.stock}
           updateData={props.updateData}
           imag={props.imag}
-          />
+        />
 
-        <Button className=" text-1xs font-bold  border-2 border-primary" color="warning" onClick={()=>props.handleDisable(props.id, props.enabled)}>
+        <Button
+          className=" text-1xs font-bold  border-2 border-primary"
+          color="warning"
+          onClick={() => props.handleDisable(props.id, props.enabled)}
+        >
           {buttonText}
         </Button>
-        <Button className=" text-1xs font-bold border-2 border-primary" color="danger" onClick={()=>props.handleDelete(props.id)}>
+        <Button
+          className=" text-1xs font-bold border-2 border-primary"
+          color="danger"
+          onClick={() => props.handleDelete(props.id)}
+        >
           DELETE
         </Button>
       </ButtonGroup>

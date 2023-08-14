@@ -1,14 +1,8 @@
 "use client";
-import {
-  Pagination,
-  PaginationItem,
-  PaginationCursor,
-} from "@nextui-org/react";
+import { Pagination } from "@nextui-org/react";
 import React, { useState, useEffect } from "react";
-import DashProduct from "./DashProduct";
-import axios from "axios";
-import DashText from "./DashProduct/DashText";
-import { useRouter } from "next/router";
+import DashProduct from "../DashProduct/DashProduct";
+import DashText from "../DashProduct/DashText";
 import api from "@/utils/axios";
 
 export default function DashProducts() {
@@ -20,7 +14,7 @@ export default function DashProducts() {
   const handleDelete = async (id) => {
     console.log(id);
     const { data } = await api.delete(`product/${id}`);
-    const newTotal = Math.ceil(data.total/ items);
+    const newTotal = Math.ceil(data.total / items);
     if (newTotal !== total) {
       setPage(newTotal);
     } else {
@@ -29,15 +23,13 @@ export default function DashProducts() {
   };
 
   const handleDisable = async (id, enabled) => {
-    console.log(id);
     const formData = new FormData();
     formData.append("enabled", !enabled);
-    console.log(formData)
+    console.log(formData);
     await api.put(`product/${id}`, formData);
     updateData();
-  }
+  };
   const updateData = () => {
-    //setDashProducts([]);
     api
       .get(`product?page=${page}&limit=${items}`)
       .then((response) => {
@@ -48,7 +40,20 @@ export default function DashProducts() {
         console.error("Error fetching products:", error);
       });
   };
-
+  const formatDate = (value) => {
+    const date = new Date(value);
+    // Format the date to YYYY-MM-DD
+    const formatted = date
+      .toLocaleDateString("en-GB", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      })
+      .split("/")
+      .reverse()
+      .join("-");
+    return formatted;
+  };
   const map = dashProducts.map((product) => (
     <li key={product._id} className="gap-1 grid grid-flow-col grid-cols-4 h-20">
       <DashProduct
@@ -58,30 +63,21 @@ export default function DashProducts() {
         price={product.price}
         stock={product.stock}
         imag={product.imag.secure_url}
-        date={product.createdAt}
+        date={formatDate(product.createdAt)}
         enabled={product.enabled}
         handleDelete={handleDelete}
         handleDisable={handleDisable}
-        updateData = {updateData}
-        />
+        updateData={updateData}
+      />
     </li>
   ));
-  
+
   useEffect(updateData, [page]);
 
   return (
     <ul role="list" className="w-[50vw] text-xs">
-      <div className="flex justify-center mb-5" >
-        {total ? (
-          <Pagination
-            onChange={setPage}
-            total={total}
-            page={page}
-            initialPage={1}
-          />
-        ) : (
-          ""
-        )}
+      <div className="flex justify-center mb-5">
+        {total ? <Pagination onChange={setPage} total={total} page={page} initialPage={1} /> : ""}
       </div>
       <li className="gap-1 grid grid-flow-col grid-cols-4">
         <DashText info="Name" />
