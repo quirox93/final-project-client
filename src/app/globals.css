@@ -12,3 +12,7 @@ span {
 svg {
   scrollbar-gutter: auto;
 }
+
+button {
+  scrollbar-gutter: auto;
+}
