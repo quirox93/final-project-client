@@ -9,3 +9,6 @@
 span {
   scrollbar-gutter: auto;
 }
+svg {
+  scrollbar-gutter: auto;
+}
