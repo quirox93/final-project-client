@@ -46,6 +46,10 @@ const productSchema = Schema(
           "https://product-images.tcgplayer.com/fit-in/420x420/455949.jpg",
       },
     },
+    enabled: {
+      type: Boolean,
+      default: true,
+    },
   },
   {
     timestamps: true,
