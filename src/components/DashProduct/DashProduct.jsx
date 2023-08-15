@@ -2,7 +2,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { Button, ButtonGroup } from "@nextui-org/react";
 import DashText from "./DashText";
-import Edit from "@/components/Edit";
+import Edit from "@/components/AdminProducts/EditButton";
 
 export default function DashProduct(props) {
   const buttonText = props.enabled ? "DISABLE" : "ENABLE";

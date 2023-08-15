@@ -2,7 +2,7 @@
 import { Pagination, CircularProgress } from "@nextui-org/react";
 import React, { useState, useEffect } from "react";
 import Product from "./Product";
-import axios from "axios";
+import api from "../utils/axios"
 import SortPriceButton from "./SortPriceButton";
 import SortNameButton from "./SortNameButton";
 import FilterModal from "./FilterModal";
@@ -50,7 +50,6 @@ export default function Products() {
   };
 
   const getData = () => {
-    console.log(filters)
     setLoading(true);
     const fetchData = async () => {
       try {
@@ -60,7 +59,7 @@ export default function Products() {
           sort: sortType,
           ...filters,
         };
-        const { data } = await axios.get("api/product", {
+        const { data } = await api.get("/product", {
           params: queryParams,
         });
         setProducts(data.results);
