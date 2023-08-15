@@ -54,17 +54,26 @@ export default function EditButton(props) {
           {(onClose) => {
             const handleSubmit = async () => {
               console.log(props.id);
-
+            
               const formData = new FormData();
               formData.append("name", input.name);
               formData.append("description", input.description);
               formData.append("price", input.price);
               formData.append("stock", input.stock);
               formData.append("imag", image);
-
-              await api.put(`product/${props.id}`, formData);
-              props.updateData();
-              onClose();
+            
+              try {
+                await api.put(`product/${props.id}`, formData);
+                props.updateData();
+                onClose();
+            
+                // Mostrar una alerta de éxito
+                alert("Product edited successfully!");
+              } catch (error) {
+                console.error("Error editing product:", error);
+                // Mostrar una alerta de error si ocurrió algún problema
+                alert("An error occurred while editing the product.");
+              }
             };
             return (
               <>
