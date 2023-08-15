@@ -21,6 +21,7 @@ export async function PUT(req, { params }) {
     const values = Object.fromEntries(data);
     const file = data.get("imag");
     delete values.imag;
+
     if (file) {
       const { public_id, secure_url } = await uploadImag(file);
       values.imag = { public_id, secure_url };
