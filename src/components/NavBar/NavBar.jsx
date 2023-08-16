@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { UserButton } from "@clerk/nextjs";
 
 export default function NavBar() {
   return (
@@ -10,7 +11,9 @@ export default function NavBar() {
         <li className="hover:text-primary-100">
           <Link href="/">Home</Link>
         </li>
-
+        <li>
+          <UserButton />
+        </li>
       </ul>
     </div>
   );
