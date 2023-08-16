@@ -80,7 +80,7 @@ export default function AdminProducts({ users, updateData }) {
     if (statusFilter !== "all" && Array.from(statusFilter).length !== statusOptions.length) {
       console.log(statusFilter);
       filteredUsers = filteredUsers.filter((user) =>
-        Array.from(statusFilter).includes(user.enabled.toString())
+        Array.from(statusFilter).includes(user.isEnabled.toString())
       );
     }
 
@@ -108,11 +108,11 @@ export default function AdminProducts({ users, updateData }) {
             description={
               <Chip
                 className="capitalize"
-                color={statusColorMap[user.enabled.toString()]}
+                color={statusColorMap[user.isEnabled.toString()]}
                 size="sm"
                 variant="flat"
               >
-                {user.enabled ? "Active" : "Paused"}
+                {user.isEnabled ? "Active" : "Paused"}
               </Chip>
             }
             name={<p className=" font-bold">{cellValue}</p>}
@@ -201,7 +201,7 @@ export default function AdminProducts({ users, updateData }) {
           />
           <DisableButton
             id={product._id}
-            enabled={product.enabled}
+            enabled={product.isEnabled}
             cb={() => setSelectedKeys(new Set([]))}
             updateData={updateData}
           />

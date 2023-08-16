@@ -5,7 +5,7 @@ import DashText from "./DashText";
 import Edit from "@/components/AdminProducts/EditButton";
 
 export default function DashProduct(props) {
-  const buttonText = props.enabled ? "DISABLE" : "ENABLE";
+  const buttonText = props.isEnabled ? "DISABLE" : "ENABLE";
 
   return (
     <>
@@ -33,7 +33,7 @@ export default function DashProduct(props) {
         <Button
           className=" text-1xs font-bold  border-2 border-primary"
           color="warning"
-          onClick={() => props.handleDisable(props.id, props.enabled)}
+          onClick={() => props.handleDisable(props.id, props.isEnabled)}
         >
           {buttonText}
         </Button>

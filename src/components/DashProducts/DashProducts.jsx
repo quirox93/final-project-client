@@ -64,7 +64,7 @@ export default function DashProducts() {
         stock={product.stock}
         imag={product.imag.secure_url}
         date={formatDate(product.createdAt)}
-        enabled={product.enabled}
+        enabled={product.isEnabled}
         handleDelete={handleDelete}
         handleDisable={handleDisable}
         updateData={updateData}
