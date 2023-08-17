@@ -1,6 +1,7 @@
 "use client";
 import LoadingPage from "@/app/loading";
 import AdminProducts from "@/components/AdminProducts/AdminProducts";
+import api from "@/utils/axios";
 import { useEffect, useState } from "react";
 
 export default function ProductsTable() {
