@@ -2,7 +2,7 @@ import AdminProducts from "@/components/AdminProducts/AdminProducts";
 import api from "@/utils/axios";
 
 export default async function ProductsTable() {
-  //const { data } = await api.get("product");
+  const { data } = await api.get("product");
   const users = [];
   return (
     <>
