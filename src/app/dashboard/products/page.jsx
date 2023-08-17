@@ -1,5 +1,7 @@
+import ProductsTable from "@/components/AdminProducts/ProductsTable";
+
 const DashSection = () => {
-  return <div></div>;
+  return <ProductsTable />;
 };
 
 export default DashSection;

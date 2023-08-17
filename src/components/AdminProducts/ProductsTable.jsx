@@ -1,4 +1,3 @@
-"use server";
 import AdminProducts from "@/components/AdminProducts/AdminProducts";
 import api from "@/utils/axios";
 
