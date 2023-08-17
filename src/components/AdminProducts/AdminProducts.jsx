@@ -98,8 +98,6 @@ export default function AdminProducts({ defUsers }) {
 
   const renderCell = React.useCallback((user, columnKey) => {
     const cellValue = user[columnKey];
-
-    console.log(columnKey);
     switch (columnKey) {
       case "name":
         return (
