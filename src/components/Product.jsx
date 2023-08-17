@@ -1,9 +1,31 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
+import { Button } from "@nextui-org/react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useDispatch, useSelector } from "react-redux";
+import { selectedProducts } from "@/store/slice";
 export default function Product(props) {
   const router = useRouter();
-  
+  const dispatch = useDispatch();
+  const selectionProducts = useSelector(
+    (state) => state.shopCart.selectionProducts
+  );
+  const [quantity, setQuantity] = useState(1);
+
+  const handleAddToCart = () => {
+    const productToAdd = {
+      ...props,
+    };
+    const productsToAdd = Array.from({ length: quantity }, () => ({
+      ...productToAdd,
+    })); 
+
+    dispatch(selectedProducts([...selectionProducts, ...productsToAdd]));
+
+    setQuantity(1); 
+  };
+
   return (
     <div className="bg-white m-10 lg:w-3/12 md:w-1/3 flex items-center  p-2 rounded-2xl shadow-2xl">
       <div className="flex-1">
@@ -44,9 +66,30 @@ export default function Product(props) {
             <span className="text-green">{props.stock}</span>
           )}
         </p>
-        <button className="w-12 bg-primary rounded text-white py-2 px-4">
-          +
-        </button>
+        <div className="flex items-center">
+          <input
+            type="number"
+            value={quantity}
+            onChange={(e) => {
+              const inputValue = parseInt(e.target.value);
+              if (!isNaN(inputValue) && inputValue >= 1 && inputValue <= props.stock) {
+                setQuantity(inputValue);
+              }  else if (e.target.value === '') {
+                setQuantity(1);
+              }
+            }}
+            className="border p-1 mr-2"
+            min={1}
+            max={props.stock}
+          />
+          <Button
+            className="w-12 flex  justify-center bg-primary rounded text-white py-2 px-4"
+            onClick={handleAddToCart}
+            disabled={props.stock === 0}
+          >
+            Add
+          </Button>
+        </div>
       </div>
     </div>
   );

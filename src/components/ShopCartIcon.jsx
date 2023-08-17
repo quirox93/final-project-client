@@ -1,6 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
-import { useState } from "react";
 import {
   Badge,
   Button,
@@ -11,13 +10,15 @@ import {
   DropdownSection,
   cn,
 } from "@nextui-org/react";
+import { deletedProducts } from "@/store/slice";
 import { CartIcon } from "../assets/svg/CartIcon";
 import { DeleteDocumentIcon } from "@/assets/svg/DeleteDocumentIcon";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import React from "react";
 
 const ShopCartIcon = () => {
+  const dispatch = useDispatch();
   const iconClasses =
     "text-xl text-default-500 pointer-events-none flex-shrink-0";
   const selectedProducts = useSelector(
@@ -26,14 +27,13 @@ const ShopCartIcon = () => {
 
   /* Cuenta los productos  */
   const productCountMap = selectedProducts.reduce((map, product) => {
-    map[product._id] = (map[product._id] || 0) + 1;
+    map[product.id] = (map[product.id] || 0) + 1;
     return map;
   }, {});
 
-  
   /* Crea una instancia por productos repetidos con su respectiva cuenta */
   const uniqueProducts = Object.keys(productCountMap).map((productId) => {
-    const product = selectedProducts.find((p) => p._id === productId);
+    const product = selectedProducts.find((p) => p.id === productId);
     return { ...product, count: productCountMap[productId] };
   });
 
@@ -41,12 +41,9 @@ const ShopCartIcon = () => {
     return total + product.price * product.count;
   }, 0);
 
-
   return (
-    <div
-      className=" mr-12 "
-    >
-      <Dropdown>
+    <div className=" mr-12 ">
+      <Dropdown className=" mr-12 ">
         <Badge color="danger" content={selectedProducts.length} shape="circle">
           <DropdownTrigger>
             <Button
@@ -65,13 +62,18 @@ const ShopCartIcon = () => {
           color="primary"
         >
           <DropdownSection title="Products" showDivider>
-          {uniqueProducts.map((product) => (
+            {uniqueProducts.map((product) => (
               <DropdownItem
-                key={product._id}
+                key={product.id}
                 description={`${product.name} - $${product.price}`}
+                closeOnSelect={false}
                 startContent={
                   <>
-                    <img src={product.imag.secure_url} alt={product.name} className="w-12 h-12" />
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      className="w-12 h-12"
+                    />
                     {product.count > 1 && (
                       <span className="ml-2 text-sm text-gray-500">
                         ×{product.count}
@@ -79,7 +81,11 @@ const ShopCartIcon = () => {
                     )}
                   </>
                 }
-                shortcut={<DeleteDocumentIcon className={cn(iconClasses)} />}
+                shortcut={
+                  <button onClick={() => dispatch(deletedProducts(product.id))}>
+                    <DeleteDocumentIcon className={cn(iconClasses)} />
+                  </button>
+                }
               >
                 {product.name}
               </DropdownItem>
@@ -94,13 +100,13 @@ const ShopCartIcon = () => {
               description={`Subtotal: $${totalPrice}`}
               startContent={
                 <Button
-              radius="full"
-              isIconOnly
-              aria-label="more than 99 notifications"
-              variant="dark"
-            >
-              Cart
-            </Button>
+                  radius="full"
+                  isIconOnly
+                  aria-label="more than 99 notifications"
+                  variant="dark"
+                >
+                  Cart
+                </Button>
               }
             >
               Subtotal:
@@ -108,7 +114,6 @@ const ShopCartIcon = () => {
           </DropdownSection>
         </DropdownMenu>
       </Dropdown>
-
     </div>
   );
 };
