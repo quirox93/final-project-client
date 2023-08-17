@@ -108,6 +108,7 @@ const ShopCartIcon = () => {
           </DropdownSection>
         </DropdownMenu>
       </Dropdown>
+
     </div>
   );
 };
