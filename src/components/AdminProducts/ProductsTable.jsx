@@ -2,6 +2,7 @@
 import LoadingPage from "@/app/loading";
 import AdminProducts from "@/components/AdminProducts/AdminProducts";
 import { iApi } from "@/utils/axios";
+import { currentUser } from "@clerk/nextjs";
 //import { useEffect, useState } from "react";
 
 export default async function ProductsTable() {
@@ -15,6 +16,7 @@ export default async function ProductsTable() {
   };
   useEffect(getData, []);
 */
+  const user = await currentUser();
   const users = await iApi.products.fetch("product");
   return (
     <>
