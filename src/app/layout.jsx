@@ -3,6 +3,11 @@ import { Providers } from "./providers";
 import { Inter } from "next/font/google";
 import NavBar from "../components/NavBar/NavBar";
 
+import { Suspense } from "react";
+import Loading from "./loading";
+import { ClerkProvider } from "@clerk/nextjs";
+
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -14,10 +19,14 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className="light text-foreground bg-background">
       <body className={inter.className}>
-        <Providers>
-          <NavBar />
-          {children}
-        </Providers>
+
+        <ClerkProvider>
+          <Providers>
+            <NavBar />
+            <Suspense fallback={<Loading />}>{children}</Suspense>
+          </Providers>
+        </ClerkProvider>
+
       </body>
     </html>
   );
