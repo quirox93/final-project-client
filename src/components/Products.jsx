@@ -2,7 +2,7 @@
 import { Pagination, CircularProgress } from "@nextui-org/react";
 import React, { useState, useEffect } from "react";
 import Product from "./Product";
-import api from "../utils/axios"
+import api from "../utils/axios";
 import SortPriceButton from "./SortPriceButton";
 import SortNameButton from "./SortNameButton";
 import FilterModal from "./FilterModal";
@@ -36,17 +36,16 @@ export default function Products() {
       />
     ))
   );
-  const handleSearch = (searchQuery) =>{
-    setFilters({...filters, name: searchQuery});
+  const handleSearch = (searchQuery) => {
+    setFilters({ ...filters, name: searchQuery });
     setPage(1);
-  }
+  };
   const handleSortChange = (sortType) => {
     setSortType(sortType);
   };
 
   const handleFilter = (values) => {
-   
-    setFilters({...values});
+    setFilters({ ...values });
   };
 
   const getData = () => {
@@ -65,7 +64,7 @@ export default function Products() {
         setProducts(data.results);
         const newTotal = Math.ceil(data.total / items);
         setTotal(newTotal);
-        if(page === 0 && newTotal > 0 ) setPage(1)
+        if (page === 0 && newTotal > 0) setPage(1);
         if (page > newTotal) setPage(newTotal);
         else setLoading(false);
       } catch (error) {
@@ -79,7 +78,7 @@ export default function Products() {
 
   return (
     <div>
-      <SearchBar onSearch={handleSearch}/>
+      <SearchBar onSearch={handleSearch} />
       <div className="flex justify-center">
         {total ? (
           <Pagination

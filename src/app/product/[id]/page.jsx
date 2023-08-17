@@ -20,7 +20,16 @@ export default function ProductDetail() {
     const fetchProduct = async () => {
       const { data } = await api.get(`/product/${id}`);
 
-      setProduct(data);
+      const alignedProduct = {
+        id: data._id,
+        name: data.name,
+        description: data.description,
+        price: data.price,
+        stock: data.stock,
+        image: data.imag.secure_url,
+      };
+
+      setProduct(alignedProduct);
     };
     fetchProduct();
   }, [id]);
@@ -33,13 +42,13 @@ export default function ProductDetail() {
       />
     );
   }
-
+  console.log(product);
   return (
     <div className="flex items-center justify-center mt-20">
       <div className="flex justify-center flex-1 m-2 ">
         <img
           className="border-4 border-primary rounded-2xl"
-          src={product.imag.secure_url}
+          src={product.image}
           alt={product.name}
         />
       </div>
