@@ -1,14 +1,17 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
+import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
-import {HeartIcon} from "../../../assets/svg/HeartIcon"
 import api from "../../../utils/axios";
 import { CircularProgress, Button } from "@nextui-org/react";
-
-
+import { selectedProducts } from "@/store/slice";
 import { useParams } from "next/navigation";
 
 export default function ProductDetail() {
+  const dispatch = useDispatch();
+  const selectionProducts = useSelector(
+    (state) => state.shopCart.selectionProducts
+  );
   const [product, setProduct] = useState(null);
   const params = useParams();
   const { id } = params;
@@ -34,7 +37,11 @@ export default function ProductDetail() {
   return (
     <div className="flex items-center justify-center mt-20">
       <div className="flex justify-center flex-1 m-2 ">
-        <img className="border-4 border-primary rounded-2xl"src={product.imag.secure_url} alt={product.name} />
+        <img
+          className="border-4 border-primary rounded-2xl"
+          src={product.imag.secure_url}
+          alt={product.name}
+        />
       </div>
       <div className=" flex-column flex-1 m-4 text-center justify-center space-y-10 bg-content4 rounded-2xl pb-4">
         <h1 className=" font-bold mt-4">{product.name}</h1>
@@ -56,14 +63,19 @@ export default function ProductDetail() {
           {product.stock === 0 ? (
             <span className="text-red">0</span>
           ) : (
-            <span >{product.stock}</span>
+            <span>{product.stock}</span>
           )}
         </p>
         <div className="text-center">
-        <Button isIconOnly color="primary" aria-label="Like">
-            <HeartIcon />
-        </Button>
-
+          <Button
+            color="primary"
+            aria-label="Like"
+            onClick={() => {
+              dispatch(selectedProducts([...selectionProducts, product]));
+            }}
+          >
+            Add to Cart
+          </Button>
         </div>
       </div>
     </div>

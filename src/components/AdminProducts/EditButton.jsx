@@ -15,6 +15,7 @@ import api from "@/utils/axios";
 export default function EditButton(props) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
+  const [buttonDisabled, setButtonDisabled] = useState(true);
   const [image, setImage] = useState("");
   const [input, setInput] = useState({
     name: props.name,
@@ -23,11 +24,60 @@ export default function EditButton(props) {
     stock: props.stock,
     image: props.imag,
   });
+  const [errors, setErrors] = useState({
+    name: "",
+    description: "",
+    price: "",
+    stock: "",
+  });
 
   const handleChange = (event) => {
-    const property = event.target.name;
-    const value = event.target.value;
-    setInput({ ...input, [property]: value });
+    const { name, value } = event.target;
+
+    let newErrors = { ...errors };
+    newErrors[name] = "";
+
+    if (!Object.values(newErrors).some((error) => error !== "")) {
+      setButtonDisabled(false);
+    }
+
+    switch (name) {
+      case "name":
+        if (value.length === 0) {
+          newErrors.name = "Nombre requerido";
+          setButtonDisabled(true);
+        } else if (value.length > 40) {
+          newErrors.name = "Nombre no puede tener más de 50 caracteres";
+          setButtonDisabled(true);
+        } else {
+          newErrors.name = "";
+          setButtonDisabled(false);
+        }
+        break;
+      case "description":
+        if (value.length === 0) {
+          newErrors.description = "Descripción requerida";
+          setButtonDisabled(true);
+        } else {
+          newErrors.description = "";
+          setButtonDisabled(false);
+        }
+        break;
+      case "stock":
+        if (value.includes(".")) {
+          newErrors.stock = "El stock debe ser un número entero";
+          setButtonDisabled(true);
+        } else {
+          newErrors.stock = "";
+          setButtonDisabled(false);
+        }
+        break;
+      default:
+        break;
+    }
+
+    setInput({ ...input, [name]: value });
+    setErrors(newErrors);
   };
   function handleImage(event) {
     const reader = new FileReader();
@@ -53,8 +103,6 @@ export default function EditButton(props) {
         <ModalContent>
           {(onClose) => {
             const handleSubmit = async () => {
-              console.log(props.id);
-
               const formData = new FormData();
               formData.append("name", input.name);
               formData.append("description", input.description);
@@ -62,9 +110,17 @@ export default function EditButton(props) {
               formData.append("stock", input.stock);
               formData.append("imag", image);
 
-              await api.put(`product/${props.id}`, formData);
-              props.updateData();
-              onClose();
+              try {
+                const { data } = await api.put(`product/${props.id}`, formData);
+                const newData = props.data.map((e) => (e._id === props.id ? (e = data) : e));
+                props.setData(newData);
+                onClose();
+                alert("Product edited successfully!");
+              } catch (error) {
+                console.error("Error editing product:", error);
+                // Mostrar una alerta de error si ocurrió algún problema
+                alert("An error occurred while editing the product.");
+              }
             };
             return (
               <>
@@ -77,14 +133,18 @@ export default function EditButton(props) {
                     variant="bordered"
                     name="name"
                     onChange={handleChange}
+                    isRequired
                   />
+                  {errors.name && <p className="text-danger">{errors.name}</p>}
                   <Input
                     label="Description"
                     value={input.description}
                     variant="bordered"
                     name="description"
                     onChange={handleChange}
+                    isRequired
                   />
+                  {errors.description && <p className="text-danger">{errors.description}</p>}
                   <Input
                     label="Price"
                     type="number"
@@ -101,7 +161,7 @@ export default function EditButton(props) {
                     name="stock"
                     onChange={handleChange}
                   />
-
+                  {errors.stock && <p className="text-danger">{errors.stock}</p>}
                   <input
                     //label="Image"
                     type="file"
@@ -118,7 +178,7 @@ export default function EditButton(props) {
                   <Button color="danger" variant="flat" onClick={onClose}>
                     Close
                   </Button>
-                  <Button color="primary" onPress={handleSubmit}>
+                  <Button color="primary" onPress={handleSubmit} isDisabled={buttonDisabled}>
                     Update
                   </Button>
                 </ModalFooter>
