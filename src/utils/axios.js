@@ -5,8 +5,9 @@ const baseURL = getURL("api");
 const api = axios.create({
   baseURL,
 });
-export default api;
 
+export default api;
+/*
 export const iApi = {
   products: {
     fetch: async () => {
@@ -15,4 +16,4 @@ export const iApi = {
       return products.results;
     },
   },
-};
+};*/
