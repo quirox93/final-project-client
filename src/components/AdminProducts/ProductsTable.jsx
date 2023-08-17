@@ -1,7 +1,7 @@
 "use server";
 import LoadingPage from "@/app/loading";
 import AdminProducts from "@/components/AdminProducts/AdminProducts";
-import api from "@/utils/axios";
+import { iApi } from "@/utils/axios";
 //import { useEffect, useState } from "react";
 
 export default async function ProductsTable() {
@@ -15,7 +15,7 @@ export default async function ProductsTable() {
   };
   useEffect(getData, []);
 */
-  const users = await api.get("product");
+  const users = await iApi.products.fetch("product");
   return (
     <>
       <div className="p-4 z-0 flex flex-col relative justify-between gap-4 bg-content1 overflow-auto rounded-large shadow-small max-w-ld ">
