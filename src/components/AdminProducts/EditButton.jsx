@@ -103,8 +103,6 @@ export default function EditButton(props) {
         <ModalContent>
           {(onClose) => {
             const handleSubmit = async () => {
-              console.log(props.id);
-
               const formData = new FormData();
               formData.append("name", input.name);
               formData.append("description", input.description);
@@ -113,11 +111,10 @@ export default function EditButton(props) {
               formData.append("imag", image);
 
               try {
-                await api.put(`product/${props.id}`, formData);
-                props.updateData();
+                const { data } = await api.put(`product/${props.id}`, formData);
+                const newData = props.data.map((e) => (e._id === props.id ? (e = data) : e));
+                props.setData(newData);
                 onClose();
-
-                // Mostrar una alerta de éxito
                 alert("Product edited successfully!");
               } catch (error) {
                 console.error("Error editing product:", error);
@@ -147,9 +144,7 @@ export default function EditButton(props) {
                     onChange={handleChange}
                     isRequired
                   />
-                  {errors.description && (
-                    <p className="text-danger">{errors.description}</p>
-                  )}
+                  {errors.description && <p className="text-danger">{errors.description}</p>}
                   <Input
                     label="Price"
                     type="number"
@@ -166,9 +161,7 @@ export default function EditButton(props) {
                     name="stock"
                     onChange={handleChange}
                   />
-                  {errors.stock && (
-                    <p className="text-danger">{errors.stock}</p>
-                  )}
+                  {errors.stock && <p className="text-danger">{errors.stock}</p>}
                   <input
                     //label="Image"
                     type="file"
@@ -178,23 +171,14 @@ export default function EditButton(props) {
                     onChange={handleImage}
                   />
                   <div className="flex justify-center">
-                    <img
-                      width={150}
-                      height={150}
-                      alt={input?.name}
-                      src={input.image}
-                    />
+                    <img width={150} height={150} alt={input?.name} src={input.image} />
                   </div>
                 </ModalBody>
                 <ModalFooter>
                   <Button color="danger" variant="flat" onClick={onClose}>
                     Close
                   </Button>
-                  <Button
-                    color="primary"
-                    onPress={handleSubmit}
-                    isDisabled={buttonDisabled}
-                  >
+                  <Button color="primary" onPress={handleSubmit} isDisabled={buttonDisabled}>
                     Update
                   </Button>
                 </ModalFooter>
