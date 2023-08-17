@@ -9,9 +9,9 @@ const ShopCartIcon = () => {
   const selectedProducts = useSelector(
     (state) => state.shopCart.selectionProducts
   );
-  return (
+  return (  
     <div className=" mr-8    relative">
-      <Link href="/">
+      <Link href="/cart">
         <CartIcon />
       </Link>
       <span className="rounded-full w-3/4 text-center bg-danger absolute top-5 left-5 ">
