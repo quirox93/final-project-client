@@ -26,7 +26,9 @@ export async function PUT(req, { params }) {
       const { public_id, secure_url } = await uploadImag(file);
       values.imag = { public_id, secure_url };
     }
-    const product = await Product.findByIdAndUpdate(params.id, values);
+    const product = await Product.findByIdAndUpdate(params.id, values, {
+      new: true,
+    });
     return NextResponse.json(product);
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
@@ -38,7 +40,6 @@ export async function DELETE(_, { params }) {
 
   try {
     const productDeleted = await Product.findByIdAndDelete(params.id);
-    const products = await Product.find();
 
     if (!productDeleted)
       return NextResponse.json(
@@ -49,8 +50,7 @@ export async function DELETE(_, { params }) {
           status: 404,
         }
       );
-    //const del = await deleteImag(productDeleted.imag.public_id);
-    return NextResponse.json({ total: products.length, products, productDeleted });
+    return NextResponse.json(productDeleted);
   } catch (error) {
     return NextResponse.json(error.message, {
       status: 400,

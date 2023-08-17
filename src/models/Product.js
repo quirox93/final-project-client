@@ -7,18 +7,32 @@ const productSchema = Schema(
       required: true,
       trim: true,
       unique: true,
+      validate: {
+        validator: function (v) {
+          return v.trim().length > 0;
+        },
+        message: (props) => `${props.value} is not a valid name!`,
+      },
     },
     description: {
       type: String,
       required: true,
+      validate: {
+        validator: function (v) {
+          return v.trim().length > 0;
+        },
+        message: (props) => `${props.value} is not a valid description!`,
+      },
     },
     price: {
       type: Number,
-      default: 0,
+      default: 1,
+      max: 9999999,
     },
     stock: {
       type: Number,
       default: 0,
+      max: 9999999,
       validate: {
         validator: Number.isInteger,
         message: "must be interger number",
@@ -37,6 +51,10 @@ const productSchema = Schema(
     enabled: {
       type: Boolean,
       default: true,
+    },
+    isDeleted: {
+      type: Boolean,
+      default: false,
     },
   },
   {
