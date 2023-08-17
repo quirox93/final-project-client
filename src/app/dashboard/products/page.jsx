@@ -1,6 +1,6 @@
 import ProductsTable from "@/components/AdminProducts/ProductsTable";
 
-const DashSection = async () => {
+const DashSection = () => {
   return <ProductsTable />;
 };
 
