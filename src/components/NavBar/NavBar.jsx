@@ -6,7 +6,7 @@ import { SignInButton, UserButton, useUser } from "@clerk/nextjs";
 export default function NavBar() {
   const { isSignedIn } = useUser();
   const login = isSignedIn ? (
-    <UserButton />
+    <UserButton afterSignOutUrl="/" />
   ) : (
     <SignInButton mode="modal">
       <button className="btn">Sign in</button>
