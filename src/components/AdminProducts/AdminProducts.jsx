@@ -36,7 +36,8 @@ const statusColorMap = {
 
 const INITIAL_VISIBLE_COLUMNS = ["name", "createdAt", "stock", "price"];
 
-export default function AdminProducts({ users, updateData }) {
+export default function AdminProducts({ defUsers }) {
+  const [users, setUsers] = React.useState(defUsers);
   const [filterValue, setFilterValue] = React.useState("");
   const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
   const [visibleColumns, setVisibleColumns] = React.useState(new Set(INITIAL_VISIBLE_COLUMNS));
@@ -46,7 +47,7 @@ export default function AdminProducts({ users, updateData }) {
     column: "name",
     direction: "ascending",
   });
-
+  const updateData = () => console.log("test");
   const SortFunc = {
     nameascending: (a, b) => a.name.localeCompare(b.name),
     namedescending: (a, b) => b.name.localeCompare(a.name),
@@ -78,7 +79,6 @@ export default function AdminProducts({ users, updateData }) {
       );
     }
     if (statusFilter !== "all" && Array.from(statusFilter).length !== statusOptions.length) {
-      console.log(statusFilter);
       filteredUsers = filteredUsers.filter((user) =>
         Array.from(statusFilter).includes(user.enabled.toString())
       );
@@ -98,8 +98,6 @@ export default function AdminProducts({ users, updateData }) {
 
   const renderCell = React.useCallback((user, columnKey) => {
     const cellValue = user[columnKey];
-
-    console.log(columnKey);
     switch (columnKey) {
       case "name":
         return (
@@ -196,19 +194,22 @@ export default function AdminProducts({ users, updateData }) {
             description={product.description}
             price={product.price}
             stock={product.stock}
-            updateData={updateData}
+            data={users}
+            setData={setUsers}
             imag={product.imag.secure_url}
           />
           <DisableButton
             id={product._id}
             enabled={product.enabled}
             cb={() => setSelectedKeys(new Set([]))}
-            updateData={updateData}
+            data={users}
+            setData={setUsers}
           />
           <DeleteButton
             cb={() => setSelectedKeys(new Set([]))}
             id={product._id}
-            updateData={updateData}
+            data={users}
+            setData={setUsers}
           />
         </>
       ) : (
@@ -294,7 +295,7 @@ export default function AdminProducts({ users, updateData }) {
     onSearchChange,
     statusFilter,
     visibleColumns,
-    users.length,
+    users,
     onRowsPerPageChange,
     onClear,
     selectedKeys,

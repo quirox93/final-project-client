@@ -1,5 +1,4 @@
 import Sidebar from "@/components/Sidebar";
-import HeaderDash from "@/components/HeaderDash";
 
 const DashboardLayout = ({ children }) => {
   return (
