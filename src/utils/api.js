@@ -4,8 +4,8 @@ const baseURL = getURL("api");
 
 const api = {
   products: async () => {
-    const data = await fetch(baseURL + "/product");
-    return await data.json();
+    //const data = await fetch(baseURL + "/product");
+    return "TEST";
   },
 };
 export default api;
