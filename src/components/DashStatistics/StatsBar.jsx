@@ -1,5 +1,6 @@
 "use client";
 import { Bar } from "react-chartjs-2";
+import {values, day} from "./data.js";
 import { useState, useEffect } from "react";
 import {
   Chart as ChartJS,
@@ -20,22 +21,21 @@ ChartJS.register(
   Legend
 );
 
-// const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
 
 const StatsBar = () => {
   const [barData, setBarData] = useState({
     datasets: [],
   });
 
-  const [barOptions, setBarOptions] = useState({});
+const [barOptions, setBarOptions] = useState({});
 
   useEffect(() => {
     setBarData({
-      labels: ["Mon", "Tues", "wed", "Thurs", "Fri", "Sat", "Sun"],
+      labels: day,
       datasets: [
         {
           label: "Sales $",
-          data: [10000, 4000, 2000, 2500, 23000, 500, 14040],
+          data: values,
           borderColor: "rgb(53, 162, 235)",
           backgroundColor: "rgb(53, 162, 235, 0.4)",
         },
