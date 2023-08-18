@@ -4,7 +4,7 @@ import api from "@/utils/api";
 
 const loadProducts = async () => {
   const host = headers().get("host");
-  return await api.products(host);
+  return await api.products();
 };
 
 export default async function ProductsTable() {
