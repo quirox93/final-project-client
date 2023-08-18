@@ -1,8 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
-import { findIndex } from "lodash"
 import { Button } from "@nextui-org/react";
-import { useState } from "react";
+import { useState} from "react";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { selectedProducts } from "@/store/slice";
@@ -18,30 +17,29 @@ export default function Product(props) {
     const productToAdd = {
       ...props,
     };
-    const productsToAdd = Array.from({ length: quantity }, () => ({
-      ...productToAdd,
-    })); 
-
-    const existingIndex = findIndex(
-      selectionProducts,
+  
+    const existingProductsWithSameId = selectionProducts.filter(
       (product) => product.id === productToAdd.id
     );
   
-    if (existingIndex !== -1) {
-      const existingProduct = selectionProducts[existingIndex];
-      const totalQuantity = existingProduct.quantity + productsToAdd.length;
+    const currentQuantityInCart = existingProductsWithSameId.length;
   
-      if (totalQuantity <= props.stock) {
-        existingProduct.quantity = totalQuantity;
-      } else {
-        alert("Maximum stock reached")
-        return;
-      }
-    } else {
+    const availableToAdd = Math.min(props.stock - currentQuantityInCart, quantity);
+  
+    if (availableToAdd <= 0) {
+      alert("No more available stock to add");
+      return;
+    }
+  
+    const productsToAdd = Array.from({ length: availableToAdd }, () => ({
+      ...productToAdd,
+    }));
+  
+    if (availableToAdd <= props.stock) {
       dispatch(selectedProducts([...selectionProducts, ...productsToAdd]));
     }
-
-    setQuantity(1); 
+  
+    setQuantity(1);
   };
 
   return (
