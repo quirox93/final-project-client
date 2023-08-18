@@ -1,21 +1,21 @@
-"use client";
-import React, { useState } from "react";
-import StatsBar from "./StatsBar";
+'use client'
+
 import { Tabs, Tab } from "@nextui-org/react";
 import { BsFillBarChartFill } from "react-icons/bs";
 import { HiOutlineChartPie } from "react-icons/hi";
 import { FaChartLine } from "react-icons/fa";
 
+import StatsBar from "./StatsBar";
+import PieChart from "./PieChart";
+import Linechart from "./Linechart";
+
 const StatisticsBar = () => {
-  const [selected, setSelected] = useState("Bars");
   return (
     <div className="w-full md:col-span-2 relative lg:h-[70vh] h-[50vh] m-auto p-6 border rounded-lg bg-white">
       <Tabs
         aria-label="Options"
         color="primary"
         variant="bordered"
-        selectedKey={selected}
-        onSelectionChange={setSelected}
       >
         <Tab
           key="Bars"
@@ -26,7 +26,9 @@ const StatisticsBar = () => {
             </div>
           }
         >
-          <StatsBar />
+          <div className=" lg:h-[60vh] h-[40vh] ">
+            <StatsBar />
+          </div>
         </Tab>
         <Tab
           key="Lines"
@@ -37,7 +39,9 @@ const StatisticsBar = () => {
             </div>
           }
         >
-          Barra Line
+          <div className=" lg:h-[60vh] h-[40vh] ">
+            <Linechart />
+          </div>
         </Tab>
         <Tab
           key="Circular"
@@ -48,7 +52,9 @@ const StatisticsBar = () => {
             </div>
           }
         >
-          Barra circular
+          <div className=" lg:h-[60vh] h-[40vh] ">
+            <PieChart />
+          </div>
         </Tab>
       </Tabs>
     </div>
