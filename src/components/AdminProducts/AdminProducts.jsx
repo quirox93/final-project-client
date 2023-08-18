@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import React from "react";
 import {
@@ -16,14 +17,14 @@ import {
   Chip,
   User,
   Pagination,
+  ButtonGroup,
+  Spacer,
 } from "@nextui-org/react";
-import { PlusIcon } from "./PlusIcon";
 import { VerticalDotsIcon } from "./VerticalDotsIcon";
 import { SearchIcon } from "./SearchIcon";
 import { ChevronDownIcon } from "./ChevronDownIcon";
 import { columns, statusOptions } from "./data";
 import { capitalize } from "./utils";
-import FilterModal from "../FilterModal";
 import Edit from "./EditButton";
 import FormNewProduct from "../FormNewProduct/FormNewProduct";
 import DeleteButton from "./DeleteButton";
@@ -47,7 +48,6 @@ export default function AdminProducts({ defUsers }) {
     column: "name",
     direction: "ascending",
   });
-  const updateData = () => console.log("test");
   const SortFunc = {
     nameascending: (a, b) => a.name.localeCompare(b.name),
     namedescending: (a, b) => b.name.localeCompare(a.name),
@@ -187,7 +187,7 @@ export default function AdminProducts({ defUsers }) {
     const product = users.find((e) => e._id === selected[0]);
     const actions =
       selected.length === 1 && product ? (
-        <>
+        <ButtonGroup>
           <Edit
             id={product._id}
             name={product.name}
@@ -211,9 +211,18 @@ export default function AdminProducts({ defUsers }) {
             data={users}
             setData={setUsers}
           />
-        </>
+        </ButtonGroup>
       ) : (
-        ""
+        <ButtonGroup>
+          <DisableButton id={selected} enabled={true} data={users} setData={setUsers} />
+          <DisableButton id={selected} enabled={false} data={users} setData={setUsers} />
+          <DeleteButton
+            cb={() => setSelectedKeys(new Set([]))}
+            id={selected}
+            data={users}
+            setData={setUsers}
+          />
+        </ButtonGroup>
       );
     return (
       <div className="flex flex-col gap-4">
@@ -275,7 +284,8 @@ export default function AdminProducts({ defUsers }) {
         </div>
         <div className="flex justify-between items-center">
           <span className="text-default-400 text-small">Total {users.length} products</span>
-          {actions}
+          {selected.length ? actions : ""}
+          <Spacer y={8} />
           <label className="flex items-center text-default-400 text-small">
             Rows per page:
             <select

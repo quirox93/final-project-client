@@ -16,6 +16,12 @@ export async function GET(_, { params }) {
 
 export async function PUT(req, { params }) {
   try {
+    if (params.id === "bulk") {
+      const data = await req.json();
+      const productsUpdated = await Product.updateMany({ _id: { $in: data.array } }, data.values);
+      return NextResponse.json(productsUpdated);
+    }
+
     const data = await req.formData();
     const values = Object.fromEntries(data);
     const file = data.get("imag");

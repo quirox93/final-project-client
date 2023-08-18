@@ -9,10 +9,17 @@ export default function DeleteButton({ id, data, setData, cb }) {
   const handleDelete = async (id) => {
     try {
       setIsLoading(true);
+      if (typeof id === "object") {
+        enabled = !enabled;
+        await api.product.bulkDelete(id);
+        setData(data.filter((e) => !id.includes(e._id)));
+        setIsLoading(false);
+        cb();
+        return;
+      }
       await api.delete(`product/${id}`);
       setData(data.filter((e) => e._id !== id));
       cb();
-
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);

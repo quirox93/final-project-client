@@ -1,7 +1,7 @@
 import AdminProducts from "./AdminProducts";
 import api from "@/utils/api";
 
-const loadProducts = async () => await api.products();
+const loadProducts = async () => await api.product.all();
 
 export default async function ProductsTable() {
   const products = await loadProducts();
