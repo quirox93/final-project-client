@@ -270,7 +270,7 @@ export default function AdminProducts({ defUsers }) {
                 ))}
               </DropdownMenu>
             </Dropdown>
-            <FormNewProduct cb={updateData} />
+            <FormNewProduct setData={setUsers} data={users} />
           </div>
         </div>
         <div className="flex justify-between items-center">

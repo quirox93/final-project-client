@@ -25,7 +25,6 @@ const ShopCartIcon = () => {
     (state) => state.shopCart.selectionProducts
   );
   
-
   /* Cuenta los productos  */
   const productCountMap = selectedProducts.reduce((map, product) => {
     if (map[product.id]) {
@@ -43,21 +42,17 @@ const ShopCartIcon = () => {
   }, 0);
 
   return (
-    <div className=" mr-12 ">
-      <Dropdown className=" mr-12 ">
+    <div className=" mr-6 ">
+      <Dropdown shouldBlockScroll={false} className=" mr-6 w-max max-h-unit-72 ">
         <Badge color="danger" content={selectedProducts.length} shape="circle">
           <DropdownTrigger>
-            <Button
-              radius="full"
-              isIconOnly
-              aria-label="more than 99 notifications"
-              variant="dark"
-            >
+            <Button radius="full" isIconOnly aria-label="more than 99 notifications" variant="dark">
               <CartIcon size={30} />
             </Button>
           </DropdownTrigger>
         </Badge>
         <DropdownMenu
+          className=" overflow-auto"
           variant="faded"
           aria-label="Dropdown menu with description"
           color="primary"
@@ -70,15 +65,9 @@ const ShopCartIcon = () => {
                 closeOnSelect={false}
                 startContent={
                   <>
-                    <img
-                      src={product.image}
-                      alt={product.name}
-                      className="w-12 h-12"
-                    />
+                    <img src={product.image} alt={product.name} className="w-12 h-12" />
                     {product.count > 1 && (
-                      <span className="ml-2 text-sm text-gray-500">
-                        ×{product.count}
-                      </span>
+                      <span className="ml-2 text-sm text-gray-500">×{product.count}</span>
                     )}
                   </>
                 }
