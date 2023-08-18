@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import { Button } from "@nextui-org/react";
-import { useState } from "react";
+import { useState} from "react";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { selectedProducts } from "@/store/slice";
@@ -17,13 +17,29 @@ export default function Product(props) {
     const productToAdd = {
       ...props,
     };
-    const productsToAdd = Array.from({ length: quantity }, () => ({
+  
+    const existingProductsWithSameId = selectionProducts.filter(
+      (product) => product.id === productToAdd.id
+    );
+  
+    const currentQuantityInCart = existingProductsWithSameId.length;
+  
+    const availableToAdd = Math.min(props.stock - currentQuantityInCart, quantity);
+  
+    if (availableToAdd <= 0) {
+      alert("No more available stock to add");
+      return;
+    }
+  
+    const productsToAdd = Array.from({ length: availableToAdd }, () => ({
       ...productToAdd,
-    })); 
-
-    dispatch(selectedProducts([...selectionProducts, ...productsToAdd]));
-
-    setQuantity(1); 
+    }));
+  
+    if (availableToAdd <= props.stock) {
+      dispatch(selectedProducts([...selectionProducts, ...productsToAdd]));
+    }
+  
+    setQuantity(1);
   };
 
   return (
