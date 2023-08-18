@@ -1,10 +1,10 @@
 //import getURL from "./getUrl";
 
-import { NEXT_PUBLIC_SITE_URL } from "./config";
+import { NEXT_PUBLIC_SITE_URL, VERCEL_URL } from "./config";
 
 //const baseURL = getURL("api");
-const host = NEXT_PUBLIC_SITE_URL;
-console.log(host);
+const host = NEXT_PUBLIC_SITE_URL || VERCEL_URL || window.location.origin;
+
 const api = {
   products: async () => {
     const data = await fetch(`http://${host}/api/product`);

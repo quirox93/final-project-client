@@ -7,3 +7,5 @@ export const CLOUDINARY_API_KEY = process.env["CLOUDINARY_API_KEY"];
 export const CLOUDINARY_API_SECRET = process.env["CLOUDINARY_API_SECRET"];
 
 export const NEXT_PUBLIC_SITE_URL = process.env["NEXT_PUBLIC_SITE_URL"];
+
+export const VERCEL_URL = process.env["VERCEL_URL"];
