@@ -9,7 +9,9 @@ import {
   Button,
   useDisclosure,
   Input,
+  Image,
 } from "@nextui-org/react";
+import NextImage from "next/image";
 import api from "@/utils/axios";
 
 export default function EditButton(props) {
@@ -99,7 +101,12 @@ export default function EditButton(props) {
       >
         Edit
       </Button>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="top-center">
+      <Modal
+        className=" max-h-[95vh] h-fit w-90 max-w-[100%] overflow-auto"
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        placement="top-center"
+      >
         <ModalContent>
           {(onClose) => {
             const handleSubmit = async () => {
@@ -170,8 +177,17 @@ export default function EditButton(props) {
                     name="image"
                     onChange={handleImage}
                   />
-                  <div className="flex justify-center">
-                    <img width={150} height={150} alt={input?.name} src={input.image} />
+                  <div className="flex justify-center ">
+                    <Image
+                      showSkeleton={true}
+                      disableSkeleton={false}
+                      isZoomed
+                      as={NextImage}
+                      width={150}
+                      height={150}
+                      alt={input?.name}
+                      src={input.image}
+                    />
                   </div>
                 </ModalBody>
                 <ModalFooter>

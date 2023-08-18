@@ -102,7 +102,12 @@ export default function FormNewProduct({ data, setData }) {
       <Button className="font-bold" color="primary" onPress={onOpen}>
         Add Product
       </Button>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="mid-center">
+      <Modal
+        className=" max-h-[95vh] h-fit w-90 max-w-[100%] overflow-auto"
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        placement="mid-center"
+      >
         <ModalContent>
           {(onClose) => {
             const handleSubmit = async () => {
