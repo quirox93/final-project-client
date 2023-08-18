@@ -9,10 +9,10 @@ connectDB();
 export async function GET(req) {
   try {
     const query = Object.fromEntries(new URL(req.url).searchParams.entries());
-    const products = filterItems(await Product.find(), query);
+    const products = filterItems(await Product.find({ isDeleted: false }), query);
     return NextResponse.json(products);
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ message: message.message }, { status: 500 });
   }
 }
 
@@ -23,7 +23,7 @@ export async function POST(req) {
     const finded = await Product.findOne({ name: values.name }).exec();
     if (finded)
       return NextResponse.json(
-        { error: "Product already exists", product: finded },
+        { message: "Product already exists.", product: finded },
         { status: 409 }
       );
 
@@ -38,8 +38,8 @@ export async function POST(req) {
     const savedProduct = await newProduct.save();
     return NextResponse.json(savedProduct, { status: 201 });
   } catch (error) {
-    if (error._message == "Product validation failed")
-      return NextResponse.json({ error: error.message }, { status: 400 });
-    return NextResponse.json({ error: error }, { status: 500 });
+    if (error._message == "Product validation failed.")
+      return NextResponse.json({ message: error.message }, { status: 400 });
+    return NextResponse.json({ message: error.message }, { status: 500 });
   }
 }
