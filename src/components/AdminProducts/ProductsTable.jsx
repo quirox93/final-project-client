@@ -1,11 +1,10 @@
 import { headers } from "next/headers";
 import AdminProducts from "./AdminProducts";
+import api from "@/utils/api";
 
 const loadProducts = async () => {
   const host = headers().get("host");
-  const res = await fetch(`http://${host}/api/product`);
-  const data = await res.json();
-  return data;
+  return await api.products(host);
 };
 
 export default async function ProductsTable() {
