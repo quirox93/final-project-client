@@ -40,6 +40,8 @@ export async function POST(req) {
     const savedProduct = await newProduct.save();
     return NextResponse.json(savedProduct, { status: 201 });
   } catch (error) {
+    if (error._message == "Product validation failed")
+      return NextResponse.json({ error: error.message }, { status: 400 });
     return NextResponse.json({ error: error }, { status: 500 });
   }
 }
