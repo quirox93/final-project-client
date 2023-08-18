@@ -1,9 +1,5 @@
-//import getURL from "./getUrl";
-
 import { NEXT_PUBLIC_SITE_URL, VERCEL_URL } from "./config";
-
-//const baseURL = getURL("api");
-const host = NEXT_PUBLIC_SITE_URL || VERCEL_URL || window.location.origin;
+const host = VERCEL_URL || NEXT_PUBLIC_SITE_URL;
 
 const api = {
   products: async () => {

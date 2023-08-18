@@ -1,11 +1,7 @@
-import { headers } from "next/headers";
 import AdminProducts from "./AdminProducts";
 import api from "@/utils/api";
 
-const loadProducts = async () => {
-  const host = headers().get("host");
-  return await api.products();
-};
+const loadProducts = async () => await api.products();
 
 export default async function ProductsTable() {
   const products = await loadProducts();
