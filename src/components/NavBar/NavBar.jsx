@@ -15,7 +15,7 @@ export default function NavBar() {
 
   return (
     <>
-      <nav className="flex place-content-center place-items-center w-full z-50 fixed top-0 bg-primary text-primary-foreground p-2 ">
+      <nav className="flex w-[100vw] place-content-center place-items-center  z-50 fixed top-0 bg-primary text-primary-foreground p-2 ">
         {login}
         <ul className="flex space-x-4 mx-auto ">
           <li className="hover:text-primary-100">
