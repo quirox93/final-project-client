@@ -24,18 +24,19 @@ const ShopCartIcon = () => {
   const selectedProducts = useSelector(
     (state) => state.shopCart.selectionProducts
   );
+  
 
   /* Cuenta los productos  */
   const productCountMap = selectedProducts.reduce((map, product) => {
-    map[product.id] = (map[product.id] || 0) + 1;
+    if (map[product.id]) {
+      map[product.id].count += 1;
+    } else {
+      map[product.id] = { ...product, count: 1 };
+    }
     return map;
   }, {});
-
-  /* Crea una instancia por productos repetidos con su respectiva cuenta */
-  const uniqueProducts = Object.keys(productCountMap).map((productId) => {
-    const product = selectedProducts.find((p) => p.id === productId);
-    return { ...product, count: productCountMap[productId] };
-  });
+  
+  const uniqueProducts = Object.values(productCountMap);
 
   const totalPrice = uniqueProducts.reduce((total, product) => {
     return total + product.price * product.count;

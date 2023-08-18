@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
+import { findIndex } from "lodash"
 import { Button } from "@nextui-org/react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -21,7 +22,24 @@ export default function Product(props) {
       ...productToAdd,
     })); 
 
-    dispatch(selectedProducts([...selectionProducts, ...productsToAdd]));
+    const existingIndex = findIndex(
+      selectionProducts,
+      (product) => product.id === productToAdd.id
+    );
+  
+    if (existingIndex !== -1) {
+      const existingProduct = selectionProducts[existingIndex];
+      const totalQuantity = existingProduct.quantity + productsToAdd.length;
+  
+      if (totalQuantity <= props.stock) {
+        existingProduct.quantity = totalQuantity;
+      } else {
+        alert("Maximum stock reached")
+        return;
+      }
+    } else {
+      dispatch(selectedProducts([...selectionProducts, ...productsToAdd]));
+    }
 
     setQuantity(1); 
   };

@@ -13,6 +13,7 @@ export default function ProductDetail() {
     (state) => state.shopCart.selectionProducts
   );
   const [product, setProduct] = useState(null);
+  const [quantity, setQuantity] = useState(1); 
   const params = useParams();
   const { id } = params;
 
@@ -33,6 +34,29 @@ export default function ProductDetail() {
     };
     fetchProduct();
   }, [id]);
+
+  const handleAddToCart = () => {
+    const productToAdd = {
+      ...product,
+    };
+
+    const totalQuantity = selectionProducts.reduce(
+      (total, p) => (p.id === productToAdd.id ? total + p.quantity : total),
+      0
+    );
+
+    if (totalQuantity + quantity <= product.stock) {
+      const productsToAdd = Array.from({ length: quantity }, () => ({
+        ...productToAdd,
+        quantity: 1,
+      }));
+
+      dispatch(selectedProducts([...selectionProducts, ...productsToAdd]));
+      setQuantity(1);
+    } else {
+      alert("Maximum stock reached");
+    }
+  };
 
   if (!product) {
     return (
@@ -79,9 +103,8 @@ export default function ProductDetail() {
           <Button
             color="primary"
             aria-label="Like"
-            onClick={() => {
-              dispatch(selectedProducts([...selectionProducts, product]));
-            }}
+            onClick={handleAddToCart}
+            disabled={product.stock === 0}
           >
             Add to Cart
           </Button>
