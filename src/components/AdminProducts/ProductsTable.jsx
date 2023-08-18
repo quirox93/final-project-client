@@ -1,4 +1,5 @@
 import { headers } from "next/headers";
+import AdminProducts from "./AdminProducts";
 const loadProducts = async () => {
   const host = headers().get("host");
   const res = await fetch(`http://${host}/api/product`);
@@ -11,7 +12,7 @@ export default async function ProductsTable() {
   return (
     <>
       <div className="p-4 z-0 flex flex-col relative justify-between gap-4 bg-content1 overflow-auto rounded-large shadow-small max-w-ld ">
-        {products.results.toString()}
+        {<AdminProducts defUsers={products.results} />}
       </div>
     </>
   );
