@@ -1,6 +1,6 @@
-import getURL from "./getUrl";
+//import getURL from "./getUrl";
 
-const baseURL = getURL("api");
+//const baseURL = getURL("api");
 
 const api = {
   products: async () => {

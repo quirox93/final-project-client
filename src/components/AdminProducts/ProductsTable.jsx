@@ -1,7 +1,10 @@
 import api from "@/utils/api";
 import AdminProducts from "./AdminProducts";
 
-const loadProducts = async () => await api.products();
+async function loadProducts() {
+  const data = await fetch("http://localhost:3000/api/product");
+  return await data.json();
+}
 
 export default async function ProductsTable() {
   const products = await loadProducts();
