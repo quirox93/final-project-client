@@ -1,5 +1,5 @@
 "use client"
-import { useState } from "react";
+
 import CartTable from "@/components/CartTable/CartTable";
 import {
     removeFromCart,
@@ -7,28 +7,43 @@ import {
     calculateSubtotal,
     calculateTotal
 } from "@/components/CartHandler/utils";
+import { useSelector, useDispatch } from "react-redux";
+import { useState, useEffect } from "react";
+import { deletedProducts } from "@/store/slice";
 
 const CartHandler = () => {
-    const [cartItems, setCartItems] = useState([
-        { id: 1, name: 'Item 1', price: 10, quantity: 1 },
-        { id: 2, name: 'Item 2', price: 20, quantity: 1 },
-        { id: 3, name: 'Item 3', price: 30, quantity: 1 },
-        { id: 4, name: 'Item 4', price: 40, quantity: 1 },
-        { id: 5, name: 'Item 5', price: 50, quantity: 1 },
-        { id: 6, name: 'Item 6', price: 60, quantity: 1 },
-    ]);
+    const dispatch = useDispatch();
+    const selectedProducts = useSelector((state) => state.shopCart.selectionProducts);
+   
+    const [cartItems, setCartItems] = useState([]);
+    console.log(cartItems)
+    useEffect(() => {
+        const productCountMap = selectedProducts.reduce((acc, product) => {
+            acc[product.id] = (acc[product.id] || 0) + 1;
+            return acc;
+        }, {});
+
+        const uniqueProducts = Object.keys(productCountMap).map((productId) => {
+            const product = selectedProducts.find((p) => p.id === productId);
+            return { ...product, quantity: productCountMap[productId] };
+        });
+
+        setCartItems(uniqueProducts);
+    }, [selectedProducts]);
 
     const handleRemoveFromCart = (id) => {
         const updatedCart = removeFromCart(cartItems, id);
         setCartItems(updatedCart);
+        dispatch(deletedProducts(id));
     };
 
     const handleUpdateQuantity = (id, quantity) => {
         if (isNaN(quantity) || quantity < 1) {
-            return; 
+            return;
         }
         const updatedCart = updateQuantity(cartItems, id, quantity);
         setCartItems(updatedCart);
+
     };
 
     const handleCheckout = () => {

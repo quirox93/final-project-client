@@ -42,7 +42,7 @@ const CartTable = ({
                 </div>
             )}>
                 <TableHeader>
-                    <TableColumn>ID</TableColumn>
+                  
                     <TableColumn>Name</TableColumn>
                     <TableColumn>Price</TableColumn>
                     <TableColumn>Quantity</TableColumn>
@@ -52,8 +52,11 @@ const CartTable = ({
                 <TableBody>
                     {cartItems.map(item => (
                         <TableRow key={item.id}>
-                            <TableCell>{item.id}</TableCell>
-                            <TableCell>{item.name}</TableCell>
+                            
+                            <TableCell>{item.name} - {<>
+                    <img src={item.image} alt={item.name} />
+                  
+                  </>}</TableCell>
                             <TableCell>${item.price}</TableCell>
                             <TableCell>
                                 <Input

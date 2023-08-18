@@ -14,28 +14,26 @@ import { deletedProducts } from "@/store/slice";
 import { CartIcon } from "../assets/svg/CartIcon";
 import { DeleteDocumentIcon } from "@/assets/svg/DeleteDocumentIcon";
 import { useSelector, useDispatch } from "react-redux";
+import { useRouter } from "next/router";
 
 import React from "react";
 
 const ShopCartIcon = () => {
   const dispatch = useDispatch();
-  const iconClasses =
-    "text-xl text-default-500 pointer-events-none flex-shrink-0";
-  const selectedProducts = useSelector(
-    (state) => state.shopCart.selectionProducts
-  );
-  
+  const iconClasses = "text-xl text-default-500 pointer-events-none flex-shrink-0";
+  const selectedProducts = useSelector((state) => state.shopCart.selectionProducts);
+  console.log(selectedProducts)
   /* Cuenta los productos  */
   const productCountMap = selectedProducts.reduce((map, product) => {
-    if (map[product.id]) {
-      map[product.id].count += 1;
-    } else {
-      map[product.id] = { ...product, count: 1 };
-    }
+    map[product.id] = (map[product.id] || 0) + 1;
     return map;
   }, {});
-  
-  const uniqueProducts = Object.values(productCountMap);
+
+  /* Crea una instancia por productos repetidos con su respectiva cuenta */
+  const uniqueProducts = Object.keys(productCountMap).map((productId) => {
+    const product = selectedProducts.find((p) => p.id === productId);
+    return { ...product, count: productCountMap[productId] };
+  });
 
   const totalPrice = uniqueProducts.reduce((total, product) => {
     return total + product.price * product.count;
@@ -86,7 +84,7 @@ const ShopCartIcon = () => {
               key="delete"
               className="text-primary"
               color="success"
-              shortcut="Buy"
+              shortcut={useRouter("/cart")}
               description={`Subtotal: $${totalPrice}`}
               startContent={
                 <Button
