@@ -3,6 +3,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import api from "../../../utils/axios";
+import AlertModalStock from "@/components/AlertModalStock";
 import { CircularProgress, Button } from "@nextui-org/react";
 import { selectedProducts } from "@/store/slice";
 import { useParams } from "next/navigation";
@@ -13,6 +14,7 @@ export default function ProductDetail() {
     (state) => state.shopCart.selectionProducts
   );
   const [product, setProduct] = useState(null);
+  const [showModal, setShowModal] = useState(false);
   const [quantity, setQuantity] = useState(1); 
   const params = useParams();
   const { id } = params;
@@ -54,7 +56,7 @@ export default function ProductDetail() {
       dispatch(selectedProducts([...selectionProducts, ...productsToAdd]));
       setQuantity(1);
     } else {
-      alert("Maximum stock reached");
+      setShowModal(true);
     }
   };
 
@@ -68,6 +70,7 @@ export default function ProductDetail() {
   }
   return (
     <div className="flex items-center justify-center mt-20">
+      <AlertModalStock isOpen={showModal} onClose={() => setShowModal(false)} name={product.name}/>
       <div className="flex justify-center flex-1 m-2 ">
         <img
           className="border-4 border-primary rounded-2xl"
