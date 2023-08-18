@@ -1,9 +1,4 @@
-import React from "react";
-import {
-  RecentOrders,
-  StatisticsBar,
-  TopCard,
-} from "@/components/DashStatistics/index.js";
+import { RecentOrders, StatisticsBar, TopCard } from "@/components/DashStatistics/index.js";
 
 const statisticsPage = () => {
   return (
