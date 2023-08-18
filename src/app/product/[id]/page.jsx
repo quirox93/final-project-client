@@ -66,7 +66,6 @@ export default function ProductDetail() {
       />
     );
   }
-  console.log(product);
   return (
     <div className="flex items-center justify-center mt-20">
       <div className="flex justify-center flex-1 m-2 ">
