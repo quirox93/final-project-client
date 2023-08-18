@@ -1,7 +1,9 @@
 //import getURL from "./getUrl";
 
+import { NEXT_PUBLIC_SITE_URL } from "./config";
+
 //const baseURL = getURL("api");
-const host = process.env["HOST"] || window.location.host;
+const host = NEXT_PUBLIC_SITE_URL;
 console.log(host);
 const api = {
   products: async () => {
