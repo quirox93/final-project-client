@@ -35,7 +35,7 @@ export default function Product(props) {
       ...productToAdd,
     }));
   
-    if (availableToAdd < props.stock) {
+    if (availableToAdd <= props.stock) {
       dispatch(selectedProducts([...selectionProducts, ...productsToAdd]));
     }
   
