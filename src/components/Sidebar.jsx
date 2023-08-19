@@ -1,6 +1,7 @@
 "use client";
 import { RxDashboard } from "react-icons/rx";
 import { VscGraph } from "react-icons/vsc";
+
 import { Link, Avatar, User, Divider } from "@nextui-org/react";
 import DateTime from "./DateTime";
 import NextLink from "next/link";
@@ -37,6 +38,7 @@ const Sidebar = ({ Children }) => {
               <VscGraph size={20} className="mr-6 max-md:mr-0" />
               <div className="max-md:hidden">Statistics</div>
             </Link>
+          
           </div>
         </div>
       </div>
