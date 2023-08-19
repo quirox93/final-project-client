@@ -1,5 +1,6 @@
 "use client"
-import React from "react";
+import { useState } from "react";
+import AlertModalStock from "@/components/AlertModalStock";
 import {
     Table,
     TableHeader,
@@ -8,7 +9,9 @@ import {
     TableRow,
     TableCell,
     Button,
-    Input
+    Input,
+    Image
+    
 } from "@nextui-org/react";
 
 const CartTable = ({
@@ -17,6 +20,7 @@ const CartTable = ({
     updateQuantityFn,
     handleCheckoutFn
 }) => {
+    const [showModal, setShowModal] = useState(false);
     const calculateSubtotal = (price, quantity) => {
         return price * quantity;
     };
@@ -27,6 +31,7 @@ const CartTable = ({
 
     return (
         <div>
+            
             <h1>Your Cart</h1>
             <Table aria-label="Cart items" bottomContent={(
                 <div className="flex justify-between items-center p-4 bg-primary-200 rounded-lg">
@@ -53,18 +58,25 @@ const CartTable = ({
                     {cartItems.map(item => (
                         <TableRow key={item.id}>
                             
-                            <TableCell>{item.name} - {<>
-                    <img src={item.image} alt={item.name} />
-                  
-                  </>}</TableCell>
+                            <TableCell className="flex items-center" >
+                            <Image width={50} height={50} src={item.image} alt={item.name}/>
+                             <div> {item.name}</div>
+                  </TableCell>
                             <TableCell>${item.price}</TableCell>
                             <TableCell>
                                 <Input
                                     className="w-20"
                                     type="number"
                                     value={item.quantity}
-                                    onChange={(e) => updateQuantityFn(item.id, e.target.value)}
-                                    min={0}
+                                    onChange={(e) => {
+                                        if(e.target.value > item.stock){
+                                          {setShowModal(true)}
+                                          <AlertModalStock isOpen={showModal} onClose={() => setShowModal(false)} name={item.name}/>      
+                                        } else{updateQuantityFn(item.id, e.target.value)}
+                                        }}
+                                         min={1}
+                                         max={item.stock}
+                                 
                                 />
                             </TableCell>
                             <TableCell>${calculateSubtotal(item.price, item.quantity)}</TableCell>
