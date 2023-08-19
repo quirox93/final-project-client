@@ -8,7 +8,7 @@ const AlertModalStock = ({ isOpen, onClose, name }) => {
           <>
             <ModalHeader className="flex flex-col gap-1">Warning</ModalHeader>
             <ModalBody>
-              <p>Maximum stock reached for {name}</p>
+              <p>Maximum stock reached for <span className="font-bold">{name}</span></p>
             </ModalBody>
             <ModalFooter>
               <Button color="danger" variant="light" onClick={onClose}>

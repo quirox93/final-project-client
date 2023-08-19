@@ -85,7 +85,7 @@ export default function Product(props) {
             <span className="text-green">{props.stock}</span>
           )}
         </p>
-        <div className="flex justify-center items-center">
+        <div className="flex-column justify-center items-center">
           
           <Input
           type="number"
@@ -102,7 +102,8 @@ export default function Product(props) {
           value={quantity}
           color="primary"
           placeholder="0"
-          labelPlacement="outside"
+          labelPlacement="inside"
+          className="mb-2"
           startContent={
             <div className="pointer-events-none flex items-center">
               
@@ -110,7 +111,7 @@ export default function Product(props) {
           }
         />
           <Button
-            className=" flex mt-8  justify-center bg-primary rounded text-white  "
+            className=" flex mt-5  bg-primary rounded text-white m-auto"
             onClick={handleAddToCart}
             disabled={props.stock === 0}
             size="sm"
