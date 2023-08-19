@@ -23,7 +23,7 @@ export default function NavBar() {
     <UserButton afterSignOutUrl="/" />
   ) : (
     <SignInButton mode="modal">
-      <Button as={Link} color="primary" href="#" variant="flat">
+      <Button as={NextLink} color="primary" href="#" variant="flat">
         Login
       </Button>
     </SignInButton>
@@ -49,13 +49,13 @@ export default function NavBar() {
 
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
         <NavbarItem>
-          <Link as={Link} color={path !== "/" && "foreground"} href="/">
+          <Link as={NextLink} color={path !== "/" && "foreground"} href="/">
             Home
           </Link>
         </NavbarItem>
         <NavbarItem>
           <Link
-            as={Link}
+            as={NextLink}
             href="/dashboard/products"
             color={path !== "/dashboard/products" && "foreground"}
             aria-current="page"
@@ -64,7 +64,7 @@ export default function NavBar() {
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link as={Link} color={path !== "/contact" && "foreground"} href="#">
+          <Link as={NextLink} color={path !== "/contact" && "foreground"} href="#">
             Contact
           </Link>
         </NavbarItem>
@@ -77,7 +77,7 @@ export default function NavBar() {
         {menuItems.map((item, index) => (
           <NavbarMenuItem key={`${item.name}-${index}`}>
             <Link
-              as={Link}
+              as={NextLink}
               color={path !== item.path && "foreground"}
               className="w-full"
               href={item.path}

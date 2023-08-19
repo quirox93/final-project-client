@@ -1,5 +1,3 @@
-import api from "@/utils/axios";
-
 const columns = [
   { name: "ID", uid: "_id", sortable: false },
   { name: "NAME", uid: "name", sortable: true },
