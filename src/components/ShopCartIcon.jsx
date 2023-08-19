@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
+import React from "react";
 import {
   Badge,
   Button,
@@ -14,37 +15,38 @@ import { deletedProducts } from "@/store/slice";
 import { CartIcon } from "../assets/svg/CartIcon";
 import { DeleteDocumentIcon } from "@/assets/svg/DeleteDocumentIcon";
 import { useSelector, useDispatch } from "react-redux";
-
-import React from "react";
+import { useRouter } from "next/navigation";
 
 const ShopCartIcon = () => {
   const dispatch = useDispatch();
-  const iconClasses =
-    "text-xl text-default-500 pointer-events-none flex-shrink-0";
-  const selectedProducts = useSelector(
-    (state) => state.shopCart.selectionProducts
-  );
-  
-  /* Cuenta los productos  */
+  const router = useRouter();
+  const iconClasses = "text-xl text-default-500 pointer-events-none flex-shrink-0";
+  const selectedProducts = useSelector((state) => state.shopCart.selectionProducts);
+
+  /* Crea un mapa de cantidad por producto */
   const productCountMap = selectedProducts.reduce((map, product) => {
-    if (map[product.id]) {
-      map[product.id].count += 1;
-    } else {
-      map[product.id] = { ...product, count: 1 };
-    }
+    map[product.id] = (map[product.id] || 0) + product.quantity;
     return map;
   }, {});
-  
-  const uniqueProducts = Object.values(productCountMap);
 
-  const totalPrice = uniqueProducts.reduce((total, product) => {
-    return total + product.price * product.count;
+  /* Crea una instancia por productos con su respectiva cantidad */
+  const uniqueProducts = selectedProducts.map((product) => ({
+    ...product,
+    quantity: productCountMap[product.id],
+  }));
+
+  const totalQuantity = selectedProducts.reduce((total, product) => {
+    return total + product.quantity;
+  }, 0);
+
+  const totalPrice = selectedProducts.reduce((total, product) => {
+    return total + product.price * product.quantity;
   }, 0);
 
   return (
-    <div className=" mr-6 ">
-      <Dropdown shouldBlockScroll={false} className=" mr-6 w-max max-h-unit-72 ">
-        <Badge color="danger" content={selectedProducts.length} shape="circle">
+    <div className="mr-6">
+      <Dropdown shouldBlockScroll={false} className="mr-6 w-max max-h-unit-72">
+        <Badge color="danger" content={totalQuantity} shape="circle">
           <DropdownTrigger>
             <Button radius="full" isIconOnly aria-label="more than 99 notifications" variant="dark">
               <CartIcon size={30} />
@@ -52,7 +54,7 @@ const ShopCartIcon = () => {
           </DropdownTrigger>
         </Badge>
         <DropdownMenu
-          className=" overflow-auto"
+          className="overflow-auto"
           variant="faded"
           aria-label="Dropdown menu with description"
           color="primary"
@@ -66,8 +68,8 @@ const ShopCartIcon = () => {
                 startContent={
                   <>
                     <img src={product.image} alt={product.name} className="w-12 h-12" />
-                    {product.count > 1 && (
-                      <span className="ml-2 text-sm text-gray-500">×{product.count}</span>
+                    {product.quantity > 1 && (
+                      <span className="ml-2 text-sm text-gray-500">×{product.quantity}</span>
                     )}
                   </>
                 }
@@ -86,7 +88,11 @@ const ShopCartIcon = () => {
               key="delete"
               className="text-primary"
               color="success"
-              shortcut="Buy"
+              shortcut={
+                <button onClick={() => router.push("/cart")}>
+                  Buy
+                </button>
+              }
               description={`Subtotal: $${totalPrice}`}
               startContent={
                 <Button

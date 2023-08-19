@@ -3,7 +3,6 @@ export const removeFromCart = (cartItems, id) => {
 };
 
 export const updateQuantity = (cartItems, id, quantity) => {
-
     return cartItems.map(item =>
         item.id === id ? { ...item, quantity } : item
         );

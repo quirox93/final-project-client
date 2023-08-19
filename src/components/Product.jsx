@@ -16,31 +16,38 @@ export default function Product(props) {
   const [showModal, setShowModal] = useState(false);
 
   const handleAddToCart = () => {
-    const productToAdd = {
-      ...props,
-    };
-  
-    const existingProductsWithSameId = selectionProducts.filter(
-      (product) => product.id === productToAdd.id
-    );
-  
-    const currentQuantityInCart = existingProductsWithSameId.length;
-  
-    const availableToAdd = Math.min(props.stock - currentQuantityInCart, quantity);
-  
-    if (availableToAdd <= 0) {
+    if (quantity > props.stock) {
       setShowModal(true);
       return;
     }
-  
-    const productsToAdd = Array.from({ length: availableToAdd }, () => ({
-      ...productToAdd,
-    }));
-  
-    if (availableToAdd <= props.stock) {
-      dispatch(selectedProducts([...selectionProducts, ...productsToAdd]));
+
+    const existingProduct = selectionProducts.find(
+      (product) => product.id === props.id
+    );
+
+    if (existingProduct) {
+      // Checkear si la cantidad total excede el stock disponible
+      if (existingProduct.quantity + quantity > props.stock) {
+        setShowModal(true);
+        return;
+      }
+
+      const updatedSelectionProducts = selectionProducts.map((product) =>
+        product.id === props.id
+          ? { ...product, quantity: product.quantity + quantity }
+          : product
+      );
+
+      dispatch(selectedProducts(updatedSelectionProducts));
+    } else {
+      const newProduct = {
+        ...props,
+        quantity: quantity,
+      };
+
+      dispatch(selectedProducts([...selectionProducts, newProduct]));
     }
-  
+
     setQuantity(1);
   };
 
