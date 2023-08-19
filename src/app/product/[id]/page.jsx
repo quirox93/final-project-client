@@ -4,7 +4,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import api from "../../../utils/axios";
 import AlertModalStock from "@/components/AlertModalStock";
-import { CircularProgress, Button } from "@nextui-org/react";
+import {
+  CircularProgress,
+  Button,
+  Card,
+  CardHeader,
+  CardBody,
+  CardFooter,
+  Divider,
+  Chip,
+  Image,
+} from "@nextui-org/react";
 import { selectedProducts } from "@/store/slice";
 import { useParams } from "next/navigation";
 
@@ -15,7 +25,7 @@ export default function ProductDetail() {
   );
   const [product, setProduct] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const [quantity, setQuantity] = useState(1); 
+  const [quantity, setQuantity] = useState(1);
   const params = useParams();
   const { id } = params;
 
@@ -70,47 +80,84 @@ export default function ProductDetail() {
   }
   return (
     <div className="flex items-center justify-center mt-20">
-      <AlertModalStock isOpen={showModal} onClose={() => setShowModal(false)} name={product.name}/>
-      <div className="flex justify-center flex-1 m-2 ">
+      <AlertModalStock
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        name={product.name}
+      />
+      <div className="flex justify-center flex-1 m-7 max-w-xl">
         <img
           className="border-4 border-primary rounded-2xl"
           src={product.image}
           alt={product.name}
         />
       </div>
-      <div className=" flex-column flex-1 m-4 text-center justify-center space-y-10 bg-content4 rounded-2xl pb-4">
-        <h1 className=" font-bold mt-4">{product.name}</h1>
-        <p>{product.description}</p>
-        <p className="pb-2">
-          Price: <span className="text-green font-bold">${product.price}</span>
-        </p>
-        {product.stock === 0 ? (
-          <span className="bg-black rounded-2xl text-white p-1">
-            Out of Stock
-          </span>
-        ) : (
-          <span className="bg-success-500 rounded-2xl text-white p-1">
-            Available
-          </span>
-        )}
-        <p>
-          Stock:{" "}
-          {product.stock === 0 ? (
-            <span className="text-red">0</span>
-          ) : (
-            <span>{product.stock}</span>
-          )}
-        </p>
-        <div className="text-center">
-          <Button
-            color="primary"
-            aria-label="Like"
-            onClick={handleAddToCart}
-            disabled={product.stock === 0}
-          >
-            Add to Cart
-          </Button>
-        </div>
+      <div className=" flex-1 ">
+        <Card className="max-w-[400px] m-auto">
+          <CardHeader className="flex gap-3">
+            <Image
+              alt="nextui logo"
+              height={40}
+              radius="sm"
+              src="https://avatars.githubusercontent.com/u/86160567?s=200&v=4"
+              width={40}
+            />
+            <div className="flex flex-col">
+              <h1 className=" font-bold mt-4">{product.name}</h1>
+              <p className="text-small text-default-500">${product.price}</p>
+            </div>
+          </CardHeader>
+          <Divider />
+          <CardBody>
+            <p>{product.description}</p>
+          </CardBody>
+          <Divider />
+          <CardBody>
+            {product.stock === 0 ? (
+              <Chip
+              className="capitalize"
+              color="danger"
+              size="sm"
+              variant="flat"
+            >
+              Out of stock
+            </Chip>
+            ) : (
+               <Chip
+               className="capitalize"
+               color="success"
+               size="sm"
+               variant="flat"
+             >
+               Available
+             </Chip>
+            )}
+            
+          </CardBody>
+          <Divider />
+          <CardBody>
+            <p>
+              Stock:{" "}
+              {product.stock === 0 ? (
+                <span className="text-red">0</span>
+              ) : (
+                <span>{product.stock}</span>
+              )}
+            </p>
+          </CardBody>
+          <Divider />
+          <CardFooter>
+            <Button
+              className="m-auto"
+              color="primary"
+              aria-label="Like"
+              onClick={handleAddToCart}
+              disabled={product.stock === 0}
+            >
+              Add to Cart
+            </Button>
+          </CardFooter>
+        </Card>
       </div>
     </div>
   );
