@@ -68,7 +68,7 @@ const ShopCartIcon = () => {
                 startContent={
                   <>
                     <img src={product.image} alt={product.name} className="w-12 h-12" />
-                    {product.quantity > 1 && (
+                    {product.quantity > 0 && (
                       <span className="ml-2 text-sm text-gray-500">×{product.quantity}</span>
                     )}
                   </>
@@ -88,8 +88,9 @@ const ShopCartIcon = () => {
               key="delete"
               className="text-primary"
               color="success"
+              onClick={() => router.push("/cart")}
               shortcut={
-                <button onClick={() => router.push("/cart")}>
+                <button >
                   Buy
                 </button>
               }
