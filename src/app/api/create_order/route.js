@@ -1,5 +1,5 @@
 const { NextRequest, NextResponse } = require("next/server");
-import { VERCEL_URL } from "@/utils/config";
+import { MP_TOKEN, VERCEL_URL } from "@/utils/config";
 import mercadopago from "mercadopago";
 
 
@@ -30,7 +30,7 @@ export async function POST(req) {
   console.log(userId)
   mercadopago.configure({
     access_token:
-      "TEST-5829389646462984-081811-95d54801b0a8fa9664b3e903edd0bbec-1453720691",
+      MP_TOKEN,
   });
 try {
   const result = await mercadopago.preferences.create({
