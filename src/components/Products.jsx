@@ -24,7 +24,7 @@ export default function Products() {
       <h1 className="font-bold text-danger">No products found.</h1>
     </div>
   ) : (
-    products.map((product) => (
+    products.map((product, index) => (
       <Product
         key={product._id}
         id={product._id}
@@ -33,6 +33,7 @@ export default function Products() {
         price={product.price}
         stock={product.stock}
         image={product.imag.secure_url}
+        delay={index * 0.2}
       />
     ))
   );
