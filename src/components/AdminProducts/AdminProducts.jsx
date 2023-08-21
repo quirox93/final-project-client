@@ -27,6 +27,7 @@ import Edit from "./EditButton";
 import FormNewProduct from "../FormNewProduct/FormNewProduct";
 import DeleteButton from "./DeleteButton";
 import DisableButton from "./DisableButton";
+import ProdButtonGroup from "./ProdButtonGroup";
 
 const statusColorMap = {
   true: "success",
@@ -177,40 +178,15 @@ export default function AdminProducts({
     const actions =
       selected.length === 1 && product ? (
         <ButtonGroup>
-          <Edit
-            id={product._id}
-            name={product.name}
-            description={product.description}
-            price={product.price}
-            stock={product.stock}
-            data={allItems}
-            setData={setAllItems}
-            imag={product.imag.secure_url}
-          />
-          <DisableButton
-            id={product._id}
-            enabled={product.enabled}
-            cb={() => setSelectedKeys(new Set([]))}
-            data={allItems}
-            setData={setAllItems}
-          />
-          <DeleteButton
-            cb={() => setSelectedKeys(new Set([]))}
-            id={product._id}
-            data={allItems}
-            setData={setAllItems}
-          />
+          {mode === "user" ? (
+            <ProdButtonGroup product={product} allItems={allItems} setAllItems={setAllItems} />
+          ) : (
+            <ProdButtonGroup product={product} allItems={allItems} setAllItems={setAllItems} />
+          )}
         </ButtonGroup>
       ) : (
         <ButtonGroup>
-          <DisableButton id={selected} enabled={true} data={allItems} setData={setAllItems} />
-          <DisableButton id={selected} enabled={false} data={allItems} setData={setAllItems} />
-          <DeleteButton
-            cb={() => setSelectedKeys(new Set([]))}
-            id={selected}
-            data={allItems}
-            setData={setAllItems}
-          />
+         
         </ButtonGroup>
       );
     return (
