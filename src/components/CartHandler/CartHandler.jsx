@@ -1,14 +1,13 @@
 "use client"
 
 import CartTable from "@/components/CartTable/CartTable";
-import {
-    calculateSubtotal,
-    calculateTotal
-} from "@/components/CartHandler/utils";
 import { useSelector, useDispatch } from "react-redux";
 import { selectedProducts, deletedProducts } from "@/store/slice";
+import api from "@/utils/api";
+import { useRouter } from "next/navigation";
 
-const CartHandler = () => {
+const CartHandler = ({userId}) => {
+    const router = useRouter()
     const dispatch = useDispatch();
     const selectedProduct = useSelector((state) => state.shopCart.selectionProducts);
   
@@ -27,19 +26,24 @@ const CartHandler = () => {
       ));
     };
   
-    const handleCheckout = () => {
-      const checkoutData = {
-        purchasedItems: selectedProduct.map((item) => ({
-          id: item.id,
-          description: item.description,
-          image: item.image,
-          name: item.name,
-          quantity: item.quantity,
-          subtotal: calculateSubtotal(item.price, item.quantity),
-        })),
-        total: calculateTotal(selectedProduct),
-      };
-      console.log(checkoutData);
+    const handleCheckout = async () => {
+               
+          try {
+            const items = selectedProduct.map((item) => ({
+              id: item.id,
+              title: item.name,
+              quantity: item.quantity,
+              unit_price: item.price,
+              currency_id: "ARS",
+            }))
+            
+          const {paymentURL} = await api.payment.checkout(items,userId)
+          
+          router.push(paymentURL)
+          } catch (error) {
+            alert("error in processing payment.")
+          }
+          
     };
   
     return (
