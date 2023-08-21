@@ -11,3 +11,7 @@ export const NEXT_PUBLIC_SITE_URL = process.env["NEXT_PUBLIC_SITE_URL"] || "loca
 export const VERCEL_URL = process.env["VERCEL_URL"];
 
 export const CLERK_ORG_ID = process.env["CLERK_ORG_ID"];
+
+export const MP_TOKEN = process.env["MP_TOKEN"];
+
+
