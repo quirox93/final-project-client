@@ -1,6 +1,7 @@
 const { NextRequest, NextResponse } = require("next/server");
+import { VERCEL_URL } from "@/utils/config";
 import mercadopago from "mercadopago";
-VERCEL_URL
+
 
 
 // const items = [
@@ -35,7 +36,7 @@ try {
   const result = await mercadopago.preferences.create({
     items,
     back_urls:{
-      success:"/cart",
+      success:`${VERCEL_URL}/cart`,
       failure:"",
       pending:"",
     },
