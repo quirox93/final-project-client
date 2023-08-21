@@ -37,7 +37,7 @@ const api = {
   },
   payment: {
     checkout: async (items, user_id) => {
-      const data = await fetch(`http://${host}/api/product/bulk`, {
+      const data = await fetch(`http://${host}/api/payment`, {
         method: "POST",
         body: JSON.stringify({ user_id, items }),
         headers: {
