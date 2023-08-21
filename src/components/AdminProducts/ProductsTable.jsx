@@ -1,5 +1,6 @@
 import AdminProducts from "./AdminProducts";
 import api from "@/utils/api";
+import ProdButtonGroup from "./ProdButtonGroup";
 
 const loadProducts = async () => await api.product.all();
 
@@ -19,6 +20,7 @@ export default async function ProductsTable() {
     { name: "Paused", uid: false, prop: "enabled" },
   ];
   const products = await loadProducts();
+
   return (
     <div className="p-4 z-0 flex flex-col relative justify-between gap-4 bg-content1 overflow-auto rounded-large shadow-small max-w-ld ">
       {
