@@ -2,7 +2,7 @@ import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button } from
 
 const AlertModalStock = ({ isOpen, onClose, name }) => {
   return (
-    <Modal isOpen={isOpen} placement="center" onOpenChange={onClose}>
+    <Modal isOpen={isOpen} placement="center" onOpenChange={onClose} isDismissable={false}>
       <ModalContent>
         {(onClose) => (
           <>
