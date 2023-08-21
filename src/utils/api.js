@@ -1,5 +1,5 @@
 import { NEXT_PUBLIC_SITE_URL, VERCEL_URL } from "./config";
-const host = VERCEL_URL || NEXT_PUBLIC_SITE_URL;
+const host = VERCEL_URL;
 
 const api = {
   product: {
