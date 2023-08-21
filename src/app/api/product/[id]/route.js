@@ -57,6 +57,6 @@ export async function DELETE(req, { params }) {
       return NextResponse.json({ message: "Product not found." }, { status: 404 });
     return NextResponse.json({ message: "Product successfully deleted.", productDeleted });
   } catch (error) {
-    return NextResponse.json({ message: error.message }, { status: 500 });
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

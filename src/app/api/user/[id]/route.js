@@ -15,8 +15,8 @@ export async function DELETE(_, { params }) {
   try {
     connectDB();
     const { id } = params;
-    return NextResponse.json({ message: "Borrar usuario con id: " + id });
+    return NextResponse.json({ error: "Borrar usuario con id: " + id });
   } catch (error) {
-    return NextResponse.json({ message: error.message }, { status: 500 });
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

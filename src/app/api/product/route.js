@@ -11,7 +11,7 @@ export async function GET(req) {
     const products = filterItems(await Product.find({ isDeleted: false }), query);
     return NextResponse.json(products);
   } catch (error) {
-    return NextResponse.json({ message: message.message }, { status: 500 });
+    return NextResponse.json({ error: message.message }, { status: 500 });
   }
 }
 
@@ -23,7 +23,7 @@ export async function POST(req) {
     const finded = await Product.findOne({ name: values.name }).exec();
     if (finded)
       return NextResponse.json(
-        { message: "Product already exists.", product: finded },
+        { error: "Product already exists.", product: finded },
         { status: 409 }
       );
 
@@ -39,7 +39,7 @@ export async function POST(req) {
     return NextResponse.json(savedProduct, { status: 201 });
   } catch (error) {
     if (error._message == "Product validation failed.")
-      return NextResponse.json({ message: error.message }, { status: 400 });
-    return NextResponse.json({ message: error.message }, { status: 500 });
+      return NextResponse.json({ error: error.message }, { status: 400 });
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

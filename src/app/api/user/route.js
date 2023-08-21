@@ -6,6 +6,6 @@ export async function GET() {
     connectDB();
     return NextResponse.json({ message: "Devolver todos los usuarios." });
   } catch (error) {
-    return NextResponse.json({ message: message.message }, { status: 500 });
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
