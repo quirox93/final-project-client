@@ -1,11 +1,11 @@
-const { NextResponse, NextRequest } = require("next/server");
+const { NextResponse } = require("next/server");
 import { connectDB } from "@/utils/mongoose";
 import Product from "@/models/Product";
 import { uploadImag } from "@/utils/cloudinary";
 
-connectDB();
 export async function GET(_, { params }) {
   try {
+    connectDB();
     const products = await Product.findById(params.id);
     if (!products) return NextResponse.json({ message: "Product not found " }, { status: 404 });
     return NextResponse.json(products);
@@ -16,6 +16,7 @@ export async function GET(_, { params }) {
 
 export async function PUT(req, { params }) {
   try {
+    connectDB();
     if (params.id === "bulk") {
       const data = await req.json();
       const productsUpdated = await Product.updateMany({ _id: { $in: data.array } }, data.values);
@@ -42,6 +43,7 @@ export async function PUT(req, { params }) {
 
 export async function DELETE(req, { params }) {
   try {
+    connectDB();
     if (params.id === "bulk") {
       const idArr = await req.json();
       const productsDeleted = await Product.updateMany(

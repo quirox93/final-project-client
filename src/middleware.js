@@ -10,6 +10,8 @@ export default authMiddleware({
   publicRoutes: ["/", "/api(.*)", "/product(.*)"],
   //ignoredRoutes: ["/api"],
   async afterAuth(auth, req, evt) {
+    const adminRoutes = ["/dashboard/products", "/dashboard/statistics"];
+
     // get all organizations from user
     let orgs = [];
     if (auth.sessionClaims?._orgs) orgs = Object.keys(auth.sessionClaims._orgs);
@@ -19,8 +21,8 @@ export default authMiddleware({
       return redirectToSignIn({ returnBackUrl: req.url });
     }
 
-    // handle users who aren't admins
-    if (auth.userId && !orgs.includes(CLERK_ORG_ID) && !auth.isPublicRoute) {
+    // handle users in admin routes
+    if (auth.userId && !orgs.includes(CLERK_ORG_ID) && adminRoutes.includes(req.nextUrl.pathname)) {
       const orgSelection = new URL("/", req.url);
       return NextResponse.redirect(orgSelection);
     }

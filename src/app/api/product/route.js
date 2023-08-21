@@ -4,10 +4,9 @@ import Product from "@/models/Product";
 import { uploadImag } from "@/utils/cloudinary";
 import { filterItems } from "@/utils/apiFunctions";
 
-connectDB();
-
 export async function GET(req) {
   try {
+    connectDB();
     const query = Object.fromEntries(new URL(req.url).searchParams.entries());
     const products = filterItems(await Product.find({ isDeleted: false }), query);
     return NextResponse.json(products);
@@ -18,6 +17,7 @@ export async function GET(req) {
 
 export async function POST(req) {
   try {
+    connectDB();
     const data = await req.formData();
     const values = Object.fromEntries(data);
     const finded = await Product.findOne({ name: values.name }).exec();

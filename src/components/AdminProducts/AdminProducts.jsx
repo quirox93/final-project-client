@@ -20,10 +20,8 @@ import {
   ButtonGroup,
   Spacer,
 } from "@nextui-org/react";
-import { VerticalDotsIcon } from "./VerticalDotsIcon";
 import { SearchIcon } from "./SearchIcon";
 import { ChevronDownIcon } from "./ChevronDownIcon";
-import { columns, statusOptions } from "./data";
 import { capitalize } from "./utils";
 import Edit from "./EditButton";
 import FormNewProduct from "../FormNewProduct/FormNewProduct";
@@ -35,10 +33,14 @@ const statusColorMap = {
   false: "warning",
 };
 
-const INITIAL_VISIBLE_COLUMNS = ["name", "createdAt", "stock", "price"];
-
-export default function AdminProducts({ defUsers }) {
-  const [users, setUsers] = React.useState(defUsers);
+export default function AdminProducts({
+  mode,
+  defItems,
+  columns,
+  statusOptions,
+  INITIAL_VISIBLE_COLUMNS,
+}) {
+  const [allItems, setAllItems] = React.useState(defItems);
   const [filterValue, setFilterValue] = React.useState("");
   const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
   const [visibleColumns, setVisibleColumns] = React.useState(new Set(INITIAL_VISIBLE_COLUMNS));
@@ -72,20 +74,20 @@ export default function AdminProducts({ defUsers }) {
 
   const filteredItems = React.useMemo(() => {
     const sortF = SortFunc[sortDescriptor.column + sortDescriptor.direction];
-    let filteredUsers = [...users].sort(sortF);
+    let filteredUsers = [...allItems].sort(sortF);
     if (hasSearchFilter) {
-      filteredUsers = filteredUsers.filter((user) =>
-        user.name.toLowerCase().includes(filterValue.toLowerCase())
+      filteredUsers = filteredUsers.filter((item) =>
+        item.name.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
     if (statusFilter !== "all" && Array.from(statusFilter).length !== statusOptions.length) {
-      filteredUsers = filteredUsers.filter((user) =>
-        Array.from(statusFilter).includes(user.enabled.toString())
+      filteredUsers = filteredUsers.filter((item) =>
+        Array.from(statusFilter).includes(item[statusOptions[0].prop].toString())
       );
     }
 
     return filteredUsers;
-  }, [users, filterValue, statusFilter, sortDescriptor]);
+  }, [allItems, filterValue, statusFilter, sortDescriptor]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -96,55 +98,41 @@ export default function AdminProducts({ defUsers }) {
     return filteredItems.slice(start, end);
   }, [page, filteredItems, rowsPerPage]);
 
-  const renderCell = React.useCallback((user, columnKey) => {
-    const cellValue = user[columnKey];
+  const renderCell = React.useCallback((item, columnKey) => {
+    const cellValue = item[columnKey];
+
     switch (columnKey) {
       case "name":
-        return (
+        return mode === "user" ? (
           <User
-            avatarProps={{ radius: "lg", src: user.imag.secure_url }}
+            avatarProps={{ radius: "lg", src: item.imag.secure_url }}
             description={
               <Chip
                 className="capitalize"
-                color={statusColorMap[user.enabled.toString()]}
+                color={statusColorMap[item.enabled.toString()]}
                 size="sm"
                 variant="flat"
               >
-                {user.enabled ? "Active" : "Paused"}
+                {item.enabled ? "Active" : "Paused"}
               </Chip>
             }
             name={<p className=" font-bold">{cellValue}</p>}
           ></User>
-        );
-      case "role":
-        return (
-          <div className="flex flex-col">
-            <p className="text-bold text-small capitalize">{cellValue}</p>
-            <p className="text-bold text-tiny capitalize text-default-400">{user.team}</p>
-          </div>
-        );
-      case "status":
-        return (
-          <Chip className="capitalize" color={statusColorMap[user.status]} size="sm" variant="flat">
-            {cellValue}
-          </Chip>
-        );
-      case "actions":
-        return (
-          <div className="relative flex justify-end items-center gap-2">
-            <Dropdown>
-              <DropdownTrigger>
-                <Button isIconOnly size="sm" variant="light">
-                  <VerticalDotsIcon className="text-default-300" />
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu>
-                <DropdownItem>View</DropdownItem>
-                <DropdownItem>Edit</DropdownItem>
-                <DropdownItem>Delete</DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
-          </div>
+        ) : (
+          <User
+            avatarProps={{ radius: "lg", src: item.imag.secure_url }}
+            description={
+              <Chip
+                className="capitalize"
+                color={statusColorMap[item.enabled.toString()]}
+                size="sm"
+                variant="flat"
+              >
+                {item.enabled ? "Active" : "Paused"}
+              </Chip>
+            }
+            name={<p className=" font-bold">{cellValue}</p>}
+          ></User>
         );
       default:
         return cellValue;
@@ -183,8 +171,9 @@ export default function AdminProducts({ defUsers }) {
   }, []);
 
   const topContent = React.useMemo(() => {
-    const selected = Array.from(selectedKeys);
-    const product = users.find((e) => e._id === selected[0]);
+    let selected = Array.from(selectedKeys);
+    if (selectedKeys === "all") selected = filteredItems.map((e) => e._id);
+    const product = allItems.find((e) => e._id === selected[0]);
     const actions =
       selected.length === 1 && product ? (
         <ButtonGroup>
@@ -194,33 +183,33 @@ export default function AdminProducts({ defUsers }) {
             description={product.description}
             price={product.price}
             stock={product.stock}
-            data={users}
-            setData={setUsers}
+            data={allItems}
+            setData={setAllItems}
             imag={product.imag.secure_url}
           />
           <DisableButton
             id={product._id}
             enabled={product.enabled}
             cb={() => setSelectedKeys(new Set([]))}
-            data={users}
-            setData={setUsers}
+            data={allItems}
+            setData={setAllItems}
           />
           <DeleteButton
             cb={() => setSelectedKeys(new Set([]))}
             id={product._id}
-            data={users}
-            setData={setUsers}
+            data={allItems}
+            setData={setAllItems}
           />
         </ButtonGroup>
       ) : (
         <ButtonGroup>
-          <DisableButton id={selected} enabled={true} data={users} setData={setUsers} />
-          <DisableButton id={selected} enabled={false} data={users} setData={setUsers} />
+          <DisableButton id={selected} enabled={true} data={allItems} setData={setAllItems} />
+          <DisableButton id={selected} enabled={false} data={allItems} setData={setAllItems} />
           <DeleteButton
             cb={() => setSelectedKeys(new Set([]))}
             id={selected}
-            data={users}
-            setData={setUsers}
+            data={allItems}
+            setData={setAllItems}
           />
         </ButtonGroup>
       );
@@ -279,11 +268,11 @@ export default function AdminProducts({ defUsers }) {
                 ))}
               </DropdownMenu>
             </Dropdown>
-            <FormNewProduct setData={setUsers} data={users} />
+            <FormNewProduct setData={setAllItems} data={allItems} />
           </div>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-default-400 text-small">Total {users.length} products</span>
+          <span className="text-default-400 text-small">Total {allItems.length} products</span>
           {selected.length ? actions : ""}
           <Spacer y={8} />
           <label className="flex items-center text-default-400 text-small">
@@ -305,7 +294,7 @@ export default function AdminProducts({ defUsers }) {
     onSearchChange,
     statusFilter,
     visibleColumns,
-    users,
+    allItems,
     onRowsPerPageChange,
     onClear,
     selectedKeys,
@@ -342,7 +331,7 @@ export default function AdminProducts({ defUsers }) {
 
   return (
     <Table
-      aria-label="Example table with custom cells, pagination and sorting"
+      aria-label="Items table"
       isHeaderSticky
       bottomContent={bottomContent}
       bottomContentPlacement="outside"
@@ -359,16 +348,12 @@ export default function AdminProducts({ defUsers }) {
     >
       <TableHeader columns={headerColumns}>
         {(column) => (
-          <TableColumn
-            key={column.uid}
-            align={column.uid === "actions" ? "center" : "start"}
-            allowsSorting={column.sortable}
-          >
+          <TableColumn key={column.uid} align={"start"} allowsSorting={column.sortable}>
             {column.name}
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody emptyContent={"No users found"} items={items}>
+      <TableBody emptyContent={"No items found"} items={items}>
         {(item) => (
           <TableRow key={item._id}>
             {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
