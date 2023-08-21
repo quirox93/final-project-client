@@ -1,8 +1,28 @@
 import { configureStore } from "@reduxjs/toolkit";
+import { persistStore, persistReducer, REGISTER, PERSIST } from "redux-persist";
+import storage from "redux-persist/lib/storage";
 import { Slice } from "./slice";
 
-export default configureStore({
+const persistConfig = {
+  key: "root", 
+  version:1,
+  storage, 
+};
+
+const persistedReducer = persistReducer(persistConfig, Slice.reducer);
+
+const store = configureStore({
   reducer: {
-    shopCart: Slice.reducer,
+    shopCart: persistedReducer, 
   },
+  middleware: (getDefaultMiddleware) =>
+  getDefaultMiddleware({
+    serializableCheck: {
+      ignoredActions: [PERSIST],
+    },
+  }),
 });
+
+const persistor = persistStore(store);
+
+export { store, persistor };
