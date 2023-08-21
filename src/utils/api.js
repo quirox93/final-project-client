@@ -35,5 +35,18 @@ const api = {
       return await data.json();
     },
   },
+  payment: {
+    checkout: async (items, user_id) => {
+      const data = await fetch(`http://${host}/api/product/bulk`, {
+        method: "POST",
+        body: JSON.stringify({ user_id, items }),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      });
+      return await data.json();
+    },
+  },
 };
+
 export default api;
