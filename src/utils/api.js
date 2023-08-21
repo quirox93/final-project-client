@@ -16,7 +16,7 @@ const api = {
       return await data.json();
     },
     bulkUpdate: async (array, values) => {
-      const data = await fetch(`https://${host}/api/product/bulk`, {
+      const data = await fetch(`${host}/api/product/bulk`, {
         method: "PUT",
         body: JSON.stringify({ array, values }),
         headers: {
@@ -39,7 +39,7 @@ const api = {
   payment: {
     checkout: async (items, user_id) => {
       console.log(host);
-      const data = await fetch(`https://${host}/api/payment`, {
+      const data = await fetch(`${host}/api/payment`, {
         method: "POST",
         body: JSON.stringify({ user_id, items }),
         headers: {
