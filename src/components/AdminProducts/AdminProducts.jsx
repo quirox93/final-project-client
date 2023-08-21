@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import React from "react";
 import {
@@ -16,28 +17,31 @@ import {
   Chip,
   User,
   Pagination,
+  ButtonGroup,
+  Spacer,
 } from "@nextui-org/react";
-import { PlusIcon } from "./PlusIcon";
-import { VerticalDotsIcon } from "./VerticalDotsIcon";
 import { SearchIcon } from "./SearchIcon";
 import { ChevronDownIcon } from "./ChevronDownIcon";
-import { columns, statusOptions } from "./data";
 import { capitalize } from "./utils";
-import FilterModal from "../FilterModal";
 import Edit from "./EditButton";
 import FormNewProduct from "../FormNewProduct/FormNewProduct";
 import DeleteButton from "./DeleteButton";
 import DisableButton from "./DisableButton";
+import ProdButtonGroup from "./ProdButtonGroup";
 
 const statusColorMap = {
   true: "success",
   false: "warning",
 };
 
-const INITIAL_VISIBLE_COLUMNS = ["name", "createdAt", "stock", "price"];
-
-export default function AdminProducts({ defUsers }) {
-  const [users, setUsers] = React.useState(defUsers);
+export default function AdminProducts({
+  mode,
+  defItems,
+  columns,
+  statusOptions,
+  INITIAL_VISIBLE_COLUMNS,
+}) {
+  const [allItems, setAllItems] = React.useState(defItems);
   const [filterValue, setFilterValue] = React.useState("");
   const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
   const [visibleColumns, setVisibleColumns] = React.useState(new Set(INITIAL_VISIBLE_COLUMNS));
@@ -47,7 +51,6 @@ export default function AdminProducts({ defUsers }) {
     column: "name",
     direction: "ascending",
   });
-  const updateData = () => console.log("test");
   const SortFunc = {
     nameascending: (a, b) => a.name.localeCompare(b.name),
     namedescending: (a, b) => b.name.localeCompare(a.name),
@@ -72,20 +75,20 @@ export default function AdminProducts({ defUsers }) {
 
   const filteredItems = React.useMemo(() => {
     const sortF = SortFunc[sortDescriptor.column + sortDescriptor.direction];
-    let filteredUsers = [...users].sort(sortF);
+    let filteredUsers = [...allItems].sort(sortF);
     if (hasSearchFilter) {
-      filteredUsers = filteredUsers.filter((user) =>
-        user.name.toLowerCase().includes(filterValue.toLowerCase())
+      filteredUsers = filteredUsers.filter((item) =>
+        item.name.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
     if (statusFilter !== "all" && Array.from(statusFilter).length !== statusOptions.length) {
-      filteredUsers = filteredUsers.filter((user) =>
-        Array.from(statusFilter).includes(user.enabled.toString())
+      filteredUsers = filteredUsers.filter((item) =>
+        Array.from(statusFilter).includes(item[statusOptions[0].prop].toString())
       );
     }
 
     return filteredUsers;
-  }, [users, filterValue, statusFilter, sortDescriptor]);
+  }, [allItems, filterValue, statusFilter, sortDescriptor]);
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
@@ -96,57 +99,41 @@ export default function AdminProducts({ defUsers }) {
     return filteredItems.slice(start, end);
   }, [page, filteredItems, rowsPerPage]);
 
-  const renderCell = React.useCallback((user, columnKey) => {
-    const cellValue = user[columnKey];
+  const renderCell = React.useCallback((item, columnKey) => {
+    const cellValue = item[columnKey];
 
-    console.log(columnKey);
     switch (columnKey) {
       case "name":
-        return (
+        return mode === "user" ? (
           <User
-            avatarProps={{ radius: "lg", src: user.imag.secure_url }}
+            avatarProps={{ radius: "lg", src: item.imag.secure_url }}
             description={
               <Chip
                 className="capitalize"
-                color={statusColorMap[user.enabled.toString()]}
+                color={statusColorMap[item.enabled.toString()]}
                 size="sm"
                 variant="flat"
               >
-                {user.enabled ? "Active" : "Paused"}
+                {item.enabled ? "Active" : "Paused"}
               </Chip>
             }
             name={<p className=" font-bold">{cellValue}</p>}
           ></User>
-        );
-      case "role":
-        return (
-          <div className="flex flex-col">
-            <p className="text-bold text-small capitalize">{cellValue}</p>
-            <p className="text-bold text-tiny capitalize text-default-400">{user.team}</p>
-          </div>
-        );
-      case "status":
-        return (
-          <Chip className="capitalize" color={statusColorMap[user.status]} size="sm" variant="flat">
-            {cellValue}
-          </Chip>
-        );
-      case "actions":
-        return (
-          <div className="relative flex justify-end items-center gap-2">
-            <Dropdown>
-              <DropdownTrigger>
-                <Button isIconOnly size="sm" variant="light">
-                  <VerticalDotsIcon className="text-default-300" />
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu>
-                <DropdownItem>View</DropdownItem>
-                <DropdownItem>Edit</DropdownItem>
-                <DropdownItem>Delete</DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
-          </div>
+        ) : (
+          <User
+            avatarProps={{ radius: "lg", src: item.imag.secure_url }}
+            description={
+              <Chip
+                className="capitalize"
+                color={statusColorMap[item.enabled.toString()]}
+                size="sm"
+                variant="flat"
+              >
+                {item.enabled ? "Active" : "Paused"}
+              </Chip>
+            }
+            name={<p className=" font-bold">{cellValue}</p>}
+          ></User>
         );
       default:
         return cellValue;
@@ -185,37 +172,22 @@ export default function AdminProducts({ defUsers }) {
   }, []);
 
   const topContent = React.useMemo(() => {
-    const selected = Array.from(selectedKeys);
-    const product = users.find((e) => e._id === selected[0]);
+    let selected = Array.from(selectedKeys);
+    if (selectedKeys === "all") selected = filteredItems.map((e) => e._id);
+    const product = allItems.find((e) => e._id === selected[0]);
     const actions =
       selected.length === 1 && product ? (
-        <>
-          <Edit
-            id={product._id}
-            name={product.name}
-            description={product.description}
-            price={product.price}
-            stock={product.stock}
-            data={users}
-            setData={setUsers}
-            imag={product.imag.secure_url}
-          />
-          <DisableButton
-            id={product._id}
-            enabled={product.enabled}
-            cb={() => setSelectedKeys(new Set([]))}
-            data={users}
-            setData={setUsers}
-          />
-          <DeleteButton
-            cb={() => setSelectedKeys(new Set([]))}
-            id={product._id}
-            data={users}
-            setData={setUsers}
-          />
-        </>
+        <ButtonGroup>
+          {mode === "user" ? (
+            <ProdButtonGroup product={product} allItems={allItems} setAllItems={setAllItems} />
+          ) : (
+            <ProdButtonGroup product={product} allItems={allItems} setAllItems={setAllItems} />
+          )}
+        </ButtonGroup>
       ) : (
-        ""
+        <ButtonGroup>
+         
+        </ButtonGroup>
       );
     return (
       <div className="flex flex-col gap-4">
@@ -272,12 +244,13 @@ export default function AdminProducts({ defUsers }) {
                 ))}
               </DropdownMenu>
             </Dropdown>
-            <FormNewProduct cb={updateData} />
+            <FormNewProduct setData={setAllItems} data={allItems} />
           </div>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-default-400 text-small">Total {users.length} products</span>
-          {actions}
+          <span className="text-default-400 text-small">Total {allItems.length} products</span>
+          {selected.length ? actions : ""}
+          <Spacer y={8} />
           <label className="flex items-center text-default-400 text-small">
             Rows per page:
             <select
@@ -297,7 +270,7 @@ export default function AdminProducts({ defUsers }) {
     onSearchChange,
     statusFilter,
     visibleColumns,
-    users,
+    allItems,
     onRowsPerPageChange,
     onClear,
     selectedKeys,
@@ -334,7 +307,7 @@ export default function AdminProducts({ defUsers }) {
 
   return (
     <Table
-      aria-label="Example table with custom cells, pagination and sorting"
+      aria-label="Items table"
       isHeaderSticky
       bottomContent={bottomContent}
       bottomContentPlacement="outside"
@@ -351,16 +324,12 @@ export default function AdminProducts({ defUsers }) {
     >
       <TableHeader columns={headerColumns}>
         {(column) => (
-          <TableColumn
-            key={column.uid}
-            align={column.uid === "actions" ? "center" : "start"}
-            allowsSorting={column.sortable}
-          >
+          <TableColumn key={column.uid} align={"start"} allowsSorting={column.sortable}>
             {column.name}
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody emptyContent={"No users found"} items={items}>
+      <TableBody emptyContent={"No items found"} items={items}>
         {(item) => (
           <TableRow key={item._id}>
             {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}

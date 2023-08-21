@@ -2,14 +2,14 @@
 import { Pagination, CircularProgress } from "@nextui-org/react";
 import React, { useState, useEffect } from "react";
 import Product from "./Product";
-import api from "../utils/axios"
+import api from "../utils/axios";
 import SortPriceButton from "./SortPriceButton";
 import SortNameButton from "./SortNameButton";
 import FilterModal from "./FilterModal";
 import SearchBar from "@/components/SearchBar";
 
 export default function Products() {
-  const items = 3;
+  const items = 6;
   const [products, setProducts] = useState([]);
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
@@ -24,7 +24,7 @@ export default function Products() {
       <h1 className="font-bold text-danger">No products found.</h1>
     </div>
   ) : (
-    products.map((product) => (
+    products.map((product, index) => (
       <Product
         key={product._id}
         id={product._id}
@@ -33,20 +33,20 @@ export default function Products() {
         price={product.price}
         stock={product.stock}
         image={product.imag.secure_url}
+        delay={index * 0.2}
       />
     ))
   );
-  const handleSearch = (searchQuery) =>{
-    setFilters({...filters, name: searchQuery});
+  const handleSearch = (searchQuery) => {
+    setFilters({ ...filters, name: searchQuery });
     setPage(1);
-  }
+  };
   const handleSortChange = (sortType) => {
     setSortType(sortType);
   };
 
   const handleFilter = (values) => {
-   
-    setFilters({...values});
+    setFilters({ ...values });
   };
 
   const getData = () => {
@@ -65,7 +65,7 @@ export default function Products() {
         setProducts(data.results);
         const newTotal = Math.ceil(data.total / items);
         setTotal(newTotal);
-        if(page === 0 && newTotal > 0 ) setPage(1)
+        if (page === 0 && newTotal > 0) setPage(1);
         if (page > newTotal) setPage(newTotal);
         else setLoading(false);
       } catch (error) {
@@ -79,18 +79,9 @@ export default function Products() {
 
   return (
     <div>
-      <SearchBar onSearch={handleSearch}/>
+      <SearchBar onSearch={handleSearch} />
       <div className="flex justify-center">
-        {total ? (
-          <Pagination
-            onChange={setPage}
-            total={total}
-            page={page}
-            initialPage={1}
-          />
-        ) : (
-          ""
-        )}
+        {total ? <Pagination onChange={setPage} total={total} page={page} initialPage={1} /> : ""}
       </div>
       <div className="flex mt-10 justify-evenly">
         <SortPriceButton onSortChange={handleSortChange} />

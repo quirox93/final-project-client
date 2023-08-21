@@ -2,21 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-* {
+html {
   scrollbar-gutter: stable;
-}
-
-span {
-  scrollbar-gutter: auto;
-}
-div {
-  scrollbar-gutter: auto;
-}
-
-svg {
-  scrollbar-gutter: auto;
-}
-
-button {
-  scrollbar-gutter: auto;
 }
