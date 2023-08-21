@@ -17,6 +17,7 @@ import {
 } from "@nextui-org/react";
 import { selectedProducts } from "@/store/slice";
 import { useParams } from "next/navigation";
+import { PageWrapper } from "@/components/PageWrapper/PageWrapper";
 
 export default function ProductDetail() {
   const dispatch = useDispatch();
@@ -88,6 +89,7 @@ export default function ProductDetail() {
     );
   }
   return (
+    <PageWrapper>
     <div className="flex items-center justify-center mt-20">
       <AlertModalStock
         isOpen={showModal}
@@ -169,5 +171,6 @@ export default function ProductDetail() {
         </Card>
       </div>
     </div>
+    </PageWrapper>
   );
 }

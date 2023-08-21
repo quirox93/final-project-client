@@ -6,6 +6,7 @@ import { useState} from "react";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { selectedProducts } from "@/store/slice";
+import { motion } from 'framer-motion';
 export default function Product(props) {
   const router = useRouter();
   const dispatch = useDispatch();
@@ -52,7 +53,11 @@ export default function Product(props) {
   };
 
   return (
-    <div className="bg-white m-10 lg:w-3/12 md:w-1/3 flex items-center  p-2 rounded-2xl shadow-2xl">
+    <motion.div className="bg-white m-10 lg:w-3/12 md:w-1/3 flex items-center  p-2 rounded-2xl shadow-2xl"
+    initial={{ opacity: 0, x: -20 }}
+    animate={{ opacity: 1, x: 0 }}
+    transition={{ duration: 0.3, delay: props.delay }}
+    >
       <AlertModalStock isOpen={showModal} onClose={() => setShowModal(false)} name={props.name}/>
       <div className="flex-1">
         <img
@@ -127,6 +132,6 @@ export default function Product(props) {
           </Button>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
