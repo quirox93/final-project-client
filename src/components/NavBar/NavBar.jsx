@@ -1,5 +1,6 @@
 "use client";
 import NextLink from "next/link";
+import Image from "next/image";
 import ShopCartIcon from "../ShopCartIcon";
 import { SignInButton, UserButton, useUser } from "@clerk/nextjs";
 import {
@@ -15,6 +16,7 @@ import {
 } from "@nextui-org/react";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
+import logo from "../../../public/LogoGod.svg";
 export default function NavBar() {
   const path = usePathname();
 
@@ -43,7 +45,7 @@ export default function NavBar() {
           className="sm:hidden"
         />
         <NavbarBrand>
-          <p className="font-bold text-inherit">LOGO</p>
+          <Image src={logo} width={200} alt="GOD" />
         </NavbarBrand>
       </NavbarContent>
 
@@ -64,7 +66,11 @@ export default function NavBar() {
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link as={NextLink} color={path !== "/contact" && "foreground"} href="#">
+          <Link
+            as={NextLink}
+            color={path !== "/contact" && "foreground"}
+            href="#"
+          >
             Contact
           </Link>
         </NavbarItem>
