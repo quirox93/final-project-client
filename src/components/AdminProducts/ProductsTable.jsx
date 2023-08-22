@@ -1,8 +1,7 @@
 import AdminProducts from "./AdminProducts";
-import api from "@/utils/api";
-import ProdButtonGroup from "./ProdButtonGroup";
+import { prodGetAll } from "@/utils/api";
 
-const loadProducts = async () => await api.product.all();
+const loadProducts = async () => await prodGetAll();
 
 const columns = [
   { name: "ID", uid: "_id", sortable: false },

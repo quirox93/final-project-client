@@ -2,7 +2,7 @@
 import CartTable from "@/components/CartTable/CartTable";
 import { useSelector, useDispatch } from "react-redux";
 import { selectedProducts, deletedProducts } from "@/store/slice";
-import api from "@/utils/api";
+import { payment } from "@/utils/api";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 
@@ -47,7 +47,7 @@ const CartHandler = ({ userId }) => {
         currency_id: "ARS",
       }));
 
-      const { paymentURL } = await api.payment.checkout(items, userId);
+      const { paymentURL } = await payment(items, userId);
 
       router.push(paymentURL);
     } catch (error) {

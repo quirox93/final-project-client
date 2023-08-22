@@ -1,6 +1,6 @@
 "use_client";
 
-import api from "@/utils/api";
+import { prodBulkUpdate, prodUpdate } from "@/utils/api";
 import { Button } from "@nextui-org/react";
 import { useState } from "react";
 
@@ -11,7 +11,7 @@ export default function DisableButton({ id, enabled, setData, data }) {
       setIsLoading(true);
       if (typeof id === "object") {
         enabled = !enabled;
-        await api.product.bulkUpdate(id, { enabled });
+        await prodBulkUpdate(id, { enabled });
         setData(data.map((e) => (id.includes(e._id) ? { ...e, enabled } : e)));
         setIsLoading(false);
         return;
@@ -19,7 +19,7 @@ export default function DisableButton({ id, enabled, setData, data }) {
 
       const formData = new FormData();
       formData.append("enabled", !enabled);
-      const product = await api.product.update(id, formData);
+      const product = await prodUpdate(id, formData);
       setData(data.map((e) => (e._id === id ? product : e)));
       setIsLoading(false);
     } catch (error) {
