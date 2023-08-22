@@ -2,7 +2,7 @@ const { NextResponse } = require("next/server");
 import { MP_TOKEN } from "@/utils/config";
 import getURL from "@/utils/getUrl";
 import mercadopago from "mercadopago";
-const host = getURL(api);
+const host = getURL("api");
 
 export async function POST(req) {
   const { items, userId } = await req.json();
