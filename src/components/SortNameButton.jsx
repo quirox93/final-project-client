@@ -14,7 +14,7 @@ const SortNameButton = ({ onSortChange }) => {
   return (
     <Dropdown>
       <DropdownTrigger>
-        <Button color="primary" variant="solid">
+        <Button color="primary" variant="solid" className="font-bold hover:shadow-lg hover:shadow-primary-500/50">
           Order by Name
         </Button>
       </DropdownTrigger>
