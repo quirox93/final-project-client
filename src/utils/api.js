@@ -1,5 +1,5 @@
 import { NEXT_PUBLIC_SITE_URL, VERCEL_URL } from "./config";
-//import getURL from "./getUrl";
+import getURL from "./getUrl";
 const host = "https://" + (VERCEL_URL || NEXT_PUBLIC_SITE_URL) + "/api";
 console.log({ VERCEL_URL, NEXT_PUBLIC_SITE_URL });
 const api = {
@@ -39,7 +39,7 @@ const api = {
   payment: {
     checkout: async (items, user_id) => {
       console.log(host);
-      const data = await fetch(`${host}/payment`, {
+      const data = await fetch(`${getURL("api")}/payment`, {
         method: "POST",
         body: JSON.stringify({ user_id, items }),
         headers: {
