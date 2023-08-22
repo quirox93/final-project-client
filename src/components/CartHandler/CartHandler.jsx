@@ -1,15 +1,24 @@
 "use client";
-
 import CartTable from "@/components/CartTable/CartTable";
 import { useSelector, useDispatch } from "react-redux";
 import { selectedProducts, deletedProducts } from "@/store/slice";
 import api from "@/utils/api";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect } from "react";
 
 const CartHandler = ({ userId }) => {
   const router = useRouter();
   const dispatch = useDispatch();
+  const searchParams = useSearchParams();
   const selectedProduct = useSelector((state) => state.shopCart.selectionProducts);
+  useEffect(() => {
+    const status = searchParams.get("status");
+    if (!status) return;
+    if (status === "approved") {
+      dispatch(selectedProducts([]));
+      alert("Payment approved.");
+    } else alert("Payment error.");
+  }, []);
 
   const handleRemoveFromCart = (id) => {
     dispatch(deletedProducts(id));

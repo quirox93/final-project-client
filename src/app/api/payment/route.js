@@ -1,6 +1,8 @@
 const { NextResponse } = require("next/server");
-import { MP_TOKEN, VERCEL_URL } from "@/utils/config";
+import { MP_TOKEN } from "@/utils/config";
+import getURL from "@/utils/getUrl";
 import mercadopago from "mercadopago";
+const host = getURL(api);
 
 export async function POST(req) {
   const { items, userId } = await req.json();
@@ -11,9 +13,9 @@ export async function POST(req) {
     const result = await mercadopago.preferences.create({
       items,
       back_urls: {
-        success: `${VERCEL_URL}/cart`,
-        failure: "",
-        pending: "",
+        success: `${host}/cart`,
+        failure: `${host}/cart`,
+        pending: `${host}/cart`,
       },
       //notification_url:"http://localhost:3000/api/webhook"
     });

@@ -5,11 +5,11 @@ const host = getURL("api");
 const api = {
   product: {
     all: async () => {
-      const data = await fetch(`http://${host}/api/product`);
+      const data = await fetch(`${host}/product`);
       return await data.json();
     },
     update: async (id, body) => {
-      const data = await fetch(`http://${host}/api/product/${id}`, {
+      const data = await fetch(`${host}/product/${id}`, {
         method: "PUT",
         body,
       });
@@ -26,7 +26,7 @@ const api = {
       return await data.json();
     },
     bulkDelete: async (array) => {
-      const data = await fetch(`http://${host}/api/product/bulk`, {
+      const data = await fetch(`${host}/product/bulk`, {
         method: "DELETE",
         body: JSON.stringify(array),
         headers: {
