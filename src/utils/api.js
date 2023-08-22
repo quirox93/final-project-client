@@ -1,6 +1,6 @@
 import { NEXT_PUBLIC_SITE_URL, VERCEL_URL } from "./config";
 //import getURL from "./getUrl";
-const host = "http://" + (VERCEL_URL || NEXT_PUBLIC_SITE_URL) + "/api";
+const host = "https://" + (VERCEL_URL || NEXT_PUBLIC_SITE_URL) + "/api";
 console.log({ VERCEL_URL, NEXT_PUBLIC_SITE_URL });
 const api = {
   product: {
