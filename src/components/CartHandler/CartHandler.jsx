@@ -51,7 +51,7 @@ const CartHandler = ({ userId }) => {
 
       router.push(paymentURL);
     } catch (error) {
-      console.log(error.message);
+      console.log(error);
       alert("error in processing payment.");
     }
   };
