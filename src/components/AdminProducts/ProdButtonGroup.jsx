@@ -3,7 +3,7 @@ import DeleteButton from "./DeleteButton";
 import DisableButton from "./DisableButton";
 import EditButton from "./EditButton";
 
-export default function ProdButtonGroup({ product, allItems, setAllItems }) {
+export default function ProdButtonGroup({ product, cb, allItems, setAllItems }) {
   return (
     <>
       <EditButton
@@ -19,16 +19,10 @@ export default function ProdButtonGroup({ product, allItems, setAllItems }) {
       <DisableButton
         id={product._id}
         enabled={product.enabled}
-        cb={() => setSelectedKeys(new Set([]))}
         data={allItems}
         setData={setAllItems}
       />
-      <DeleteButton
-        cb={() => setSelectedKeys(new Set([]))}
-        id={product._id}
-        data={allItems}
-        setData={setAllItems}
-      />
+      <DeleteButton cb={cb} id={product._id} data={allItems} setData={setAllItems} />
     </>
   );
 }
