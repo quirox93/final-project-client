@@ -1,6 +1,6 @@
 "use server";
 import { VERCEL_URL } from "./config";
-let host = VERCEL_URL + "/api";
+let host = "https://" + VERCEL_URL + "/api";
 import getURL from "./getUrl";
 if (!VERCEL_URL) host = getURL("api");
 
