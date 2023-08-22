@@ -1,12 +1,19 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
-import { Button, Input } from "@nextui-org/react";
+import {
+  Button,
+  Input,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from "@nextui-org/react";
 import AlertModalStock from "./AlertModalStock";
-import { useState} from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { selectedProducts } from "@/store/slice";
-import { motion } from 'framer-motion';
+import { motion } from "framer-motion";
+
 export default function Product(props) {
   const router = useRouter();
   const dispatch = useDispatch();
@@ -15,6 +22,20 @@ export default function Product(props) {
   );
   const [quantity, setQuantity] = useState(1);
   const [showModal, setShowModal] = useState(false);
+  const [popoverOpen, setPopoverOpen] = useState(false);
+
+  useEffect(() => {
+    let timer;
+    if (popoverOpen) {
+      timer = setTimeout(() => {
+        setPopoverOpen(false); 
+      }, 1000); 
+    }
+
+    return () => {
+      clearTimeout(timer); 
+    };
+  }, [popoverOpen]);
 
   const handleAddToCart = () => {
     if (quantity > props.stock) {
@@ -49,16 +70,22 @@ export default function Product(props) {
       dispatch(selectedProducts([...selectionProducts, newProduct]));
     }
 
-    setQuantity(1);
+    setQuantity(quantity);
+    setPopoverOpen(true);
   };
 
   return (
-    <motion.div className="bg-white m-10 lg:w-3/12 md:w-1/3 flex items-center  p-2 rounded-2xl shadow-2xl"
-    initial={{ opacity: 0, x: -20 }}
-    animate={{ opacity: 1, x: 0 }}
-    transition={{ duration: 0.3, delay: props.delay }}
+    <motion.div
+      className="bg-white m-10 lg:w-3/12 md:w-1/3 flex items-center  p-2 rounded-2xl shadow-2xl"
+      initial={{ opacity: 0, x: -20 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.3, delay: props.delay }}
     >
-      <AlertModalStock isOpen={showModal} onClose={() => setShowModal(false)} name={props.name}/>
+      <AlertModalStock
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        name={props.name}
+      />
       <div className="flex-1">
         <img
           className=" cursor-pointer"
@@ -98,38 +125,45 @@ export default function Product(props) {
           )}
         </p>
         <div className="flex-column justify-center items-center">
-          
           <Input
-          type="number"
-          label="Quantity"
-          onChange={(e) => {
-            let inputValue = parseInt(e.target.value);
-            if (isNaN(inputValue) || inputValue < 1) {
-              inputValue = 1;
-            } else if (inputValue > props.stock) {
-              inputValue = props.stock;
+            type="number"
+            label="Quantity"
+            onChange={(e) => {
+              let inputValue = parseInt(e.target.value);
+              if (isNaN(inputValue) || inputValue < 1) {
+                inputValue = 1;
+              } else if (inputValue > props.stock) {
+                inputValue = props.stock;
+              }
+              setQuantity(inputValue);
+            }}
+            value={quantity}
+            color="primary"
+            placeholder="0"
+            labelPlacement="inside"
+            className="mb-2"
+            startContent={
+              <div className="pointer-events-none flex items-center"></div>
             }
-            setQuantity(inputValue);
-          }}
-          value={quantity}
-          color="primary"
-          placeholder="0"
-          labelPlacement="inside"
-          className="mb-2"
-          startContent={
-            <div className="pointer-events-none flex items-center">
-              
-            </div>
-          }
-        />
-          <Button
-            className=" flex mt-5  bg-primary rounded text-white m-auto"
-            onClick={handleAddToCart}
-            disabled={props.stock === 0}
-            size="sm"
-          >
-            Add
-          </Button>
+          />
+          <Popover placement="right" offset={20} showArrow isOpen={popoverOpen}>
+            <PopoverTrigger>
+              <Button
+                className=" flex mt-5  bg-primary rounded text-white m-auto"
+                onClick={handleAddToCart}
+                disabled={props.stock === 0}
+                size="sm"
+              >
+                Add
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent>
+              <div className="px-1 py-2">
+                <div className="text-small font-bold">Products</div>
+                <div className="text-tiny">Added {quantity}</div>
+              </div>
+            </PopoverContent>
+          </Popover>
         </div>
       </div>
     </motion.div>
