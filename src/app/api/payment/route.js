@@ -11,9 +11,9 @@ export async function POST(req) {
     const result = await mercadopago.preferences.create({
       items,
       back_urls: {
-        success: `${VERCEL_URL}/cart`,
-        failure: "",
-        pending: "",
+        success: `https://${VERCEL_URL}/cart`,
+        failure: `https://${VERCEL_URL}/cart`,
+        pending: `https://${VERCEL_URL}/cart`,
       },
       //notification_url:"http://localhost:3000/api/webhook"
     });

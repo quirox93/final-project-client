@@ -1,6 +1,6 @@
 "use_client";
 
-import api from "@/utils/axios";
+import { prodBulkDelete, prodDelete } from "@/utils/api";
 import { Button } from "@nextui-org/react";
 import { useState } from "react";
 
@@ -10,16 +10,15 @@ export default function DeleteButton({ id, data, setData, cb }) {
     try {
       setIsLoading(true);
       if (typeof id === "object") {
-        enabled = !enabled;
-        await api.product.bulkDelete(id);
+        await prodBulkDelete(id);
         setData(data.filter((e) => !id.includes(e._id)));
         setIsLoading(false);
-        cb();
+        cb(new Set([]));
         return;
       }
-      await api.delete(`product/${id}`);
+      await prodDelete(id);
       setData(data.filter((e) => e._id !== id));
-      cb();
+      cb(new Set([]));
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
