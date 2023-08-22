@@ -6,6 +6,8 @@ import {
   Popover,
   PopoverTrigger,
   PopoverContent,
+  Divider,
+  Chip,
 } from "@nextui-org/react";
 import AlertModalStock from "./AlertModalStock";
 import { useState, useEffect } from "react";
@@ -28,12 +30,12 @@ export default function Product(props) {
     let timer;
     if (popoverOpen) {
       timer = setTimeout(() => {
-        setPopoverOpen(false); 
-      }, 1000); 
+        setPopoverOpen(false);
+      }, 1000);
     }
 
     return () => {
-      clearTimeout(timer); 
+      clearTimeout(timer);
     };
   }, [popoverOpen]);
 
@@ -104,17 +106,18 @@ export default function Product(props) {
           {props.name}{" "}
         </h2>
         <p>{props.description}</p>
+        <Divider />
         <p>
           Price: <span className="font-bold">${props.price}</span>
         </p>
         {props.stock === 0 ? (
-          <span className="bg-black rounded-2xl text-white p-1">
-            Out of Stock
-          </span>
+          <Chip className="capitalize" color="danger" size="sm" variant="flat">
+            Out of stock
+          </Chip>
         ) : (
-          <span className="bg-success-500 rounded-2xl text-white p-1">
+          <Chip className="capitalize" color="success" size="sm" variant="flat">
             Available
-          </span>
+          </Chip>
         )}
         <p>
           Stock:{" "}
@@ -124,6 +127,7 @@ export default function Product(props) {
             <span className="text-green">{props.stock}</span>
           )}
         </p>
+        <Divider />
         <div className="flex-column justify-center items-center">
           <Input
             type="number"
@@ -149,7 +153,7 @@ export default function Product(props) {
           <Popover placement="right" offset={20} showArrow isOpen={popoverOpen}>
             <PopoverTrigger>
               <Button
-                className=" flex mt-5  bg-primary rounded text-white m-auto"
+                className=" flex mt-5  bg-primary rounded text-white m-auto  hover:shadow-lg hover:shadow-primary-500/50"
                 onClick={handleAddToCart}
                 disabled={props.stock === 0}
                 size="sm"

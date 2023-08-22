@@ -22,7 +22,7 @@ const FilterModal = ({ cb }) => {
 
   return (
     <>
-      <Button className=" font-bold" onPress={onOpen} color="primary">
+      <Button className="font-bold hover:shadow-lg hover:shadow-primary-500/50" onPress={onOpen} color="primary">
         Filter
       </Button>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="top-center">

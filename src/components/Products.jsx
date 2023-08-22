@@ -81,7 +81,16 @@ export default function Products() {
     <div>
       <SearchBar onSearch={handleSearch} />
       <div className="flex justify-center">
-        {total ? <Pagination onChange={setPage} total={total} page={page} initialPage={1} /> : ""}
+        {total ? (
+          <Pagination
+            onChange={setPage}
+            total={total}
+            page={page}
+            initialPage={1}
+          />
+        ) : (
+          ""
+        )}
       </div>
       <div className="flex mt-10 justify-evenly">
         <SortPriceButton onSortChange={handleSortChange} />
