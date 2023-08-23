@@ -13,7 +13,7 @@ export default function Products() {
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const [sortType, setSortType] = useState("");
-  const [filters, setFilters] = useState({ stock: "1" });
+  const [filters, setFilters] = useState({ stock: "1", enabled: true });
   const [loading, setLoading] = useState(true);
 
   const map = loading ? (
@@ -45,7 +45,7 @@ export default function Products() {
   };
 
   const handleFilter = (values) => {
-    setFilters({ ...values });
+    setFilters({ ...filters, ...values });
   };
 
   const getData = () => {
@@ -58,6 +58,7 @@ export default function Products() {
           sort: sortType,
           ...filters,
         };
+
         const { data } = await api.get("/product", {
           params: queryParams,
         });
@@ -80,16 +81,7 @@ export default function Products() {
     <div>
       <SearchBar onSearch={handleSearch} />
       <div className="flex justify-center">
-        {total ? (
-          <Pagination
-            onChange={setPage}
-            total={total}
-            page={page}
-            initialPage={1}
-          />
-        ) : (
-          ""
-        )}
+        {total ? <Pagination onChange={setPage} total={total} page={page} initialPage={1} /> : ""}
       </div>
       <div className="flex mt-10 justify-evenly">
         <SortButton onSortChange={handleSortChange} />
