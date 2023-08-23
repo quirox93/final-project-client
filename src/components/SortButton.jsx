@@ -10,7 +10,7 @@ import {
 } from "@nextui-org/react";
 
 export default function SortButton({ onSortChange }) {
-  const [selectedKeys, setSelectedKeys] = useState(new Set(["Date", "Recent"]));
+  const [selectedKeys, setSelectedKeys] = useState(new Set(["Date", "Newest"]));
 
   const SORTS = {
     Price: {
@@ -22,9 +22,9 @@ export default function SortButton({ onSortChange }) {
       "Z-A": "nameDesc",
     },
     Date: {
-      Recent: "dateAsc",
-      Old: "dateDesc"
-    }
+      Newest: "dateAsc",
+      Oldest: "dateDesc",
+    },
   };
   const isDateSelected = selectedKeys.has("Date");
   const isPriceSelected = selectedKeys.has("Price");
@@ -36,6 +36,7 @@ export default function SortButton({ onSortChange }) {
   );
 
   const handleChange = ({ currentKey }) => {
+    if (!currentKey) return;
     let newSet;
     if (Object.keys(SORTS).includes(currentKey))
       newSet = [currentKey, Object.keys(SORTS[currentKey])[0]];
@@ -70,11 +71,11 @@ export default function SortButton({ onSortChange }) {
         </DropdownSection>
         {isPriceSelected && (
           <DropdownSection title="Price on top:">
-            <DropdownItem key="High" color="success">
-              High
-            </DropdownItem>
             <DropdownItem key="Low" color="danger">
               Low
+            </DropdownItem>
+            <DropdownItem key="High" color="success">
+              High
             </DropdownItem>
           </DropdownSection>
         )}
@@ -89,12 +90,12 @@ export default function SortButton({ onSortChange }) {
           </DropdownSection>
         )}
         {isDateSelected && (
-          <DropdownSection title="Date:">
-            <DropdownItem key="Recent" color="success">
-              Recent
+          <DropdownSection title="Date on top:">
+            <DropdownItem key="Newest" color="success">
+              Newest
             </DropdownItem>
-            <DropdownItem key="Old" color="danger">
-              Old
+            <DropdownItem key="Oldest" color="danger">
+              Oldest
             </DropdownItem>
           </DropdownSection>
         )}

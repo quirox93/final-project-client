@@ -36,8 +36,8 @@ const filterByName = (items, value) => {
 };
 
 const SortFunc = {
-  dateAsc: (a, b) => a.createdAt.localeCompare(b.createdAt),
-  dateDesc: (a, b) => b.createdAt.localeCompare(a.createdAt),
+  dateAsc: (a, b) => new Date(a.createdAt) - new Date(b.createdAt),
+  dateDesc: (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
   nameAsc: (a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()),
   nameDesc: (a, b) => b.name.toLowerCase().localeCompare(a.name.toLowerCase()),
   priceAsc: (a, b) => a.price - b.price,
