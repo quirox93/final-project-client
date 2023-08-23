@@ -13,3 +13,5 @@ export const LOCAL_URL = process.env["LOCAL_URL"];
 export const CLERK_ORG_ID = process.env["CLERK_ORG_ID"];
 
 export const MP_TOKEN = process.env["MP_TOKEN"];
+
+export const NEXT_PUBLIC_URL = process.env["NEXT_PUBLIC_URL"];

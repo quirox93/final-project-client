@@ -1,7 +1,8 @@
 "use server";
-import { LOCAL_URL, VERCEL_URL } from "./config";
+import { LOCAL_URL, VERCEL_URL, NEXT_PUBLIC_URL } from "./config";
 let host = "https://" + VERCEL_URL + "/api";
-if (!VERCEL_URL) host = LOCAL_URL + "/api";
+if (LOCAL_URL) host = LOCAL_URL + "/api";
+if (NEXT_PUBLIC_URL) host = "https://" + NEXT_PUBLIC_URL + "/api";
 export async function prodGetAll() {
   const data = await fetch(`${host}/product`, { next: { revalidate: 0 } });
   return await data.json();
