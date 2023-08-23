@@ -1,14 +1,6 @@
 export const filterItems = (items, query) => {
-  if (query.sort) {
-    if (query.sort === "nameAsc" || query.sort === "nameDesc") {
-      items = sortByName(items, query.sort);
-    } else if (query.sort === "priceAsc" || query.sort === "priceDesc") {
-      items = sortByPrice(items, query.sort);
-    }
-  }
-  if (query.name) {
-    items = filterByName(items, query.name);
-  }
+  if (query.sort) sort(items, query.sort);
+  if (query.name) items = filterByName(items, query.name);
   if (query.stock) items = getAvailabeStock(items, query.stock);
   if (query.min) items = getMinPrice(items, query.min);
   if (query.max) items = getMaxPrice(items, query.max);
@@ -79,3 +71,14 @@ const sortByPrice = (items, order = "priceAsc") => {
 
   return sortedItems;
 };
+
+const SortFunc = {
+  dateAsc: (a, b) => a.createdAt.localeCompare(b.createdAt),
+  dateDesc: (a, b) => b.createdAt.localeCompare(a.createdAt),
+  nameAsc: (a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()),
+  nameDesc: (a, b) => b.name.toLowerCase().localeCompare(a.name.toLowerCase()),
+  priceAsc: (a, b) => a.price - b.price,
+  priceDesc: (a, b) => b.price - a.price,
+};
+
+const sort = (items, order = "dateDesc") => items.sort(SortFunc[order]);
