@@ -5,7 +5,9 @@ import { useState, useEffect } from "react";
 import api from "../../../utils/axios";
 import AlertModalStock from "@/components/AlertModalStock";
 import {
-  CircularProgress,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
   Button,
   Card,
   CardHeader,
@@ -24,6 +26,7 @@ export default function ProductDetail() {
   const selectionProducts = useSelector((state) => state.shopCart.selectionProducts);
   const [product, setProduct] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [popoverOpen, setPopoverOpen] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const params = useParams();
   const { id } = params;
@@ -46,6 +49,19 @@ export default function ProductDetail() {
     fetchProduct();
   }, [id]);
 
+  useEffect(() => {
+    let timer;
+    if (popoverOpen) {
+      timer = setTimeout(() => {
+        setPopoverOpen(false); 
+      }, 1000); 
+    }
+
+    return () => {
+      clearTimeout(timer); 
+    };
+  }, [popoverOpen]);
+
   const handleAddToCart = () => {
     if (quantity > product.stock) {
       setShowModal(true);
@@ -63,6 +79,7 @@ export default function ProductDetail() {
         );
 
         dispatch(selectedProducts(updatedSelectionProducts));
+        setPopoverOpen(true);
       } else {
         setShowModal(true);
       }
@@ -73,6 +90,8 @@ export default function ProductDetail() {
       };
 
       dispatch(selectedProducts([...selectionProducts, newProduct]));
+      setPopoverOpen(true);
+      
     }
 
     setQuantity(1);
@@ -140,7 +159,9 @@ export default function ProductDetail() {
             </CardBody>
             <Divider />
             <CardFooter>
-              <Button
+            <Popover placement="right" offset={20} showArrow isOpen={popoverOpen}>
+            <PopoverTrigger>
+            <Button
                 className="m-auto"
                 color="primary"
                 aria-label="Like"
@@ -149,6 +170,15 @@ export default function ProductDetail() {
               >
                 Add to Cart
               </Button>
+            </PopoverTrigger>
+            <PopoverContent>
+              <div className="px-1 py-2">
+                <div className="text-small font-bold">Products</div>
+                <div className="text-tiny">Added {quantity}</div>
+              </div>
+            </PopoverContent>
+          </Popover>
+              
             </CardFooter>
           </Card>
         </div>

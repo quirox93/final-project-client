@@ -23,10 +23,7 @@ import {
 import { SearchIcon } from "./SearchIcon";
 import { ChevronDownIcon } from "./ChevronDownIcon";
 import { capitalize } from "./utils";
-import Edit from "./EditButton";
 import FormNewProduct from "../FormNewProduct/FormNewProduct";
-import DeleteButton from "./DeleteButton";
-import DisableButton from "./DisableButton";
 import ProdButtonGroup from "./ProdButtonGroup";
 import MultiProdButtonGroup from "./MultiProdButtonGroup";
 

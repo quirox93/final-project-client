@@ -12,7 +12,7 @@ const columns = [
 ];
 
 const INITIAL_VISIBLE_COLUMNS = ["name", "createdAt", "stock", "price"];
-
+export const revalidate = 0;
 export default async function ProductsTable() {
   const statusOptions = [
     { name: "Active", uid: true, prop: "enabled" },
