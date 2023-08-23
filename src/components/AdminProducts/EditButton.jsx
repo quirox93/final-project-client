@@ -12,11 +12,11 @@ import {
   Image,
 } from "@nextui-org/react";
 import NextImage from "next/image";
-import api from "@/utils/axios";
+import { useRouter } from "next/navigation";
 
 export default function EditButton(props) {
+  const router = useRouter();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-
   const [buttonDisabled, setButtonDisabled] = useState(true);
   const [image, setImage] = useState("");
   const [input, setInput] = useState({
@@ -122,6 +122,7 @@ export default function EditButton(props) {
                 const newData = props.data.map((e) => (e._id === props.id ? (e = data) : e));
                 props.setData(newData);
                 onClose();
+                router.refresh();
                 alert("Product edited successfully!");
               } catch (error) {
                 console.error("Error editing product:", error);

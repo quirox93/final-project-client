@@ -12,6 +12,7 @@ import {
   Image,
 } from "@nextui-org/react";
 import api from "@/utils/axios";
+import { useRouter } from "next/navigation";
 
 const inputStateInitial = {
   name: "",
@@ -28,6 +29,7 @@ const errorsStateInitial = {
 };
 
 export default function FormNewProduct({ data, setData }) {
+  const router = useRouter();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [input, setInput] = useState(inputStateInitial);
   const [image, setImage] = useState(null);
@@ -131,6 +133,7 @@ export default function FormNewProduct({ data, setData }) {
                   setErrors(errorsStateInitial);
                   setImage(null);
                   setLoading(false);
+                  router.refresh();
                   onClose();
                 }
               } catch (error) {
