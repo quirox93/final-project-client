@@ -90,7 +90,7 @@ export default function Product(props) {
       />
       <div className="flex-1">
         <img
-          className=" cursor-pointer"
+          className=" cursor-pointer min-w-[100px]"
           src={props.image}
           alt={props.name}
           width={200}
@@ -150,7 +150,7 @@ export default function Product(props) {
               <div className="pointer-events-none flex items-center"></div>
             }
           />
-          <Popover placement="right" offset={20} showArrow isOpen={popoverOpen}>
+          <Popover placement="left" offset={60} showArrow isOpen={popoverOpen}>
             <PopoverTrigger>
               <Button
                 className=" flex mt-5  bg-primary rounded text-white m-auto  hover:shadow-lg hover:shadow-primary-500/50"
