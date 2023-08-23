@@ -4,6 +4,7 @@ export const filterItems = (items, query) => {
   if (query.stock) items = getAvailabeStock(items, query.stock);
   if (query.min) items = getMinPrice(items, query.min);
   if (query.max) items = getMaxPrice(items, query.max);
+  if (query.enabled) items = getEnabled(items, query.enabled);
   const total = items.length;
   if (query.page && query.limit) items = getPage(items, query.page, query.limit);
   const results = { total, results: items };
@@ -17,7 +18,9 @@ const getMinPrice = (items, value) => {
 const getMaxPrice = (items, value) => {
   return items.filter((producto) => producto.price <= value);
 };
-
+const getEnabled = (items, value) => {
+  return items.filter((producto) => producto.enabled.toString() == value);
+};
 const getAvailabeStock = (items, value) => {
   //value inputs posibles: ["0", "1"]
   const onlyAvailabe = Boolean(Number(value));
