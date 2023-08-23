@@ -10,7 +10,7 @@ import {
 } from "@nextui-org/react";
 
 export default function SortButton({ onSortChange }) {
-  const [selectedKeys, setSelectedKeys] = useState(new Set(["Price", "High"]));
+  const [selectedKeys, setSelectedKeys] = useState(new Set(["Date", "Recent"]));
 
   const SORTS = {
     Price: {
@@ -21,8 +21,12 @@ export default function SortButton({ onSortChange }) {
       "A-Z": "nameAsc",
       "Z-A": "nameDesc",
     },
+    Date: {
+      Recent: "dateAsc",
+      Old: "dateDesc"
+    }
   };
-
+  const isDateSelected = selectedKeys.has("Date");
   const isPriceSelected = selectedKeys.has("Price");
   const isNameSelected = selectedKeys.has("Name");
 
@@ -38,7 +42,6 @@ export default function SortButton({ onSortChange }) {
     else newSet = [[...selectedKeys][0], currentKey];
     setSelectedKeys(new Set(newSet));
     onSortChange(SORTS[newSet[0]][newSet[1]]);
-    console.log(SORTS[newSet[0]][newSet[1]]);
   };
   return (
     <Dropdown>
@@ -63,9 +66,10 @@ export default function SortButton({ onSortChange }) {
         <DropdownSection title="Sort by:" showDivider>
           <DropdownItem key="Price">Price</DropdownItem>
           <DropdownItem key="Name">Name</DropdownItem>
+          <DropdownItem key="Date">Date</DropdownItem>
         </DropdownSection>
         {isPriceSelected && (
-          <DropdownSection title="Price Order:">
+          <DropdownSection title="Price on top:">
             <DropdownItem key="High" color="success">
               High
             </DropdownItem>
@@ -81,6 +85,16 @@ export default function SortButton({ onSortChange }) {
             </DropdownItem>
             <DropdownItem key="Z-A" color="danger">
               Z-A
+            </DropdownItem>
+          </DropdownSection>
+        )}
+        {isDateSelected && (
+          <DropdownSection title="Date:">
+            <DropdownItem key="Recent" color="success">
+              Recent
+            </DropdownItem>
+            <DropdownItem key="Old" color="danger">
+              Old
             </DropdownItem>
           </DropdownSection>
         )}
