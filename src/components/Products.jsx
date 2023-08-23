@@ -3,8 +3,7 @@ import { Pagination, CircularProgress } from "@nextui-org/react";
 import React, { useState, useEffect } from "react";
 import Product from "./Product";
 import api from "../utils/axios";
-import SortPriceButton from "./SortPriceButton";
-import SortNameButton from "./SortNameButton";
+import SortButton from "./SortButton";
 import FilterModal from "./FilterModal";
 import SearchBar from "@/components/SearchBar";
 
@@ -93,8 +92,7 @@ export default function Products() {
         )}
       </div>
       <div className="flex mt-10 justify-evenly">
-        <SortPriceButton onSortChange={handleSortChange} />
-        <SortNameButton onSortChange={handleSortChange} />
+        <SortButton onSortChange={handleSortChange} />
         <FilterModal cb={handleFilter} />
       </div>
       <div className="flex flex-wrap justify-center">{map}</div>
