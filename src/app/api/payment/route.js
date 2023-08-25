@@ -1,10 +1,9 @@
 const { NextResponse } = require("next/server");
 import { MP_TOKEN, VERCEL_URL, LOCAL_URL, NEXT_PUBLIC_URL } from "@/utils/config";
 import mercadopago from "mercadopago";
-let host = "https://" + VERCEL_URL;
-if (LOCAL_URL) host = LOCAL_URL;
-if (NEXT_PUBLIC_URL) host = "https://" + NEXT_PUBLIC_URL;
+
 export async function POST(req) {
+  const host = req.nextUrl.origin;
   const { items, userId } = await req.json();
   mercadopago.configure({
     access_token: MP_TOKEN,
