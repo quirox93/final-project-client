@@ -2,24 +2,24 @@ import { Schema, model, models } from "mongoose";
 
 const orderSchema = Schema(
   {
-    _id: String,
     status: String,
-    paymentUrl: String,
-
-    buyer: {
+    payment: {
       id: String,
+      status: String,
+      url: String,
+    },
+    payer: {
+      clerkId: String,
       name: String,
       email: String,
       address: String,
       cp: String,
       phone: String,
     },
-
     products: [
       {
-        id: String,
+        product: { type: Schema.Types.ObjectId, ref: "Product" },
         quantity: Number,
-        price: Number,
       },
     ],
   },
