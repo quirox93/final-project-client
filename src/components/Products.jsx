@@ -32,6 +32,7 @@ export default function Products() {
         price={product.price}
         stock={product.stock}
         image={product.imag.secure_url}
+        date={product.createdAt}
         delay={index * 0.2}
       />
     ))
@@ -76,7 +77,7 @@ export default function Products() {
   };
 
   useEffect(getData, [page, sortType, filters]);
-
+  
   return (
     <div>
       <SearchBar onSearch={handleSearch} />
