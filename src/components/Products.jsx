@@ -3,8 +3,7 @@ import { Pagination, CircularProgress } from "@nextui-org/react";
 import React, { useState, useEffect } from "react";
 import Product from "./Product";
 import api from "../utils/axios";
-import SortPriceButton from "./SortPriceButton";
-import SortNameButton from "./SortNameButton";
+import SortButton from "./SortButton";
 import FilterModal from "./FilterModal";
 import SearchBar from "@/components/SearchBar";
 
@@ -14,7 +13,7 @@ export default function Products() {
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const [sortType, setSortType] = useState("");
-  const [filters, setFilters] = useState({ stock: "1" });
+  const [filters, setFilters] = useState({ stock: "1", enabled: true });
   const [loading, setLoading] = useState(true);
 
   const map = loading ? (
@@ -24,7 +23,7 @@ export default function Products() {
       <h1 className="font-bold text-danger">No products found.</h1>
     </div>
   ) : (
-    products.map((product) => (
+    products.map((product, index) => (
       <Product
         key={product._id}
         id={product._id}
@@ -33,6 +32,8 @@ export default function Products() {
         price={product.price}
         stock={product.stock}
         image={product.imag.secure_url}
+        date={product.createdAt}
+        delay={index * 0.2}
       />
     ))
   );
@@ -45,7 +46,7 @@ export default function Products() {
   };
 
   const handleFilter = (values) => {
-    setFilters({ ...values });
+    setFilters({ ...filters, ...values });
   };
 
   const getData = () => {
@@ -58,6 +59,7 @@ export default function Products() {
           sort: sortType,
           ...filters,
         };
+
         const { data } = await api.get("/product", {
           params: queryParams,
         });
@@ -75,7 +77,7 @@ export default function Products() {
   };
 
   useEffect(getData, [page, sortType, filters]);
-
+  
   return (
     <div>
       <SearchBar onSearch={handleSearch} />
@@ -83,8 +85,7 @@ export default function Products() {
         {total ? <Pagination onChange={setPage} total={total} page={page} initialPage={1} /> : ""}
       </div>
       <div className="flex mt-10 justify-evenly">
-        <SortPriceButton onSortChange={handleSortChange} />
-        <SortNameButton onSortChange={handleSortChange} />
+        <SortButton onSortChange={handleSortChange} />
         <FilterModal cb={handleFilter} />
       </div>
       <div className="flex flex-wrap justify-center">{map}</div>

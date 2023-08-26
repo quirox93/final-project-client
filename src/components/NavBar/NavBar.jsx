@@ -15,7 +15,10 @@ import {
 } from "@nextui-org/react";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
-export default function NavBar() {
+import logo from "../../../public/LogoGod.svg";
+import Image from "next/image";
+
+export default function NavBar({ isAdmin }) {
   const path = usePathname();
 
   const { isSignedIn } = useUser();
@@ -31,8 +34,8 @@ export default function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuItems = [
     { name: "Home", path: "/" },
-    { name: "Dashboard", path: "/dashboard/products" },
-    { name: "Contact", path: "" },
+    { name: "Cart", path: "/cart" },
+    { name: "Products", path: "/dashboard/products" },
   ];
 
   return (
@@ -43,7 +46,7 @@ export default function NavBar() {
           className="sm:hidden"
         />
         <NavbarBrand>
-          <p className="font-bold text-inherit">LOGO</p>
+          <Image src={logo} height={200} width={200} alt="GOD" />
         </NavbarBrand>
       </NavbarContent>
 
@@ -54,20 +57,24 @@ export default function NavBar() {
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link
-            as={NextLink}
-            href="/dashboard/products"
-            color={path !== "/dashboard/products" && "foreground"}
-            aria-current="page"
-          >
-            Dashboard
+          <Link as={NextLink} color={path !== "/cart" && "foreground"} href="/cart">
+            Cart
           </Link>
         </NavbarItem>
-        <NavbarItem>
-          <Link as={NextLink} color={path !== "/contact" && "foreground"} href="#">
-            Contact
-          </Link>
-        </NavbarItem>
+        {isAdmin && (
+          <NavbarItem>
+            <Link
+              as={NextLink}
+              href="/dashboard/products"
+              color={
+                path !== "/dashboard/products" && path !== "/dashboard/statistics" && "foreground"
+              }
+              aria-current="page"
+            >
+              Dashboard
+            </Link>
+          </NavbarItem>
+        )}
       </NavbarContent>
       <NavbarContent justify="end">
         <NavbarItem>{<ShopCartIcon />}</NavbarItem>

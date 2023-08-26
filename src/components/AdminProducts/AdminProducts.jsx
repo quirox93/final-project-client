@@ -23,11 +23,9 @@ import {
 import { SearchIcon } from "./SearchIcon";
 import { ChevronDownIcon } from "./ChevronDownIcon";
 import { capitalize } from "./utils";
-import Edit from "./EditButton";
 import FormNewProduct from "../FormNewProduct/FormNewProduct";
-import DeleteButton from "./DeleteButton";
-import DisableButton from "./DisableButton";
 import ProdButtonGroup from "./ProdButtonGroup";
+import MultiProdButtonGroup from "./MultiProdButtonGroup";
 
 const statusColorMap = {
   true: "success",
@@ -179,14 +177,29 @@ export default function AdminProducts({
       selected.length === 1 && product ? (
         <ButtonGroup>
           {mode === "user" ? (
-            <ProdButtonGroup product={product} allItems={allItems} setAllItems={setAllItems} />
+            <ProdButtonGroup
+              cb={setSelectedKeys}
+              product={product}
+              allItems={allItems}
+              setAllItems={setAllItems}
+            />
           ) : (
-            <ProdButtonGroup product={product} allItems={allItems} setAllItems={setAllItems} />
+            <ProdButtonGroup
+              cb={setSelectedKeys}
+              product={product}
+              allItems={allItems}
+              setAllItems={setAllItems}
+            />
           )}
         </ButtonGroup>
       ) : (
         <ButtonGroup>
-         
+          <MultiProdButtonGroup
+            selected={selected}
+            cb={setSelectedKeys}
+            allItems={allItems}
+            setAllItems={setAllItems}
+          />
         </ButtonGroup>
       );
     return (

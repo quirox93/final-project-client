@@ -13,9 +13,9 @@ const columns = [
 
 const INITIAL_VISIBLE_COLUMNS = ["name", "createdAt", "stock", "price"];
 export const revalidate = 0;
-export default async function ProductsTable() {
+export default async function UsersTable() {
   const statusOptions = [
-    { name: "Active", uid: true, prop: "enabled" },
+    { name: "Active", uid: true, prop: "status" },
     { name: "Paused", uid: false, prop: "enabled" },
   ];
   const products = await loadProducts();

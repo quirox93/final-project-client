@@ -56,6 +56,13 @@ const productSchema = Schema(
       type: Boolean,
       default: false,
     },
+    reviews: [
+      {
+        clerkId: String,
+        score: Number,
+        message: String,
+      },
+    ],
   },
   {
     timestamps: true,
