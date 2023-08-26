@@ -40,7 +40,7 @@ try {
       failure:"",
       pending:"",
     },
-    //notification_url:"http://localhost:3000/api/webhook"
+    notification_url:"https://8c16-2800-2141-e000-2c2-6835-2033-589c-283f.ngrok.io/api/webhook"
   });
   console.log(result)
   return NextResponse.json({paymentURL:result.body.init_point});
