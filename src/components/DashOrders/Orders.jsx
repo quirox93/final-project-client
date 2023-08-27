@@ -13,7 +13,7 @@ const columns = [
 
 const INITIAL_VISIBLE_COLUMNS = ["name", "createdAt", "stock", "price"];
 export const revalidate = 0;
-export default async function UsersTable() {
+export default async function Orders() {
   const statusOptions = [
     { name: "Active", uid: true, prop: "status" },
     { name: "Paused", uid: false, prop: "enabled" },
