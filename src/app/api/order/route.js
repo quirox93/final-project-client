@@ -2,6 +2,8 @@ const { NextResponse } = require("next/server");
 import { connectDB } from "@/utils/mongoose";
 import Order from "@/models/Order";
 import mongoose from "mongoose";
+import { MP_TOKEN } from "@/utils/config";
+import mercadopago from "mercadopago";
 
 export async function GET() {
   try {
@@ -17,14 +19,29 @@ export async function GET() {
 export async function POST(req) {
   try {
     connectDB();
-    //await Order.deleteMany();
     const data = await req.json();
-    //comprobar stock, si no es valido devolver error
-    const products = data.items.map((e) => new mongoose.mongo.ObjectId(e.id));
-    console.log(products);
+    const host = req.nextUrl.origin;
+    mercadopago.configure({
+      access_token: MP_TOKEN,
+    });
+    const mpResult = await mercadopago.preferences.create({
+      items: data.items,
+      back_urls: {
+        success: `${host}/cart`,
+        failure: `${host}/cart`,
+        pending: `${host}/cart`,
+      },
+      //notification_url:"http://localhost:3000/api/webhook"
+    });
+
+    const mpId = mpResult.body.id;
+
+    const items = data.items.map((e) => new mongoose.mongo.ObjectId(e.id));
+
     const orderData = {
+      mpId,
       payer: data.payer,
-      items: [...products],
+      items,
     };
     //crear orden si el stock es valido
     const newOrder = await new Order(orderData);

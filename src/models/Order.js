@@ -3,10 +3,7 @@ import { Schema, model, models } from "mongoose";
 const orderSchema = Schema(
   {
     status: { type: String, required: true, default: "Pending" },
-    payment: {
-      id: String,
-      status: String,
-    },
+    mpId: String,
     payer: {
       clerkId: String,
       name: String,
