@@ -5,8 +5,7 @@ const orderSchema = Schema(
     status: String,
     payment: {
       id: String,
-      status: String,
-      url: String,
+      status: String
     },
     payer: {
       clerkId: String,
