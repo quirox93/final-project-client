@@ -12,7 +12,13 @@ const orderSchema = Schema(
       cp: Number,
       phone: Number,
     },
-    items: [{ type: Schema.Types.ObjectId, ref: "Product" }],
+    items: [
+      {
+        product: { type: Schema.Types.ObjectId, ref: "Product" },
+        quantity: Number,
+        unit_price: Number,
+      },
+    ],
   },
   {
     timestamps: true,

@@ -25,23 +25,22 @@ export async function POST(req) {
       access_token: MP_TOKEN,
     });
     const mpResult = await mercadopago.preferences.create({
+      metadata: { id: "brian" },
       items: data.items,
       back_urls: {
         success: `${host}/cart`,
         failure: `${host}/cart`,
         pending: `${host}/cart`,
       },
-      //notification_url:"http://localhost:3000/api/webhook"
+      notification_url: `${host}/api/payment/webhook`,
     });
-
     const mpId = mpResult.body.id;
-
-    const items = data.items.map((e) => new mongoose.mongo.ObjectId(e.id));
+    console.log(mpResult.body.init_point);
 
     const orderData = {
       mpId,
       payer: data.payer,
-      items,
+      items: data.items,
     };
     //crear orden si el stock es valido
     const newOrder = await new Order(orderData);
