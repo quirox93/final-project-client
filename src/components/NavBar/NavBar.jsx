@@ -36,6 +36,7 @@ export default function NavBar({ isAdmin }) {
     { name: "Home", path: "/" },
     { name: "Cart", path: "/cart" },
     { name: "Products", path: "/dashboard/products" },
+    {name:"Purchases", path:"/purchases/id"}
   ];
 
   return (
@@ -59,6 +60,11 @@ export default function NavBar({ isAdmin }) {
         <NavbarItem>
           <Link as={NextLink} color={path !== "/cart" && "foreground"} href="/cart">
             Cart
+          </Link>
+        </NavbarItem>
+        <NavbarItem>
+          <Link as={NextLink} color={path !== "/purchases" && "foreground"} href="/purchases">
+            Purchases
           </Link>
         </NavbarItem>
         {isAdmin && (
