@@ -10,12 +10,7 @@ export async function GET() {
   try {
     await connectDB();
     //await Order.deleteMany();
-    const orders = await Order.find()
-      .populate({
-        path: "items._id",
-        model: Product,
-      })
-      .exec();
+    const orders = await Order.find();
 
     return NextResponse.json(orders);
   } catch (error) {

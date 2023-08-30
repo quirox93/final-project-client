@@ -14,7 +14,8 @@ import {
 } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 
-const PurchasedProducts = ({ clerkId }) => {
+const PurchasedProducts = ({ orders }) => {
+  return <div></div>;
   const [order, setOrder] = useState([]);
   const [items, setItems] = useState([]);
 
@@ -30,9 +31,7 @@ const PurchasedProducts = ({ clerkId }) => {
           const fetchProductDetails = async () => {
             const productPromises = findOrder.items.map(async (itemId) => {
               try {
-                const { data: productData } = await api.get(
-                  `/product/${itemId}`
-                );
+                const { data: productData } = await api.get(`/product/${itemId}`);
                 return {
                   id: productData._id,
                   name: productData.name,
@@ -41,10 +40,7 @@ const PurchasedProducts = ({ clerkId }) => {
                   date: formatDate(order.createdAt),
                 };
               } catch (error) {
-                console.error(
-                  `Error fetching product data for ID ${itemId}:`,
-                  error
-                );
+                console.error(`Error fetching product data for ID ${itemId}:`, error);
                 return null;
               }
             });
@@ -72,7 +68,7 @@ const PurchasedProducts = ({ clerkId }) => {
       0
     );
   };
-  
+
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">Your Purchased Items</h1>
@@ -80,9 +76,7 @@ const PurchasedProducts = ({ clerkId }) => {
         aria-label="Cart items"
         bottomContent={
           <div className="flex justify-between items-center p-4 bg-primary-200 rounded-lg">
-            <span className="text-lg font-bold">
-              Total: ${calculateTotal(items)}
-            </span>
+            <span className="text-lg font-bold">Total: ${calculateTotal(items)}</span>
           </div>
         }
       >
@@ -97,21 +91,11 @@ const PurchasedProducts = ({ clerkId }) => {
           {items.map((item) => (
             <TableRow key={item.id}>
               <TableCell className="flex items-center">
-                <Image
-                  width={50}
-                  height={50}
-                  src={item.image}
-                  alt={item.name}
-                />
+                <Image width={50} height={50} src={item.image} alt={item.name} />
                 <div className="ml-2">{item.name}</div>
               </TableCell>
               <TableCell>
-                <Chip
-                  className="capitalize"
-                  color="success"
-                  size="sm"
-                  variant="flat"
-                >
+                <Chip className="capitalize" color="success" size="sm" variant="flat">
                   {order.status}
                 </Chip>
               </TableCell>
