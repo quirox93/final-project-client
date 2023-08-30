@@ -1,8 +1,12 @@
-import OrdersBack from "@/components/DashOrders/OrdersBack";
+// import OrdersSketch from "@/components/DashOrders/TestComponents/OrdersSketch";
+// import Orders from "@/components/DashOrders/Orders";
+import Orders from "@/components/DashOrders/Orders"
  
 const OrdersPage = () => {
   return (
-    <OrdersBack />
+    //  <Orders />
+    <Orders />
+    // <OrdersSketch />
   )
 }
 
