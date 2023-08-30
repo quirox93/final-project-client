@@ -4,6 +4,7 @@ const orderSchema = Schema(
   {
     status: { type: String, required: true, default: "Pending" },
     mpId: String,
+    mpStatus: { type: String, required: true, default: "Pending" },
     payer: {
       clerkId: String,
       name: String,
@@ -14,7 +15,7 @@ const orderSchema = Schema(
     },
     items: [
       {
-        product: { type: Schema.Types.ObjectId, ref: "Product" },
+        Product: { type: Schema.Types.ObjectId, ref: "Product" },
         quantity: Number,
         unit_price: Number,
       },

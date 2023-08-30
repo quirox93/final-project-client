@@ -4,11 +4,19 @@ import Order from "@/models/Order";
 import mongoose from "mongoose";
 import { MP_TOKEN } from "@/utils/config";
 import mercadopago from "mercadopago";
+import Product from "@/models/Product";
 
 export async function GET() {
   try {
-    connectDB();
-    const orders = await Order.find();
+    await connectDB();
+    //await Order.deleteMany();
+    const orders = await Order.find()
+      .populate({
+        path: "items._id",
+        model: Product,
+      })
+      .exec();
+
     return NextResponse.json(orders);
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
@@ -25,14 +33,13 @@ export async function POST(req) {
       access_token: MP_TOKEN,
     });
     const mpResult = await mercadopago.preferences.create({
-      metadata: { id: "brian" },
       items: data.items,
       back_urls: {
         success: `${host}/cart`,
         failure: `${host}/cart`,
         pending: `${host}/cart`,
       },
-      notification_url: `${host}/api/payment/webhook`,
+      notification_url: `https://9406-2800-2141-e000-2c2-6de3-e235-a030-9396.ngrok-free.app/api/payment/webhook`,
     });
     const mpId = mpResult.body.id;
     console.log(mpResult.body.init_point);
