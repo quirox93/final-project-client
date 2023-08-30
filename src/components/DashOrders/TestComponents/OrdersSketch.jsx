@@ -1,7 +1,12 @@
-import { dataBuy } from "./data";
 import { FaShoppingBag } from "react-icons/fa";
+import { getAllOrders } from "@/utils/api";
+import {CalElapsedTime} from "../CalElapsedTime";
 
-const OrdersBack = () => {
+const loadOrders = async () => await getAllOrders();
+
+const OrdersSketch = async () => {
+  const orders = await loadOrders();
+  console.log(orders)
   return (
     <div className=" bg-gray-100 min-h-screen">
       <div className="w-full m-auto p-4 border rounded-lg bg-white overflow-y-auto">
@@ -12,7 +17,7 @@ const OrdersBack = () => {
           <span className="hidden sm:grid">Payment</span>
         </div>
         <ul>
-          {dataBuy.map((order, id) => {
+          {orders.map((order, id) => {
             return (
               <li
                 key={id}
@@ -24,9 +29,9 @@ const OrdersBack = () => {
                   </div>
                   <div className="pl-4">
                     <p className="text-gray-800 font-bold">
-                      ${order.total.toLocaleString()}
+                      ${order.__v}
                     </p>
-                    <p className="text-gray-800 text-sm">${order.name.first}</p>
+                    <p className="text-gray-800 text-sm">{order.payer.email}</p>
                   </div>
                 </div>
                 <p className="text-gray-600 sm:text-left text-right">
@@ -42,9 +47,10 @@ const OrdersBack = () => {
                     {order.status}
                   </span>
                 </p>
-                <p className=" hidden md:flex">{order.date}</p>
+                <CalElapsedTime time={order.createdAt}/>
                 <div className=" sm:flex hidden justify-between items-center">
-                  <p>{order.payment}</p>
+                  {/* Agregar al modelo el metodo de pago (Por el momento solo Mercado Pago)  */}
+                  <p>Mercado Pago</p>
                 </div>
               </li>
             );
@@ -55,4 +61,4 @@ const OrdersBack = () => {
   );
 };
 
-export default OrdersBack;
+export default OrdersSketch;

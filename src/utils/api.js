@@ -50,6 +50,10 @@ export async function getAllUsers() {
   const data = await fetch(`${host}/user`, { next: { revalidate: 0 } });
   return await data.json();
 }
+export async function getAllOrders() {
+  const data = await fetch(`${host}/order`, { next: { revalidate: 0 } });
+  return await data.json();
+}
 
 export async function payment(items, user_id) {
   const data = await fetch(`${host}/payment`, {

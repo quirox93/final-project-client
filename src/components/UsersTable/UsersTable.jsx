@@ -17,7 +17,7 @@ export default async function UsersTable() {
     { name: "Paused", uid: false, prop: "banned" },
   ];
   const users = await loadUsers();
-  console.log(users);
+  // console.log(users);
 
   return (
     <div className="p-4 z-0 flex flex-col relative justify-between gap-4 bg-content1 overflow-auto rounded-large shadow-small max-w-ld ">
