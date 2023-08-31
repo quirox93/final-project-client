@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^4.23.2",
+    "@mercadopago/sdk-react": "^0.0.14",
     "@nextui-org/react": "^2.0.14",
     "@reduxjs/toolkit": "^1.9.5",
     "autoprefixer": "10.4.14",
