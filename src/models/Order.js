@@ -2,24 +2,22 @@ import { Schema, model, models } from "mongoose";
 
 const orderSchema = Schema(
   {
-    status: String,
-    payment: {
-      id: String,
-      status: String,
-      url: String,
-    },
+    status: { type: String, required: true, default: "Pending" },
+    mpId: String,
+    mpStatus: { type: String, required: true, default: "Pending" },
     payer: {
       clerkId: String,
       name: String,
       email: String,
       address: String,
-      cp: String,
-      phone: String,
+      cp: Number,
+      phone: Number,
     },
-    products: [
+    items: [
       {
-        product: { type: Schema.Types.ObjectId, ref: "Product" },
+        Product: { type: Schema.Types.ObjectId, ref: "Product" },
         quantity: Number,
+        unit_price: Number,
       },
     ],
   },

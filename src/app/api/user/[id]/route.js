@@ -1,20 +1,23 @@
 const { NextResponse } = require("next/server");
 import { connectDB } from "@/utils/mongoose";
-import { clerkClient} from "@clerk/nextjs";
+import { clerkClient } from "@clerk/nextjs";
 
 export async function GET(_, { params }) {
   try {
     connectDB();
     const { id } = params;
 
-    // Obtener el usuario
-    const user = await clerkClient.users.getUser(id);
+    // Obtener el usuario Clerk
+    const clerkUser = await clerkClient.users.getUser(id);
 
-    if (!user) {
+    //Obtener DB interna
+    //const dbUser =
+
+    if (!clerkUser) {
       return NextResponse.json({ error: "El usuario no existe" });
     }
-
-    return NextResponse.json({ message: "Usuario encontrado: " + user });
+    const data = { clerkUser, dbUser: {} };
+    return NextResponse.json(data);
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

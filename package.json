@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^4.23.2",
+    "@mercadopago/sdk-react": "^0.0.14",
     "@nextui-org/react": "^2.0.14",
     "@reduxjs/toolkit": "^1.9.5",
     "autoprefixer": "10.4.14",
@@ -24,6 +25,7 @@
     "mongoose-autopopulate": "^1.0.1",
     "next": "13.4.13",
     "next-cloudinary": "^4.17.1",
+    "nodemailer": "^6.9.4",
     "postcss": "8.4.27",
     "react": "18.2.0",
     "react-chartjs-2": "^5.2.0",

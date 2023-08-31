@@ -15,6 +15,19 @@ export async function prodUpdate(id, body) {
   });
   return await data.json();
 }
+
+export async function addReview(id, body) {
+  const data = await fetch(`${host}/review/${id}`, {
+    method: "PUT",
+    body: JSON.stringify(body),
+    next: { revalidate: 0 },
+    headers: {
+      "Content-type": "application/json; charset=UTF-8",
+    },
+  });
+  return await data.json();
+}
+
 export async function prodDelete(id) {
   const data = await fetch(`${host}/product/${id}`, {
     method: "DELETE",
@@ -46,7 +59,18 @@ export async function prodBulkDelete(array) {
   });
   return await data.json();
 }
-
+export async function getAllUsers() {
+  const data = await fetch(`${host}/user`, { next: { revalidate: 0 } });
+  return await data.json();
+}
+export async function getAllOrders() {
+  const data = await fetch(`${host}/order`, { next: { revalidate: 0 } });
+  return await data.json();
+}
+export async function getOrderById(clerkId) {
+  const data = await fetch(`${host}/order/${clerkId}`, { next: { revalidate: 0 } });
+  return await data.json();
+}
 export async function payment(items, user_id) {
   const data = await fetch(`${host}/payment`, {
     method: "POST",

@@ -78,7 +78,7 @@ export default function Product(props) {
 
   return (
     <motion.div
-      className="bg-white m-10 lg:w-3/12 md:w-1/3 flex items-center  p-2 rounded-2xl shadow-2xl"
+      className="bg-white m-3 lg:w-3/12 md:w-1/3 flex items-center  p-2 rounded-2xl shadow-2xl sm:m-10"
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.3, delay: props.delay }}
