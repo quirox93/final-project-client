@@ -11,7 +11,7 @@ const PurchasesPage = async () => {
   return (
     <div>
       <PageWrapper>
-        <PurchasedProducts orders={orders} />
+        <PurchasedProducts clerkId={userId} orders={orders} />
       </PageWrapper>
     </div>
   );
