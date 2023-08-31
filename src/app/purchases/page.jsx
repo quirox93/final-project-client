@@ -1,7 +1,7 @@
 import PurchasedProducts from "@/components/PurchasedProducts/PurchasedProducts";
 import { PageWrapper } from "@/components/PageWrapper/PageWrapper";
 import { auth } from "@clerk/nextjs";
-import { getOrderById, prodGetAll } from "@/utils/api";
+import { getOrderById } from "@/utils/api";
 
 const getData = async (clerkId) => getOrderById(clerkId);
 
@@ -11,7 +11,7 @@ const PurchasesPage = async () => {
   return (
     <div>
       <PageWrapper>
-        <PurchasedProducts orders={orders} />
+        <PurchasedProducts clerkId={userId} orders={orders} />
       </PageWrapper>
     </div>
   );
