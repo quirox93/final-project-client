@@ -16,7 +16,9 @@ import {
 } from "@nextui-org/react";
 
 const PurchasedProducts = ({ orders, clerkId }) => {
-  console.log(orders)
+
+
+  
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">Your Purchased Items</h1>

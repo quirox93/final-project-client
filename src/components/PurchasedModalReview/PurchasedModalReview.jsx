@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { addReview } from "@/utils/api";
 import StarRatings from "react-star-ratings";
 import { rate } from "./utils";
-
+import { useRouter } from "next/navigation";
 import {
   Modal,
   ModalContent,
@@ -13,23 +13,17 @@ import {
   Button,
   useDisclosure,
   Textarea,
-  
 } from "@nextui-org/react";
 
 const PurchasedModalReview = ({ clerkId, itemId, itemReviews }) => {
-  const [rating, setRating] = useState(0);
-  const [isLoading, setIsLoading ] = useState(false);
-  const [description, setDescription] = useState("");
+  const existingReview = itemReviews.find(
+    (review) => review.clerkId === clerkId
+  );
+  const [rating, setRating] = useState(existingReview.score);
+  const [isLoading, setIsLoading] = useState(false);
+  const [description, setDescription] = useState(existingReview.message);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  
-  const existingReview = itemReviews.find((review) => review.clerkId === clerkId);
-
-  useEffect(() => {
-    if (existingReview) {
-      setRating(existingReview.score);
-      setDescription(existingReview.message);
-    }
-  }, [existingReview]);
+  const router = useRouter();
 
   const handleSendReview = async () => {
     const reviewData = {
@@ -39,14 +33,17 @@ const PurchasedModalReview = ({ clerkId, itemId, itemReviews }) => {
     };
 
     try {
-      setIsLoading(true)
+      setIsLoading(true);
       const response = await addReview(itemId, reviewData);
+      router.refresh();
+      setRating(reviewData.score);
+      setDescription(reviewData.message);
       console.log("Review sent:", response);
-      
-      setIsLoading(false)
+
+      setIsLoading(false);
       onOpenChange(false);
     } catch (error) {
-      setIsLoading(false)
+      setIsLoading(false);
       console.error("Error sending review:", error);
       alert(error.message);
     }
@@ -125,7 +122,11 @@ const PurchasedModalReview = ({ clerkId, itemId, itemReviews }) => {
                 <Button color="danger" variant="flat" onPress={onClose}>
                   Close
                 </Button>
-                <Button color="primary" onPress={handleSendReview} isLoading={isLoading}>
+                <Button
+                  color="primary"
+                  onPress={handleSendReview}
+                  isLoading={isLoading}
+                >
                   Send
                 </Button>
               </ModalFooter>
