@@ -1,28 +1,35 @@
-"use client";
-import CartTable from "@/components/CartTable/CartTable";
+"use client"
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { selectedProducts, deletedProducts } from "@/store/slice";
 import { payment } from "@/utils/api";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import axios from "axios";
+import CartTable from "@/components/CartTable/CartTable";
 
 const CartHandler = ({ userId }) => {
-  const router = useRouter();
   const dispatch = useDispatch();
+  const router = useRouter();
   const searchParams = useSearchParams();
   const selectedProduct = useSelector((state) => state.shopCart.selectionProducts);
+  
+
   useEffect(() => {
     const status = searchParams.get("status");
+    
     if (!status) return;
     if (status === "approved") {
       dispatch(selectedProducts([]));
-      alert("Payment approved.");
-    } else alert("Payment error.");
+      alert("Payment Successful");
+      router.push("/")
+    } else {
+      alert("Payment error.");
+    }
   }, []);
 
-  const handleRemoveFromCart = (id) => {
+  function handleRemoveFromCart(id) {
     dispatch(deletedProducts(id));
-  };
+  }
 
   const handleUpdateQuantity = (id, quantity) => {
     if (isNaN(quantity) || quantity < 0) {
@@ -47,21 +54,51 @@ const CartHandler = ({ userId }) => {
         currency_id: "ARS",
       }));
 
-      const { paymentURL } = await payment(items, userId);
+      const response = await payment(items, userId);
 
-      router.push(paymentURL);
+   const orderData = [
+        {
+          clerkId: userId,
+          payer: {
+            name: shippingData.firstName + " " + shippingData.lastName,
+            phone: shippingData.phoneNumber,
+            city: shippingData.city,
+            street: shippingData.street,
+            postalCode: shippingData.postalCode,
+          },
+          items: selectedProduct.map((item) => ({
+            quantity: item.quantity,
+            unit_price: item.price,
+            _id: item.id,
+          })),
+        },
+      ];
+
+     /*  axios
+        .post("http://localhost:3000/api/order", orderData)
+        .then((response) => {
+          const order = response.data;
+          console.log("Order created:", order);
+        })
+        .catch((error) => {
+          console.error("Error creating order:", error);
+        });
+  */
+      return response.paymentURL;
     } catch (error) {
       console.log(error);
-      alert("error in processing payment.");
+      alert("Error processing payment.");
     }
   };
 
   return (
     <CartTable
+      userId={userId}
       cartItems={selectedProduct}
       removeFromCartFn={handleRemoveFromCart}
       updateQuantityFn={handleUpdateQuantity}
       handleCheckoutFn={handleCheckout}
+     
     />
   );
 };

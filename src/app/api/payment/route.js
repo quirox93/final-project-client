@@ -19,7 +19,7 @@ export async function POST(req) {
       },
       notification_url:"https://667d-2800-2141-e000-2c2-9966-a007-71b-2cb0.ngrok-free.app/api/payment/webhook"
     });
-    return NextResponse.json({ paymentURL: result.body.init_point });
+    return NextResponse.json({ paymentURL: result.body.id });
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
