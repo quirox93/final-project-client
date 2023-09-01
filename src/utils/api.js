@@ -71,10 +71,10 @@ export async function getOrderById(clerkId) {
   const data = await fetch(`${host}/order/${clerkId}`, { next: { revalidate: 0 } });
   return await data.json();
 }
-export async function payment(items, user_id) {
-  const data = await fetch(`${host}/payment`, {
+export async function newOrder(items, payer) {
+  const data = await fetch(`${host}/order`, {
     method: "POST",
-    body: JSON.stringify({ user_id, items }),
+    body: JSON.stringify({ items, payer }),
     next: { revalidate: 0 },
     headers: {
       "Content-type": "application/json; charset=UTF-8",
