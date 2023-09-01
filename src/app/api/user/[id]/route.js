@@ -16,21 +16,33 @@ export async function GET(_, { params }) {
     }
 
     // Buscar el usuario en nuestra base de datos por el clerkId
-    const userFromDB = await User.findOne({ clerkId: id });
+    let userFromDB = await User.findOne({ clerkId: id });
 
     if (!userFromDB) {
-      return NextResponse.json({ error: "Usuario no encontrado en la base de datos" });
+      //si no encuentra crealo
+      userFromDB = { cart: [], Orders: [] };
+      //return NextResponse.json({ error: "Usuario no encontrado en la base de datos" });
     }
 
     // Combinar los datos de Clerk y de la base de datos
     const combinedUser = {
-      clerkId: clerkUser.id,
-      _id: userFromDB._id,       
+      clerkData: { ...clerkUser },
       cart: userFromDB.cart,
       Orders: userFromDB.Orders,
     };
 
-    return NextResponse.json({user: combinedUser });
+    return NextResponse.json({ user: combinedUser });
+  } catch (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}
+export async function PUT(req, { params }) {
+  try {
+    connectDB();
+    const { id } = params;
+    const cartData = req.json()
+  
+    return NextResponse.json({ message: "Actualzar carrito" });
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

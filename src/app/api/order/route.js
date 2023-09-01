@@ -34,7 +34,7 @@ export async function POST(req) {
         failure: `${host}/cart`,
         pending: `${host}/cart`,
       },
-      notification_url: `https://9406-2800-2141-e000-2c2-6de3-e235-a030-9396.ngrok-free.app/api/payment/webhook`,
+      /* notification_url: `https://${host}/api/payment/webhook`*/
     });
     const mpId = mpResult.body.id;
     console.log(mpResult.body.init_point);
@@ -46,10 +46,10 @@ export async function POST(req) {
     };
     //crear orden si el stock es valido
     const newOrder = await new Order(orderData);
-    const savedOrder = await newOrder.save();
+    await newOrder.save();
 
     // const allOrder = await Order.find();
-    return NextResponse.json(savedOrder, { status: 201 });
+    return NextResponse.json({ paymentURL: mpResult.body.init_point }, { status: 201 });
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
