@@ -1,34 +1,30 @@
 import OrdersTable from "./OrdersTable";
-import {formatOrders, order} from "./data"
-import { getAllOrders } from "@/utils/api";
-
-const loadOrders = async () => await getAllOrders();
-const orders = formatOrders(order);
+import { formatOrders, order } from "./data";
 
 const columns = [
   { name: "Id", uid: "id", sortable: true },
   { name: "Name", uid: "name", sortable: true },
-  { name: "Email", uid: "email"},
   { name: "Status", uid: "status", sortable: true },
-  { name: "Last Order", uid: "time", sortable: true },
-  { name: "Payment", uid: "payment"},
-  {name: "Actions", uid: "actions"},
+  { name: "Purchase Date", uid: "createdAt", sortable: true },
+  { name: "Payment", uid: "statusMp", sortable: true },
+  { name: "Total", uid: "total" },
+  { name: "Actions", uid: "actions" },
 ];
 
-const INITIAL_VISIBLE_COLUMNS = ["name", "status", "actions"];
+const INITIAL_VISIBLE_COLUMNS = ["name", "status", "statusMp", "actions"];
 export const revalidate = 0;
 export default async function Orders() {
+  const orders = formatOrders(order);
   const statusOptions = [
-  { name: "Pending", uid: "Pending" },
-  { name: "Success", uid: "Success" },
-  { name: "Failure", uid: "Failure" },
-];
-const statusColorMap = {
-  Pending: "warning",
-  Success: "success",
-  Failure: "danger",
-};
-// const orders = await loadOrders();
+    { name: "Pending", uid: "Pending" },
+    { name: "Success", uid: "Success" },
+    { name: "Failure", uid: "Failure" },
+  ];
+  const statusColorMap = {
+    Pending: "warning",
+    Success: "success",
+    Failure: "danger",
+  };
 
   return (
     <div className="p-4 z-0 flex flex-col relative justify-between gap-4 bg-content1 overflow-auto rounded-large shadow-small max-w-ld ">
