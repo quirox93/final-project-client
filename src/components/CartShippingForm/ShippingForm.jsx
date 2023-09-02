@@ -7,11 +7,11 @@ import { getUserById } from "@/utils/api";
 
 
 const userInitailLoad =  async(userId)  =>{
-  const {user} = await getUserById(userId)
+  const {clerkData} = await getUserById(userId)
   const userData = {
-    firstName: user.clerkData.firstName,
-    lastName: user.clerkData.lastName,
-    email: user.clerkData.emailAddresses[0].emailAddress
+    firstName: clerkData.firstName,
+    lastName: clerkData.lastName,
+    email: clerkData.emailAddresses[0].emailAddress
     
   } 
   return userData
