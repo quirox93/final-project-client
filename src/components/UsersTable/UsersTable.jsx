@@ -1,15 +1,14 @@
 import { getAllUsers } from "@/utils/api";
-import AdminProducts from "../AdminProducts/AdminProducts";
+import UsersInfo from "../UsersTable/UsersInfo";
 
 const loadUsers = async () => await getAllUsers();
 
 const columns = [
-  { name: "Email", uid: "id", sortable: false },
-  { name: "First Name", uid: "firstName", sortable: true },
-  { name: "Last Name", uid: "lastName", sortable: false },
+  { name: "Name", uid: "name", sortable: true },
+  { name: "Created", uid: "createdAt", sortable: true },
 ];
 
-const INITIAL_VISIBLE_COLUMNS = ["id", "firstName", "lastName"];
+const INITIAL_VISIBLE_COLUMNS = ["name", "createdAt"];
 export const revalidate = 0;
 export default async function UsersTable() {
   const statusOptions = [
@@ -22,8 +21,7 @@ export default async function UsersTable() {
   return (
     <div className="p-4 z-0 flex flex-col relative justify-between gap-4 bg-content1 overflow-auto rounded-large shadow-small max-w-ld ">
       {
-        <AdminProducts
-          mode={"user"}
+        <UsersInfo
           defItems={users}
           columns={columns}
           statusOptions={statusOptions}
