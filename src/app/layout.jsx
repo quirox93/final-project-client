@@ -2,9 +2,8 @@ import "./globals.css";
 import { Providers } from "./providers";
 import { Inter } from "next/font/google";
 import NavBar from "../components/NavBar/NavBar";
-import { ClerkProvider, auth, clerkClient } from "@clerk/nextjs";
-import { CLERK_ORG_ID } from "@/utils/config";
-
+import { ClerkProvider, auth } from "@clerk/nextjs";
+import { getUserById } from "@/utils/api";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -13,11 +12,15 @@ export const metadata = {
 };
 
 export default async function RootLayout({ children }) {
-  let isAdmin = true;
+  let isAdmin = false;
   const data = auth();
   if (data.userId) {
-    const user = await clerkClient.users.getUser(data.userId);
-    isAdmin = user.publicMetadata.isAdmin;
+    try {
+      const user = await getUserById(data.userId);
+      isAdmin = user.dbData.isAdmin;
+    } catch (error) {
+      console.log(error);
+    }
   }
   return (
     <html lang="en" className="light text-foreground bg-background">

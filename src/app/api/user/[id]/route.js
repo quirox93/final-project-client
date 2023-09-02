@@ -28,15 +28,13 @@ export async function GET(_, { params }) {
 
       await userFromDB.save();
     }
-
     // Combinar los datos de Clerk y de la base de datos
     const combinedUser = {
-      clerkData: { ...clerkUser },
-      cart: userFromDB.cart,
-      Orders: userFromDB.Orders,
+      clerkData: clerkUser,
+      dbData: userFromDB,
     };
 
-    return NextResponse.json({ user: combinedUser });
+    return NextResponse.json(combinedUser);
   } catch (error) {
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
@@ -46,25 +44,20 @@ export async function PUT(req, { params }) {
   try {
     connectDB();
     const { id } = params;
-    const cartData = req.json();
+    const values = await req.json();
 
     // findOneAndUpdate para actualizar solo 'cart'
-    const updatedUser = await User.findOneAndUpdate(
-      { _id: id },
-      { cart: cartData.cart },
-      { new: true }
-    );
+    const updatedUser = await User.findOneAndUpdate({ clerkId: id }, values, { new: true });
 
     if (!updatedUser) {
       return NextResponse.json({ error: "User not found in the database" }, { status: 404 });
     }
 
-    return NextResponse.json({ message: "Cart updated", user: updatedUser });
+    return NextResponse.json(updatedUser);
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
-
 
 export async function DELETE(_, { params }) {
   try {

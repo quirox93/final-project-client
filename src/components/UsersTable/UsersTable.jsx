@@ -6,14 +6,15 @@ const loadUsers = async () => await getAllUsers();
 const columns = [
   { name: "Name", uid: "name", sortable: true },
   { name: "Created", uid: "createdAt", sortable: true },
+  { name: "Admin", uid: "role", sortable: false },
 ];
 
-const INITIAL_VISIBLE_COLUMNS = ["name", "createdAt"];
+const INITIAL_VISIBLE_COLUMNS = ["name", "createdAt", "role"];
 export const revalidate = 0;
 export default async function UsersTable() {
   const statusOptions = [
-    { name: "Active", uid: true, prop: "banned" },
-    { name: "Paused", uid: false, prop: "banned" },
+    { name: "Admin", uid: true, prop: "isAdmin" },
+    { name: "User", uid: false, prop: "isAdmin" },
   ];
   const users = await loadUsers();
   // console.log(users);
