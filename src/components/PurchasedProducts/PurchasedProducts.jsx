@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 import { formatDate, calculateTotal } from "./utils";
 import PurchasedModalReview from "../PurchasedModalReview/PurchasedModalReview";
 import NextLink from "next/link";
@@ -15,10 +16,35 @@ import {
   Link
 } from "@nextui-org/react";
 
-const PurchasedProducts = ({ orders, clerkId }) => {
+const PurchasedProducts = ({ initOrders, clerkId }) => {
+  const [orders, setOrders] = useState(initOrders);
+  const updateReview = (id , score, message) =>{
+    
+    const newOrders = orders.map((e)=>{
+      e.items.map((product)=>{
+        const review = product._id.reviews.find((r)=>r.clerkId === id);
+        if(review){
+          review.message = message;
+          review.score = score;
 
-
-  
+        } else {
+          
+          product._id.reviews.push({
+            clerkId: id,
+            message,
+            score
+          })
+        }
+        return product;
+      })
+      
+      return e;
+    })
+    setOrders(newOrders)
+    
+    
+  }
+ 
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">Your Purchased Items</h1>
@@ -60,7 +86,7 @@ const PurchasedProducts = ({ orders, clerkId }) => {
                   <TableCell>${item.unit_price}</TableCell>
                   <TableCell>{item.quantity}</TableCell>
                   <TableCell>
-                    <PurchasedModalReview clerkId={clerkId} itemId={item._id._id} itemReviews={item._id.reviews}/>
+                    <PurchasedModalReview clerkId={clerkId} itemId={item._id._id} itemReviews={item._id.reviews} updateReview={updateReview}/>
                   </TableCell>
                 </TableRow>
               ))}
