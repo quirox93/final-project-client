@@ -1,5 +1,5 @@
 "use client"
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Modal, ModalContent, useDisclosure, Button, ModalHeader, ModalBody, ModalFooter, Input } from "@nextui-org/react";
 import { newOrder } from "@/utils/api";
 import { useRouter } from "next/navigation";
@@ -57,7 +57,7 @@ const ShippingForm =  ({ userId, cartItems }) => {
   
   
   const [loading, setLoading] = useState()
-  
+  const [disabled, setDisabled] = useState(true)
   const router = useRouter()
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
   
@@ -95,7 +95,15 @@ const ShippingForm =  ({ userId, cartItems }) => {
     setShippingData({ ...shippingData, [name]: value });
     setErrors({ ...errors, [name]: errorMessage });
   };
-  
+  useEffect(() => {
+    const requiredFields = ["firstName", "lastName", "street", "number", "phoneNumber", "postalCode", "email"];
+    const hasErrors = requiredFields.some((field) => !!errors[field]);
+    const allFieldsFilled = requiredFields.every((field) => !!shippingData[field]);
+    
+    setDisabled(hasErrors || !allFieldsFilled);
+  }, [errors, shippingData]);
+
+
   useEffect(() => {
     
     const loadInitialData = async () => {
@@ -226,6 +234,7 @@ const ShippingForm =  ({ userId, cartItems }) => {
                     radius="full"
                     size="lg"
                     isLoading={loading}
+                    isDisabled={disabled}
                     onClick={handleSubmit}
                   >
                     Submit
