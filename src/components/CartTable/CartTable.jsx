@@ -57,7 +57,7 @@ const CartTable = ({
                         <ShippingForm cartItems={cartItems} userId={userId} />
                       </div>
                     )}
-                  </div>
+                  </div> 
                 }
               >
                 <TableHeader>

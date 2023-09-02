@@ -153,7 +153,7 @@ const ShippingForm =  ({ userId, cartItems }) => {
             return (
               <>
                 <ModalHeader className="flex flex-col gap-1">Shipping Information</ModalHeader>
-                <ModalBody>
+                <ModalBody> 
                   <Input
                     autoFocus
                     label="First Name"
