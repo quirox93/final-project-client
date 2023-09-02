@@ -15,16 +15,22 @@ import {
   Textarea,
 } from "@nextui-org/react";
 
-const PurchasedModalReview = ({ clerkId, itemId, itemReviews }) => {
+const PurchasedModalReview = ({ clerkId, itemId, itemReviews,updateReview }) => {
   const existingReview = itemReviews.find(
     (review) => review.clerkId === clerkId
   );
+  
   const [rating, setRating] = useState(existingReview.score);
   const [isLoading, setIsLoading] = useState(false);
   const [description, setDescription] = useState(existingReview.message);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const router = useRouter();
 
+ useEffect(() => {  
+   setRating(existingReview.score)
+   setDescription(existingReview.message)
+ }, [existingReview.score, existingReview.message])
+ 
   const handleSendReview = async () => {
     const reviewData = {
       clerkId,
@@ -35,6 +41,7 @@ const PurchasedModalReview = ({ clerkId, itemId, itemReviews }) => {
     try {
       setIsLoading(true);
       const response = await addReview(itemId, reviewData);
+      updateReview(clerkId, rating, description);
       router.refresh();
       setRating(reviewData.score);
       setDescription(reviewData.message);
@@ -56,7 +63,7 @@ const PurchasedModalReview = ({ clerkId, itemId, itemReviews }) => {
   const handleDescriptionChange = (newDescription) => {
     setDescription(newDescription);
   };
-
+  
   return (
     <>
       <Button
