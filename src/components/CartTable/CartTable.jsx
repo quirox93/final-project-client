@@ -1,7 +1,7 @@
 "use client"
 import React, { useState } from "react";
 import AlertModalStock from "@/components/AlertModalStock";
-import CartRedirect from "../CartViews/CartRedirect";
+import { DeleteDocumentIcon } from "@/assets/svg/DeleteDocumentIcon";
 import {
   Table,
   TableHeader,
@@ -13,24 +13,18 @@ import {
   Input,
   Image,
 } from "@nextui-org/react";
-import { initMercadoPago } from "@mercadopago/sdk-react";
+
 import ShippingForm from "../CartShippingForm/ShippingForm";
 
 const CartTable = ({
   cartItems,
   removeFromCartFn,
   updateQuantityFn,
-  handleCheckoutFn,
-
+  userId
 }) => {
   const [showStockModal, setShowStockModal] = useState(false);
-  const [showMercadoPagoModal, setShowMercadoPagoModal] = useState(false);
   const [modalItemName, setModalItemName] = useState("");
-  const [preferenceId, setPreferenceId] = useState(null);
-  const [buttonLoader, setButtonLoader] = useState(false);
-
-  initMercadoPago("TEST-b6901044-4403-469b-8ec6-9272736926b6");
-
+  const iconClasses = "text-xl text-default-500 flex-shrink-0";
   const calculateSubtotal = (price, quantity) => {
     return price * quantity;
   };
@@ -42,30 +36,11 @@ const CartTable = ({
     );
   };
 
-  const handleCheckout = async () => {
-    try {
-      setButtonLoader(true);
-      const paymentcheck = await handleCheckoutFn(handleupdate);
-      setButtonLoader(false);
-      setPreferenceId(paymentcheck.id);
-      setShowMercadoPagoModal(true);
-    } catch (error) {
-      console.log(error);
-      alert("Error processing payment.");
-    }
-  };
-
-
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">Your Cart</h1>
       <div className="flex">
-        {cartItems.length === 0 ? null : (
-          <div className="w-1/2 pr-4">
-            <ShippingForm/>
-          </div>
-        )}
-        <div className="w-1/2 pl-4">
+        <div className="w-full ">
           {cartItems.length === 0 ? (
             <p>No items in the cart.</p>
           ) : (
@@ -77,15 +52,11 @@ const CartTable = ({
                     <span className="text-lg font-bold">
                       Total: ${calculateTotal(cartItems)}
                     </span>
-                    <Button
-                      className="border-3 rounded-2xl bg-danger text-white"
-                      size="medium"
-                      isLoading={buttonLoader}
-                      variant="secondary"
-                      onPress={handleCheckout}
-                    >
-                      Finalizar Compra
-                    </Button>
+                    {cartItems.length === 0 ? null : (
+                      <div>
+                        <ShippingForm cartItems={cartItems} userId={userId} />
+                      </div>
+                    )}
                   </div>
                 }
               >
@@ -128,7 +99,7 @@ const CartTable = ({
                           variant="text"
                           onPress={() => removeFromCartFn(item.id)}
                         >
-                          X
+                          <DeleteDocumentIcon className={iconClasses} />
                         </Button>
                       </TableCell>
                     </TableRow>
@@ -146,13 +117,7 @@ const CartTable = ({
           name={modalItemName}
         />
       )}
-      {showMercadoPagoModal && (
-        <CartRedirect
-          isOpen={showMercadoPagoModal}
-          onClose={() => setShowMercadoPagoModal(false)}
-          preferenceId={preferenceId}
-        />
-      )}
+     
     </div>
   );
 };
