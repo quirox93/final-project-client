@@ -1,5 +1,6 @@
 import { authMiddleware, redirectToSignIn, clerkClient } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
+import { getUserById } from "./utils/api";
 
 // This example protects all routes including api/trpc routes
 // Please edit this to allow other routes to be public as needed.
@@ -18,11 +19,17 @@ export default authMiddleware({
 
     // handle users in admin routes
     let isAdmin = false;
-    if (auth.userId) {
-      const user = await clerkClient.users.getUser(auth.userId);
-      isAdmin = user.publicMetadata.isAdmin;
-    }
 
+    if (auth.userId) {
+      try {
+        const user = await getUserById(auth.userId);
+        isAdmin = user.dbData.isAdmin;
+        console.log({ isAdmin });
+      } catch (error) {
+        console.log({ isAdmin });
+      }
+    }
+    console.log({ userId: auth.userId, middleware: isAdmin });
     if (auth.userId && !isAdmin && adminRoutes.includes(req.nextUrl.pathname)) {
       const orgSelection = new URL("/", req.url);
       return NextResponse.redirect(orgSelection);
