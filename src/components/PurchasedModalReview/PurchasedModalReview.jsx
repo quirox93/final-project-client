@@ -21,16 +21,17 @@ const PurchasedModalReview = ({ clerkId, itemId, itemReviews, updateReview }) =>
     message: "",
   };
 
+
   const [rating, setRating] = useState(existingReview.score);
   const [isLoading, setIsLoading] = useState(false);
   const [description, setDescription] = useState(existingReview.message);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const router = useRouter();
 
-  useEffect(() => {
-    setRating(existingReview.score);
-    setDescription(existingReview.message);
-  }, [existingReview.score, existingReview.message]);
+ useEffect(() => {  
+   setRating(existingReview.score)
+   setDescription(existingReview.message)
+ }, [existingReview.score, existingReview.message])
 
   const handleSendReview = async () => {
     const reviewData = {
@@ -64,7 +65,7 @@ const PurchasedModalReview = ({ clerkId, itemId, itemReviews, updateReview }) =>
   const handleDescriptionChange = (newDescription) => {
     setDescription(newDescription);
   };
-
+  
   return (
     <>
       <Button
