@@ -17,7 +17,7 @@ export async function GET(_, { params }) {
         })
         .exec();
     } else {
-      order = await Order.find({ mpId: id })
+      order = await Order.findOne({ mpId: id })
         .populate({
           path: "items._id",
           model: Product,

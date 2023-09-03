@@ -25,7 +25,7 @@ export async function POST(req) {
     const data = await req.json();
     const host = req.nextUrl.origin;
     let notification_url = host === "http://localhost:3000" ? "" : `${host}/api/payment/webhook`;
-    if (NOTIFICATION_URL) notification_url = notification_url;
+    if (NOTIFICATION_URL) notification_url = NOTIFICATION_URL + "api/payment/webhook";
     mercadopago.configure({
       access_token: MP_TOKEN,
     });
