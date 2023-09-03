@@ -8,12 +8,22 @@ export async function GET(_, { params }) {
     connectDB();
     // Obtener la orden
     const { id } = params;
-    const order = await Order.find({ "payer.clerkId": id })
-      .populate({
-        path: "items._id",
-        model: Product,
-      })
-      .exec();
+    let order;
+    if (id.includes("user")) {
+      order = await Order.find({ "payer.clerkId": id })
+        .populate({
+          path: "items._id",
+          model: Product,
+        })
+        .exec();
+    } else {
+      order = await Order.find({ mpId: id })
+        .populate({
+          path: "items._id",
+          model: Product,
+        })
+        .exec();
+    }
 
     if (!order) return NextResponse.json({ message: "Order not found " }, { status: 404 });
     return NextResponse.json(order);

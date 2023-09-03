@@ -19,9 +19,10 @@ export async function POST(req) {
       const { preference_id } = body;
 
       if (status === "approved") {
-        const dbOrder = await getOrderById("user_2UDAMiSxw6OcggJBe0F1Ak9jL41")
-        const map = () =>  
-          dbOrder[0].items.reduce((total ,item) => {return `
+        const dbOrder = await getOrderById(preference_id);
+        const map = () =>
+          dbOrder.items.reduce((total, item) => {
+            return `
           ${total}  
           <tr>
                 <td>
@@ -32,13 +33,12 @@ export async function POST(req) {
                 <td>${item.quantity}</td>
                 <td>${(item.unit_price * item.quantity).toFixed(2)}</td>
             </tr>
-        `},
-        ""
-        )
-        
+        `;
+          }, "");
+
         const mailOptions = {
           from: GMAIL_MAIL,
-          to:GMAIL_MAIL,
+          to: dbOrder.payer.email,
           subject: "testeo nodemailer",
           html: `
           <html>
@@ -88,8 +88,10 @@ export async function POST(req) {
         <div class="header">
             <h1>Thank You for Your Purchase!</h1>
         </div>
-        <p>Hello <strong>${dbOrder[0].payer.name}</strong>,</p>
-        <p>Your order with Order Number <strong>${dbOrder[0].mpId}</strong> has been processed successfully.</p>
+        <p>Hello <strong>${dbOrder.payer.name}</strong>,</p>
+        <p>Your order with Order Number <strong>${
+          dbOrder.mpId
+        }</strong> has been processed successfully.</p>
         <p>Here is the list of products you purchased:</p>
         <table class="product-list">
         <tr>
@@ -112,7 +114,6 @@ export async function POST(req) {
         };
         await Order.findOneAndUpdate({ mpId: preference_id }, { mpStatus: status });
         await transporter.sendMail(mailOptions);
-
       }
     }
     return NextResponse.json({ message: "OK" }, { status: 200 });
