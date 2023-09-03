@@ -1,5 +1,5 @@
 const { NextResponse } = require("next/server");
-import { MP_TOKEN } from "@/utils/config";
+import { MP_TOKEN, NOTIFICATION_URL } from "@/utils/config";
 import mercadopago from "mercadopago";
 
 export async function POST(req) {
@@ -17,7 +17,7 @@ export async function POST(req) {
         failure: `${host}/cart`,
         pending: `${host}/cart`,
       },
-      notification_url:"https://667d-2800-2141-e000-2c2-9966-a007-71b-2cb0.ngrok-free.app/api/payment/webhook"
+      notification_url:`${NOTIFICATION_URL}/api/payment/webhook`
     });
     return NextResponse.json({ paymentURL: result.body.id });
   } catch (error) {

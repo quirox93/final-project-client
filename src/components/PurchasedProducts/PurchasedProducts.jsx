@@ -106,12 +106,14 @@ const PurchasedProducts = ({ initOrders, clerkId }) => {
                   <TableCell>${item.unit_price}</TableCell>
                   <TableCell>{item.quantity}</TableCell>
                   <TableCell>
+
                     <PurchasedModalReview
                       clerkId={clerkId}
                       itemId={item._id._id}
                       itemReviews={item._id.reviews}
                       updateReview={updateReview}
                     />
+
                   </TableCell>
                 </TableRow>
               ))}

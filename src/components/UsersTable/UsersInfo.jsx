@@ -23,8 +23,6 @@ import {
 import { SearchIcon } from "../AdminProducts/SearchIcon";
 import { ChevronDownIcon } from "../AdminProducts/ChevronDownIcon";
 import { capitalize } from "../AdminProducts/utils";
-import ProdButtonGroup from "../AdminProducts/ProdButtonGroup";
-import MultiProdButtonGroup from "../AdminProducts/MultiProdButtonGroup";
 import { formatDate } from "../PurchasedProducts/utils";
 
 const statusColorMap = {
@@ -73,14 +71,14 @@ export default function UsersInfo({ defItems, columns, statusOptions, INITIAL_VI
     if (hasSearchFilter) {
       filteredUsers = filteredUsers.filter((item) => {
         const name = `${item.firstName || ""} ${item.lastName || ""}`;
-        console.log(name);
         return name.toLowerCase().includes(filterValue.toLowerCase());
       });
     }
     if (statusFilter !== "all" && Array.from(statusFilter).length !== statusOptions.length) {
-      filteredUsers = filteredUsers.filter((item) =>
-        Array.from(statusFilter).includes(item[statusOptions[0].prop].toString())
-      );
+      filteredUsers = filteredUsers.filter((item) => {
+        const isAdmin = item[statusOptions[0].prop] || false;
+        return isAdmin.toString() == Array.from(statusFilter)[0];
+      });
     }
 
     return filteredUsers;
@@ -109,6 +107,8 @@ export default function UsersInfo({ defItems, columns, statusOptions, INITIAL_VI
             {item.emailAddresses[0].emailAddress}
           </User>
         );
+      case "role":
+        return `${item.isAdmin ?? false}`;
       case "createdAt":
         return formatDate(cellValue);
 
@@ -209,7 +209,7 @@ export default function UsersInfo({ defItems, columns, statusOptions, INITIAL_VI
           </div>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-default-400 text-small">Total {allItems.length} products</span>
+          <span className="text-default-400 text-small">Total {allItems.length} Users</span>
           <label className="flex items-center text-default-400 text-small">
             Rows per page:
             <select
@@ -237,12 +237,7 @@ export default function UsersInfo({ defItems, columns, statusOptions, INITIAL_VI
 
   const bottomContent = React.useMemo(() => {
     return (
-      <div className="py-2 px-2 flex justify-between items-center">
-        <span className="w-[30%] text-small text-default-400">
-          {selectedKeys === "all"
-            ? "All items selected"
-            : `${selectedKeys.size} of ${filteredItems.length} selected`}
-        </span>
+      <div className="py-2 px-2 flex justify-center items-center">
         <Pagination
           isCompact
           showControls

@@ -2,9 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { selectedProducts, deletedProducts } from "@/store/slice";
-import { payment } from "@/utils/api";
 import { useRouter, useSearchParams } from "next/navigation";
-import axios from "axios";
 import CartTable from "@/components/CartTable/CartTable";
 
 const CartHandler = ({ userId }) => {
@@ -43,62 +41,12 @@ const CartHandler = ({ userId }) => {
       )
     );
   };
-
-  const handleCheckout = async () => {
-    try {
-      const items = selectedProduct.map((item) => ({
-        id: item.id,
-        title: item.name,
-        quantity: item.quantity,
-        unit_price: item.price,
-        currency_id: "ARS",
-      }));
-
-      const response = await payment(items, userId);
-
-   const orderData = [
-        {
-          clerkId: userId,
-          payer: {
-            name: shippingData.firstName + " " + shippingData.lastName,
-            phone: shippingData.phoneNumber,
-            city: shippingData.city,
-            street: shippingData.street,
-            postalCode: shippingData.postalCode,
-          },
-          items: selectedProduct.map((item) => ({
-            quantity: item.quantity,
-            unit_price: item.price,
-            _id: item.id,
-          })),
-        },
-      ];
-
-     /*  axios
-        .post("http://localhost:3000/api/order", orderData)
-        .then((response) => {
-          const order = response.data;
-          console.log("Order created:", order);
-        })
-        .catch((error) => {
-          console.error("Error creating order:", error);
-        });
-  */
-      return response.paymentURL;
-    } catch (error) {
-      console.log(error);
-      alert("Error processing payment.");
-    }
-  };
-
   return (
     <CartTable
       userId={userId}
       cartItems={selectedProduct}
       removeFromCartFn={handleRemoveFromCart}
       updateQuantityFn={handleUpdateQuantity}
-      handleCheckoutFn={handleCheckout}
-     
     />
   );
 };

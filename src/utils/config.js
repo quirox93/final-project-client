@@ -16,4 +16,9 @@ export const MP_TOKEN = process.env["MP_TOKEN"];
 
 export const NEXT_PUBLIC_URL = process.env["NEXT_PUBLIC_URL"];
 
-//export const MP_PUBLIC_ACCESS_KEY = process.env["MP_PUBLIC_ACCESS_KEY"];
+export const GMAIL_MAIL = process.env["GMAIL_MAIL"];
+
+export const GMAIL_PASS = process.env["GMAIL_PASS"];
+
+export const NOTIFICATION_URL = process.env["NOTIFICATION_URL"]
+

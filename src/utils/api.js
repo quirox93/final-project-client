@@ -59,12 +59,18 @@ export async function getAllUsers() {
   const data = await fetch(`${host}/user`, { next: { revalidate: 0 } });
   return await data.json();
 }
+
+export async function getUserById(clerkId) {
+  const data = await fetch(`${host}/user/${clerkId}`, { next: { revalidate: 0 } });
+  return await data.json();
+}
+
 export async function getAllOrders() {
   const data = await fetch(`${host}/order`, { next: { revalidate: 0 } });
   return await data.json();
 }
-export async function getOrderById(clerkId) {
-  const data = await fetch(`${host}/order/${clerkId}`, { next: { revalidate: 0 } });
+export async function getOrderById(id) {
+  const data = await fetch(`${host}/order/${id}`, { next: { revalidate: 0 } });
   return await data.json();
 }
 export async function newOrder(items, payer) {
