@@ -31,9 +31,9 @@ export async function POST(req) {
     const mpResult = await mercadopago.preferences.create({
       items: data.items,
       back_urls: {
-        success: `${host}/cart`,
-        failure: `${host}/cart`,
-        pending: `${host}/cart`,
+        success: `${host}/purchases`,
+        failure: `${host}/purchases`,
+        pending: `${host}/purchases`,
       },
       notification_url,
     });
