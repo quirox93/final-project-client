@@ -4,7 +4,6 @@ import { GMAIL_MAIL, GMAIL_PASS, MP_TOKEN } from "@/utils/config";
 import nodemailer from "nodemailer";
 import { getOrderById } from "@/utils/api";
 import { transporter } from "../mail";
-import { MP_TOKEN } from "@/utils/config";
 import Order from "@/models/Order";
 
 export async function POST(req) {
