@@ -9,7 +9,6 @@ export async function POST(req) {
       access_token: MP_TOKEN,
     });
     const query = Object.fromEntries(new URL(req.url).searchParams.entries());
-    console.log({ query: query });
     if (query.type === "payment") {
       const { response } = await mercadopago.payment.findById(query["data.id"]);
       const { status, order } = response;
@@ -18,11 +17,7 @@ export async function POST(req) {
 
       if (status === "approved") {
         console.log("Actualizo DB", { status, preference_id });
-        const updatedOrder = await Order.findOneAndUpdate(
-          { mpId: preference_id },
-          { mpStatus: status },
-          { new: true }
-        );
+        await Order.findOneAndUpdate({ mpId: preference_id }, { mpStatus: status });
       }
     }
     return NextResponse.json({ message: "OK" }, { status: 200 });
