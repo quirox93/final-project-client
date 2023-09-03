@@ -1,22 +1,21 @@
 "use client"
 import { useState, useEffect } from "react";
 import { Modal, ModalContent, useDisclosure, Button, ModalHeader, ModalBody, ModalFooter, Input } from "@nextui-org/react";
-import { newOrder } from "@/utils/api";
+import { newOrder, getUserById, updateProductStock } from "@/utils/api";
+import api from "@/utils/axios";
 import { useRouter } from "next/navigation";
-import { getUserById } from "@/utils/api";
+import { useDispatch } from "react-redux";
 
 
-const userInitailLoad =  async(userId)  =>{
-  const {clerkData} = await getUserById(userId)
+const userInitailLoad = async (userId) => {
+  const { clerkData } = await getUserById(userId)
   const userData = {
     firstName: clerkData.firstName,
     lastName: clerkData.lastName,
     email: clerkData.emailAddresses[0].emailAddress
-    
-  } 
+  }
   return userData
 }
-
 
 const validateField = (fieldName, value) => {
   const validators = {
@@ -38,7 +37,7 @@ const validateField = (fieldName, value) => {
       message: "Postal code value execed limite max(10).",
     },
     phoneNumber: {
-      validate: (value) => /(\(?\d{3}\)?[- .]?\d{4}[- .]?\d\d\d\d)|(\(?\d{4}\)?[- .]?\d{3}[- .]?\d\d\d\d)|(\(?\d{5}\)?[- .]?\d{2}[- .]?\d\d\d\d)/.test(value), 
+      validate: (value) => /(\(?\d{3}\)?[- .]?\d{4}[- .]?\d\d\d\d)|(\(?\d{4}\)?[- .]?\d{3}[- .]?\d\d\d\d)|(\(?\d{5}\)?[- .]?\d{2}[- .]?\d\d\d\d)/.test(value),
       message: "Phone number not valid.",
     },
   };
@@ -47,29 +46,22 @@ const validateField = (fieldName, value) => {
     const { validate, message } = validators[fieldName];
     return validate(value) ? "" : message;
   }
-
   return "";
 };
 
+const ShippingForm = ({ userId, cartItems }) => {
 
-
-const ShippingForm =  ({ userId, cartItems }) => {
-  
-  
   const [loading, setLoading] = useState()
   const [disabled, setDisabled] = useState(true)
   const router = useRouter()
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
-  
-  
-   
 
   const [shippingData, setShippingData] = useState({
     firstName: "",
     lastName: "",
     address: "",
-    street:"",
-    number:"",
+    street: "",
+    number: "",
     phoneNumber: "",
     postalCode: "",
     email: ""
@@ -79,8 +71,8 @@ const ShippingForm =  ({ userId, cartItems }) => {
     firstName: "",
     lastName: "",
     address: "",
-    street:"",
-    number:"",
+    street: "",
+    number: "",
     phoneNumber: "",
     postalCode: "",
     email: ""
@@ -89,9 +81,9 @@ const ShippingForm =  ({ userId, cartItems }) => {
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-  
+
     const errorMessage = validateField(name, value);
-  
+
     setShippingData({ ...shippingData, [name]: value });
     setErrors({ ...errors, [name]: errorMessage });
   };
@@ -99,13 +91,13 @@ const ShippingForm =  ({ userId, cartItems }) => {
     const requiredFields = ["firstName", "lastName", "street", "number", "phoneNumber", "postalCode", "email"];
     const hasErrors = requiredFields.some((field) => !!errors[field]);
     const allFieldsFilled = requiredFields.every((field) => !!shippingData[field]);
-    
+
     setDisabled(hasErrors || !allFieldsFilled);
   }, [errors, shippingData]);
 
 
   useEffect(() => {
-    
+
     const loadInitialData = async () => {
       try {
         const initialData = await userInitailLoad(userId);
@@ -122,9 +114,10 @@ const ShippingForm =  ({ userId, cartItems }) => {
       loadInitialData();
     }
   }, [isOpen, userId]);
-  
+
   return (
     <>
+     
       <Button className="font-bold" color="primary" onPress={onOpen}>
         Finalizar Compra
       </Button>
@@ -133,35 +126,47 @@ const ShippingForm =  ({ userId, cartItems }) => {
           {(onClose) => {
             const handleSubmit = async () => {
               setLoading(true)
+              
               try {
-                const items = cartItems.map(item => ({
+                
+                const items = cartItems.map((item) => ({
                   id: item.id,
                   quantity: item.quantity,
-                  unit_price: item.price                
-                }))
+                  unit_price: item.price,
+                }));
+               for (const item of items) {
+                  const { data } = await api.get(`/product/${item.id}`);
+                  const updatedStock = data.stock - item.quantity
+                  await updateProductStock(item.id, updatedStock )
+                
+                  }
+                
+            
                 const payer = {
                   clerkId: userId,
                   name: shippingData.firstName.trim() + " " + shippingData.lastName.trim(),
                   email: shippingData.email,
                   address: shippingData.street.trim() + " " + shippingData.number.trim(),
                   cp: shippingData.postalCode,
-                  phone: shippingData.phoneNumber
-                }
+                  phone: shippingData.phoneNumber,
+                };
+            
+                const response = await newOrder(items, payer);
                 
-                const response = await newOrder(items,payer)          
-                router.push(response.paymentURL)
-                setLoading(false) 
-                onClose()
-              } catch (error) {
-                console.log(error)
+                router.push(response.paymentURL);
                 setLoading(false)
-                onClose()
-              }  
+                onClose();
+              
+              } catch (error) {
+                console.log(error);
+                setLoading(false);
+                onClose();
+              }
             };
             return (
               <>
                 <ModalHeader className="flex flex-col gap-1">Shipping Information</ModalHeader>
-                <ModalBody> 
+                <ModalBody>
                   <Input
                     autoFocus
                     label="First Name"
@@ -226,7 +231,7 @@ const ShippingForm =  ({ userId, cartItems }) => {
                     isRequired
                   />
                   {errors.postalCode && <p className="text-danger">{errors.postalCode}</p>}
-                
+
                 </ModalBody>
                 <ModalFooter className="flex justify-center">
                   <Button
