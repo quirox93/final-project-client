@@ -1,6 +1,7 @@
 const { NextRequest, NextResponse } = require("next/server");
 import mercadopago from "mercadopago";
 import { MP_TOKEN } from "@/utils/config";
+import Order from "@/models/Order";
 
 export async function POST(req) {
   try {
@@ -15,11 +16,16 @@ export async function POST(req) {
       const { body } = await mercadopago.merchant_orders.findById(order.id);
       const { preference_id } = body;
 
-      if (data.body.status === "approved") {
+      if (status === "approved") {
         console.log("Actualizo DB", { status, preference_id });
+        const updatedOrder = await Order.findOneAndUpdate(
+          { mpId: preference_id },
+          { mpStatus: status },
+          { new: true }
+        );
       }
     }
-    return NextResponse.json({ succes: "query" }, { status: 200 });
+    return NextResponse.json({ message: "OK" }, { status: 200 });
   } catch (error) {
     console.log(error.message);
     return NextResponse.json({ error: error.message }, { status: 500 });

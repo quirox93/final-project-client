@@ -24,6 +24,7 @@ export async function POST(req) {
     connectDB();
     const data = await req.json();
     const host = req.nextUrl.origin;
+    const notification_url = host === "http://localhost:3000" ? "" : `${host}/api/payment/webhook`;
     mercadopago.configure({
       access_token: MP_TOKEN,
     });
@@ -34,7 +35,7 @@ export async function POST(req) {
         failure: `${host}/cart`,
         pending: `${host}/cart`,
       },
-      /* notification_url: `https://${host}/api/payment/webhook`*/
+      notification_url,
     });
     const mpId = mpResult.body.id;
     console.log(mpResult.body.init_point);
