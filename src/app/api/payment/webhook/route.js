@@ -4,7 +4,8 @@ import { GMAIL_MAIL, GMAIL_PASS, MP_TOKEN } from "@/utils/config";
 import nodemailer from "nodemailer";
 import { getOrderById } from "@/utils/api";
 import { transporter } from "../mail";
-
+import { MP_TOKEN } from "@/utils/config";
+import Order from "@/models/Order";
 
 export async function POST(req) {
   try {
@@ -12,7 +13,6 @@ export async function POST(req) {
       access_token: MP_TOKEN,
     });
     const query = Object.fromEntries(new URL(req.url).searchParams.entries());
-    console.log({ query: query });
     if (query.type === "payment") {
       const { response } = await mercadopago.payment.findById(query["data.id"]);
       const { status, order } = response;
@@ -20,8 +20,6 @@ export async function POST(req) {
       const { preference_id } = body;
 
       if (status === "approved") {
-        console.log({ status, preference_id });
-
         const dbOrder = await getOrderById("user_2UDAMiSxw6OcggJBe0F1Ak9jL41")
         const map = () =>  
           dbOrder[0].items.reduce((total ,item) => {return `
@@ -113,11 +111,12 @@ export async function POST(req) {
 </body>
 </html>`,
         };
-
+        await Order.findOneAndUpdate({ mpId: preference_id }, { mpStatus: status });
         await transporter.sendMail(mailOptions);
+
       }
     }
-    return NextResponse.json({ succes: "query" }, { status: 200 });
+    return NextResponse.json({ message: "OK" }, { status: 200 });
   } catch (error) {
     console.log({ error: error.message });
     return NextResponse.json({ error: error.message }, { status: 500 });

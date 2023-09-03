@@ -1,6 +1,9 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { addReview } from "@/utils/api";
 import StarRatings from "react-star-ratings";
+import { rate } from "./utils";
+import { useRouter } from "next/navigation";
 import {
   Modal,
   ModalContent,
@@ -12,22 +15,55 @@ import {
   Textarea,
 } from "@nextui-org/react";
 
-const PurchasedModalReview = () => {
-  const [rating, setRating] = useState(0);
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+const PurchasedModalReview = ({ clerkId, itemId, itemReviews,updateReview }) => {
+  const existingReview = itemReviews.find(
+    (review) => review.clerkId === clerkId
+  );
   
-  const rate = {
-    1: ["Poor", "text-danger-500"],
-    2: ["Average", "text-orange-500"],
-    3: ["Good", "text-green-500"],
-    4: ["Very good", "text-success"],
-    5: ["Excellent", "text-yellow-500"],
+  const [rating, setRating] = useState(existingReview.score);
+  const [isLoading, setIsLoading] = useState(false);
+  const [description, setDescription] = useState(existingReview.message);
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const router = useRouter();
+
+ useEffect(() => {  
+   setRating(existingReview.score)
+   setDescription(existingReview.message)
+ }, [existingReview.score, existingReview.message])
+ 
+  const handleSendReview = async () => {
+    const reviewData = {
+      clerkId,
+      score: rating,
+      message: description,
+    };
+
+    try {
+      setIsLoading(true);
+      const response = await addReview(itemId, reviewData);
+      updateReview(clerkId, rating, description);
+      router.refresh();
+      setRating(reviewData.score);
+      setDescription(reviewData.message);
+      console.log("Review sent:", response);
+
+      setIsLoading(false);
+      onOpenChange(false);
+    } catch (error) {
+      setIsLoading(false);
+      console.error("Error sending review:", error);
+      alert(error.message);
+    }
   };
 
   const handleRatingChange = (newRating) => {
     setRating(newRating);
   };
 
+  const handleDescriptionChange = (newDescription) => {
+    setDescription(newDescription);
+  };
+  
   return (
     <>
       <Button
@@ -36,7 +72,7 @@ const PurchasedModalReview = () => {
         variant="text"
         onPress={onOpen}
       >
-        Review
+        {existingReview ? "Update" : "Review"}
       </Button>
       <Modal
         backdrop="opaque"
@@ -85,13 +121,19 @@ const PurchasedModalReview = () => {
                   labelPlacement="outside"
                   placeholder="Enter your description"
                   className="max-w-lg"
+                  onValueChange={handleDescriptionChange}
+                  value={description}
                 />
               </ModalBody>
               <ModalFooter>
                 <Button color="danger" variant="flat" onPress={onClose}>
                   Close
                 </Button>
-                <Button color="primary" onPress={onClose}>
+                <Button
+                  color="primary"
+                  onPress={handleSendReview}
+                  isLoading={isLoading}
+                >
                   Send
                 </Button>
               </ModalFooter>

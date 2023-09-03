@@ -19,7 +19,7 @@ export async function POST(req) {
       },
       notification_url:`${NOTIFICATION_URL}/api/payment/webhook`
     });
-    return NextResponse.json({ paymentURL: result.body.init_point });
+    return NextResponse.json({ paymentURL: result.body.id });
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

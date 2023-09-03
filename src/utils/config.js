@@ -21,3 +21,4 @@ export const GMAIL_MAIL = process.env["GMAIL_MAIL"];
 export const GMAIL_PASS = process.env["GMAIL_PASS"];
 
 export const NOTIFICATION_URL = process.env["NOTIFICATION_URL"]
+

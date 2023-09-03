@@ -24,17 +24,18 @@ export async function POST(req) {
     connectDB();
     const data = await req.json();
     const host = req.nextUrl.origin;
+    const notification_url = host === "http://localhost:3000" ? "" : `${host}/api/payment/webhook`;
     mercadopago.configure({
       access_token: MP_TOKEN,
     });
     const mpResult = await mercadopago.preferences.create({
       items: data.items,
       back_urls: {
-        success: `${host}/cart`,
-        failure: `${host}/cart`,
-        pending: `${host}/cart`,
+        success: `${host}/purchases`,
+        failure: `${host}/purchases`,
+        pending: `${host}/purchases`,
       },
-      notification_url: `https://9406-2800-2141-e000-2c2-6de3-e235-a030-9396.ngrok-free.app/api/payment/webhook`,
+      notification_url,
     });
     const mpId = mpResult.body.id;
     console.log(mpResult.body.init_point);
@@ -46,10 +47,10 @@ export async function POST(req) {
     };
     //crear orden si el stock es valido
     const newOrder = await new Order(orderData);
-    const savedOrder = await newOrder.save();
+    await newOrder.save();
 
     // const allOrder = await Order.find();
-    return NextResponse.json(savedOrder, { status: 201 });
+    return NextResponse.json({ paymentURL: mpResult.body.init_point }, { status: 201 });
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
