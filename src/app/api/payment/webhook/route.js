@@ -20,6 +20,8 @@ export async function POST(req) {
 
       if (status === "approved") {
         const dbOrder = await getOrderById(preference_id);
+
+        console.log({ dbOrder });
         const map = () =>
           dbOrder.items.reduce((total, item) => {
             return `
