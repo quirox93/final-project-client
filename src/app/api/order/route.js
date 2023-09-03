@@ -2,7 +2,7 @@ const { NextResponse } = require("next/server");
 import { connectDB } from "@/utils/mongoose";
 import Order from "@/models/Order";
 import mongoose from "mongoose";
-import { MP_TOKEN } from "@/utils/config";
+import { MP_TOKEN, NOTIFICATION_URL } from "@/utils/config";
 import mercadopago from "mercadopago";
 import Product from "@/models/Product";
 
@@ -24,7 +24,8 @@ export async function POST(req) {
     connectDB();
     const data = await req.json();
     const host = req.nextUrl.origin;
-    const notification_url = host === "http://localhost:3000" ? "" : `${host}/api/payment/webhook`;
+    let notification_url = host === "http://localhost:3000" ? "" : `${host}/api/payment/webhook`;
+    if (NOTIFICATION_URL) notification_url = notification_url;
     mercadopago.configure({
       access_token: MP_TOKEN,
     });
