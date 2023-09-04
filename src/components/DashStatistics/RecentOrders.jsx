@@ -1,6 +1,6 @@
 "use client";
 import { dataBuy } from "./data.js";
-import { FaShoppingBag } from "react-icons/fa";
+import { HiShoppingBag } from "react-icons/hi";
 import {
   Popover,
   PopoverTrigger,
@@ -19,7 +19,7 @@ const RecentOrders = () => {
               <PopoverTrigger className=" w-full bg-gray-50 hover:bg-gray-100 rounded-lg my-3 p-2">
                 <Button className="flex justify-start h-unit-2xl">
                   <div className="bg-purple-100 rounded-lg p-3">
-                    <FaShoppingBag className="text-purple-800" />
+                    <HiShoppingBag className="text-purple-800" />
                   </div>
                   <div className="pl-4">
                     <p className="text-gray-800 font-bold">${order.total}</p>

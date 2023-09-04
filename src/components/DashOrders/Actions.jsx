@@ -1,72 +1,28 @@
 import React from "react";
-import {
-  Dropdown,
-  DropdownTrigger,
-  DropdownMenu,
-  DropdownSection,
-  DropdownItem,
-  Button,
-  cn,
-} from "@nextui-org/react";
-import { LuEdit } from "react-icons/lu";
-
-import { AiOutlineDelete } from "react-icons/ai";
-import { VerticalDotsIcon } from "@/components/AdminProducts/VerticalDotsIcon";
-import { BiDetail } from "react-icons/bi";
+import { useDisclosure, Button } from "@nextui-org/react";
 import DetailOrder from "./DetailOrder";
+import { MdPageview } from "react-icons/md";
 
-function Actions() {
-  const iconClasses =
-    "text-xl text-default-500 pointer-events-none flex-shrink-0";
+function Actions({ order, statusColorMap }) {
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   return (
-    <Dropdown className="bg-background border-1 border-default-200">
-      <DropdownTrigger>
-        <Button isIconOnly radius="full" size="sm" variant="flat">
-          <VerticalDotsIcon className="text-default-400" />
-        </Button>
-      </DropdownTrigger>
-      <DropdownMenu 
-      variant="faded" 
-      aria-label="Dropdown menu with description"
-      closeOnSelect={false}
+    <div className="relative flex justify-end items-center gap-2">
+      <Button
+        isIconOnly
+        className="bg-transparent text-lg text-primary-500 cursor-pointer active:opacity-50"
+        aria-label="Like"
+        onPress={() => onOpen(isOpen)}
       >
-        <DropdownSection title="Actions" showDivider>
-          
-          <DropdownItem
-            key="detail"
-            shortcut="⌘⇧D"
-            description="Allows you to view the order."
-            startContent={<BiDetail className={iconClasses} />}
-            
-          >
-            View Order
-          </DropdownItem>
-          <DropdownItem
-            key="edit"
-            shortcut="⌘⇧E"
-            description="Allows you to edit the order."
-            startContent={<LuEdit className={iconClasses} />}
-          >
-            Edit Order
-          </DropdownItem>
-        </DropdownSection>
-        <DropdownSection title="Danger zone">
-          <DropdownItem
-            key="delete"
-            className="text-danger"
-            color="danger"
-            shortcut="⌘⇧S"
-            description="Permanently delete the order"
-            startContent={
-              <AiOutlineDelete className={cn(iconClasses, "text-danger")} />
-            }
-          >
-            Delete Order
-          </DropdownItem>
-        </DropdownSection>
-      </DropdownMenu>
-    </Dropdown>
+        <DetailOrder
+          isOpen={isOpen}
+          onOpenChange={onOpenChange}
+          order={order}
+          statusColorMap={statusColorMap}
+        />
+        <MdPageview size={25} />
+      </Button>
+    </div>
   );
 }
 export default Actions;

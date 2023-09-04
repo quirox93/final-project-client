@@ -18,14 +18,18 @@ import {
   Chip,
   User,
   Pagination,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
 } from "@nextui-org/react";
-import { FaShoppingBag } from "react-icons/fa";
+import { HiShoppingBag } from "react-icons/hi";
 
 import { SearchIcon } from "@/components/AdminProducts/SearchIcon";
 import { ChevronDownIcon } from "@/components/AdminProducts/ChevronDownIcon";
 import { capitalize } from "@/components/AdminProducts/utils";
 
 import Actions from "./Actions";
+import StatusOrder from "./StatusOrder";
 export default function OrdersTable({
   orders,
   columns,
@@ -95,33 +99,59 @@ export default function OrdersTable({
     });
   }, [sortDescriptor, items]);
 
-  const renderCell = React.useCallback((order, columnKey) => {
-    const cellValue = order[columnKey];
-
+  const renderCell = React.useCallback((_order, columnKey) => {
+    const cellValue = _order[columnKey];
     switch (columnKey) {
       case "name":
         return (
           <User
             avatarProps={{
-              icon: <FaShoppingBag size={15} className=" text-white" />,
+              icon: <HiShoppingBag size={15} className=" text-white" />,
               color: "secondary",
             }}
             classNames={{
               description: "text-default-500",
             }}
-            description={order.email}
+            description={_order.email}
             name={cellValue}
           >
-            {order.email}
+            {_order.email}
           </User>
         );
-      case "time":
-        return <CalElapsedTime time={order.time} />;
+      case "total":
+        return (
+          <div>
+            <Popover placement="top" showArrow={true} color={"primary"}>
+              <PopoverTrigger>
+                <Button
+                  color="primary"
+                  variant="bordered"
+                  size="sm"
+                >{`$ ${_order.total}`}</Button>
+              </PopoverTrigger>
+              <PopoverContent>
+                <div className="px-1 py-2">
+                  <div className="text-small font-bold">Products</div>
+                  <div className="text-tiny">
+                    items: {_order.products.length}
+                  </div>
+                </div>
+              </PopoverContent>
+            </Popover>
+          </div>
+        );
+
+      case "createdAt":
+        return <CalElapsedTime time={_order.createdAt} format={'dateFull'}/>;
       case "status":
+        return (
+          <StatusOrder statusColorMap={statusColorMap} status={cellValue} statusOptions={statusOptions} id={_order.mpId}/>
+        );
+      case "statusMp":
         return (
           <Chip
             className="capitalize"
-            color={statusColorMap[order.status]}
+            color="primary"
             size="sm"
             variant="flat"
           >
@@ -131,7 +161,7 @@ export default function OrdersTable({
       case "actions":
         return (
           <div className="relative flex justify-end items-center gap-2">
-            <Actions />
+            <Actions order={_order} statusColorMap={statusColorMap}/>
           </div>
         );
       default:
@@ -341,13 +371,15 @@ export default function OrdersTable({
         )}
       </TableHeader>
       <TableBody emptyContent={"No orders found"} items={sortedItems}>
-        {(item) => (
-          <TableRow key={item.id}>
-            {(columnKey) => (
-              <TableCell>{renderCell(item, columnKey)}</TableCell>
-            )}
-          </TableRow>
-        )}
+        {(item) => {
+          return (
+            <TableRow key={item.id}>
+              {(columnKey) => (
+                <TableCell>{renderCell(item, columnKey)}</TableCell>
+              )}
+            </TableRow>
+          );
+        }}
       </TableBody>
     </Table>
   );

@@ -32,18 +32,23 @@ function calculateElapsedTime(fromDate) {
     }
     return `${minutesRemaining} Min`;
   };
+
+ const dateFormat = (createdAt)=> {
+    return new Date(createdAt).toGMTString("en-US");
+  }
   return {
     orderTime: LastOrder(),
     date: `${DayMonth} ${initialMonth} ${DayYear}`,
+    dateFull: dateFormat(fromDate)
   };
 }
 
-const CalElapsedTime = ({ time }) => {
+const CalElapsedTime = ({ time, format }) => {
   const timeElapsed = calculateElapsedTime(time);
   return (
     <Popover placement="top-start" showArrow={true}>
       <PopoverTrigger>
-        <Button className="bg-transparent p-0">{timeElapsed.orderTime}</Button>
+        <Button className="bg-transparent p-0">{timeElapsed[format]}</Button>
       </PopoverTrigger>
       <PopoverContent>
         <div className="px-1 py-2">
