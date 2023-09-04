@@ -17,6 +17,7 @@ import {
 } from "@nextui-org/react";
 
 const PurchasedProducts = ({ initOrders, clerkId }) => {
+  console.log(initOrders);
   const [orders, setOrders] = useState(initOrders);
 
   const updateReview = (id, score, message) => {
@@ -94,26 +95,39 @@ const PurchasedProducts = ({ initOrders, clerkId }) => {
                     </Chip>
                   </TableCell>
                   <TableCell>
-                    <Chip
-                      className="capitalize"
-                      color="primary"
-                      size="sm"
-                      variant="solid"
-                    >
-                      {order.mpStatus}
-                    </Chip>
+                    {order.mpStatus !== "approved" ? (
+                      <Link
+                        href={`https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=${order.mpId}`}
+                      >
+                        <Chip
+                          className="capitalize"
+                          color="primary"
+                          size="sm"
+                          variant="solid"
+                        >
+                          {order.mpStatus}
+                        </Chip>
+                      </Link>
+                    ) : (
+                      <Chip
+                        className="capitalize"
+                        color="primary"
+                        size="sm"
+                        variant="bordered"
+                      >
+                        {order.mpStatus}
+                      </Chip>
+                    )}
                   </TableCell>
                   <TableCell>${item.unit_price}</TableCell>
                   <TableCell>{item.quantity}</TableCell>
                   <TableCell>
-
                     <PurchasedModalReview
                       clerkId={clerkId}
                       itemId={item._id._id}
                       itemReviews={item._id.reviews}
                       updateReview={updateReview}
                     />
-
                   </TableCell>
                 </TableRow>
               ))}
