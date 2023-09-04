@@ -16,14 +16,16 @@ export const revalidate = 0;
 export default async function Orders() {
   const orders = formatOrders(order);
   const statusOptions = [
-    { name: "Pending", uid: "Pending" },
     { name: "Success", uid: "Success" },
-    { name: "Failure", uid: "Failure" },
+    { name: "Sent", uid: "Sent" },
+    { name: "Pending", uid: "Pending" },
+    { name: "Canceled", uid: "Canceled" },
   ];
   const statusColorMap = {
-    Pending: "warning",
     Success: "success",
-    Failure: "danger",
+    Sent: "primary",
+    Pending: "warning",
+    Canceled: "danger",
   };
 
   return (

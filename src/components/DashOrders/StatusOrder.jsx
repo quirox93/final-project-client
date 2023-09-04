@@ -9,13 +9,8 @@ import {
 import { useRouter } from "next/navigation";
 import { getAllOrders } from "@/utils/api";
 
-const StatusOrder = ({ status }) => {
-  const router = useRouter();
-  const statusColorMap = {
-    Pending: "warning",
-    Success: "success",
-    Failure: "danger",
-  };
+const StatusOrder = ({ status, statusColorMap, statusOptions }) => {
+  // const router = useRouter();
   const [selectedKeys, setSelectedKeys] = React.useState(status);
   const [isLoading, setIsLoading] = React.useState(false);
 
@@ -45,15 +40,22 @@ const StatusOrder = ({ status }) => {
         </Button>
       </DropdownTrigger>
       <DropdownMenu
-        aria-label="Single selection example"
+        aria-label="Dynamic Status"
         variant="flat"
         disallowEmptySelection
         selectionMode="single"
         onAction={(key) => handleStatus(key)}
+        items={statusOptions}
       >
-        <DropdownItem key="Pending">Pending</DropdownItem>
-        <DropdownItem key="Success">Success</DropdownItem>
-        <DropdownItem key="Failure">Failure</DropdownItem>
+        {(item) => {
+          if (item.name !== selectedKeys) {
+            return (
+              <DropdownItem key={item.name} color={statusColorMap[item.name]}>
+                {item.name}
+              </DropdownItem>
+            );
+          }
+        }}
       </DropdownMenu>
     </Dropdown>
   );

@@ -145,7 +145,7 @@ export default function OrdersTable({
         return <CalElapsedTime time={_order.createdAt} format={'dateFull'}/>;
       case "status":
         return (
-          <StatusOrder statusColorMap={statusColorMap} status={cellValue}/>
+          <StatusOrder statusColorMap={statusColorMap} status={cellValue} statusOptions={statusOptions}/>
         );
       case "statusMp":
         return (

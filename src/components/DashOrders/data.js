@@ -154,7 +154,7 @@ export const order = [
       phone: 1128532014,
     },
     _id: "4",
-    status: "Failure",
+    status: "Canceled",
     mpId: "1453720691-66998a7b-5d3e-4288-b46b-e33d9d89cec7",
     mpStatus: "FUND",
     items: [
@@ -283,7 +283,7 @@ export const order = [
       phone: 1128532014,
     },
     _id: "8",
-    status: "Failure",
+    status: "Canceled",
     mpId: "1453720691-66998a7b-5d3e-4288-b46b-e33d9d89cec7",
     mpStatus: "EXPI",
     items: [
@@ -315,7 +315,7 @@ export const order = [
     },
     items: ["64d967b46baea30ee160c129", "64d967c36baea30ee160c130"],
     _id: "9",
-    status: "Failure",
+    status: "Canceled",
     mpId: "1453720691-66998a7b-5d3e-4288-b46b-e33d9d89cec7",
     mpStatus: "EXPI",
     items: [
@@ -374,6 +374,70 @@ export const order = [
     createdAt: "2023-08-29T07:36:36.301Z",
     updatedAt: "2023-08-29T07:36:36.301Z",
     __v: 45,
+  },
+  {
+    payer: {
+      clerkId: "user_2UBZtSTnjzVyVAVYOnKs5qqGpv9",
+      name: "Brian Leonardo",
+      email: "brianL@gmail.com",
+      city: "Cartagena",
+      address: "Marcos grigera 2036",
+      identification: 123123123,
+      cp: 1828,
+      phone: 1128532014,
+    },
+    items: ["64d967b46baea30ee160c129", "64d967c36baea30ee160c130"],
+    _id: "11",
+    status: "Sent",
+    mpId: "1453720691-66998a7b-5d3e-4288-b46b-e33d9d89cec7",
+    mpStatus: "EXPI",
+    items: [
+      {
+        quantity: 2,
+        unit_price: 10,
+        _id: "64d967b46baea30ee160c129",
+      },
+      {
+        quantity: 1,
+        unit_price: 20,
+        _id: "64d967c36baea30ee160c130",
+      },
+    ],
+    createdAt: "2023-08-28T11:36:36.301Z",
+    updatedAt: "2023-08-28T11:36:36.301Z",
+    __v: 120,
+  },
+  {
+    payer: {
+      clerkId: "user_2UBZtSTnjzVyVAVYOnKs5qqGpv9",
+      name: "Brian Leonardo",
+      email: "brianL@gmail.com",
+      city: "Cartagena",
+      address: "Marcos grigera 2036",
+      identification: 123123123,
+      cp: 1828,
+      phone: 1128532014,
+    },
+    items: ["64d967b46baea30ee160c129", "64d967c36baea30ee160c130"],
+    _id: "12",
+    status: "Sent",
+    mpId: "1453720691-66998a7b-5d3e-4288-b46b-e33d9d89cec7",
+    mpStatus: "EXPI",
+    items: [
+      {
+        quantity: 2,
+        unit_price: 10,
+        _id: "64d967b46baea30ee160c129",
+      },
+      {
+        quantity: 1,
+        unit_price: 20,
+        _id: "64d967c36baea30ee160c130",
+      },
+    ],
+    createdAt: "2023-08-28T11:36:36.301Z",
+    updatedAt: "2023-08-28T11:36:36.301Z",
+    __v: 120,
   },
 ];
 

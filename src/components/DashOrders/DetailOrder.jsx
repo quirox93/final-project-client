@@ -9,7 +9,7 @@ import {
   Chip,
 } from "@nextui-org/react";
 
-import { FaRegFilePdf } from "react-icons/Fa";
+import { AiOutlineFilePdf } from "react-icons/ai";
 import { MdReviews } from "react-icons/md";
 import { BsArrowReturnLeft } from "react-icons/bs";
 import { SiMercadopago } from "react-icons/si";
@@ -70,7 +70,7 @@ function DetailOrder({
                     <Button
                       color="primary"
                       variant="bordered"
-                      startContent={<FaRegFilePdf size={20} />}
+                      startContent={<AiOutlineFilePdf size={20} />}
                       className="mx-2 p-5"
                       onPress={downloadPDF}
                     >
