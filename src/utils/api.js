@@ -97,3 +97,15 @@ export async function newOrder(items, payer) {
   });
   return await data.json();
 }
+
+export async function updateOrder(id, values) {
+  const data = await fetch(`${host}/order/${id}`, {
+    method: "PATCH",
+    body: JSON.stringify(values),
+    next: { revalidate: 0 },
+    headers: {
+      "Content-type": "application/json; charset=UTF-8",
+    },
+  });
+  return await data.json();
+}

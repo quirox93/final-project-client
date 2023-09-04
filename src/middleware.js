@@ -17,22 +17,19 @@ export default authMiddleware({
       return redirectToSignIn({ returnBackUrl: req.url });
     }
 
-    // handle users in admin routes
-    let isAdmin = false;
+    if (auth.userId && adminRoutes.includes(req.nextUrl.pathname)) {
+      let isAdmin = false;
 
-    if (auth.userId) {
-      try {
-        const user = await getUserById(auth.userId);
-        isAdmin = user.dbData.isAdmin;
-        console.log({ isAdmin });
-      } catch (error) {
-        console.log({ isAdmin });
+      if (auth.userId) {
+        try {
+          const user = await getUserById(auth.userId);
+          isAdmin = user.dbData.isAdmin;
+        } catch (error) {
+          console.log({ isAdmin });
+        }
       }
-    }
-    console.log({ userId: auth.userId, middleware: isAdmin });
-    if (auth.userId && !isAdmin && adminRoutes.includes(req.nextUrl.pathname)) {
       const orgSelection = new URL("/", req.url);
-      return NextResponse.redirect(orgSelection);
+      if (!isAdmin) return NextResponse.redirect(orgSelection);
     }
   },
 });
