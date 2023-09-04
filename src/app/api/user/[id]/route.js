@@ -12,37 +12,48 @@ export async function GET(_, { params }) {
     const clerkUser = await clerkClient.users.getUser(id);
 
     if (!clerkUser) {
-      return NextResponse.json({ error: "El usuario no existe" });
+      return NextResponse.json({ error: "the user does not exist" }, { status: 404 });
     }
 
     // Buscar el usuario en nuestra base de datos por el clerkId
     let userFromDB = await User.findOne({ clerkId: id });
 
     if (!userFromDB) {
-      //si no encuentra crealo
-      userFromDB = { cart: [], Orders: [] };
-      //return NextResponse.json({ error: "Usuario no encontrado en la base de datos" });
-    }
+      // Si no se encuentra en la base de datos, crea un nuevo usuario
+      userFromDB = new User({
+        clerkId: id,
+        cart: [],
+        Orders: [],
+      });
 
+      await userFromDB.save();
+    }
     // Combinar los datos de Clerk y de la base de datos
     const combinedUser = {
-      clerkData: { ...clerkUser },
-      cart: userFromDB.cart,
-      Orders: userFromDB.Orders,
+      clerkData: clerkUser,
+      dbData: userFromDB,
     };
 
-    return NextResponse.json({ user: combinedUser });
+    return NextResponse.json(combinedUser);
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }
+
 export async function PUT(req, { params }) {
   try {
     connectDB();
     const { id } = params;
-    const cartData = req.json()
-  
-    return NextResponse.json({ message: "Actualzar carrito" });
+    const values = await req.json();
+
+    // findOneAndUpdate para actualizar solo 'cart'
+    const updatedUser = await User.findOneAndUpdate({ clerkId: id }, values, { new: true });
+
+    if (!updatedUser) {
+      return NextResponse.json({ error: "User not found in the database" }, { status: 404 });
+    }
+
+    return NextResponse.json(updatedUser);
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
@@ -57,10 +68,10 @@ export async function DELETE(_, { params }) {
     const user = await clerkClient.users.deleteUser(id);
 
     if (!user) {
-      return NextResponse.json({ error: "El usuario no existe" });
+      return NextResponse.json({ error: "the user does not exist" });
     }
 
-    return NextResponse.json({ message: "Usuario eliminado" });
+    return NextResponse.json({ message: "User deleted" });
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

@@ -14,7 +14,7 @@ export async function PUT(req, { params }) {
       finded.score = review.score;
       finded.message = review.message;
     } else product.reviews.push(review);
-
+    
     await product.save();
     return NextResponse.json(product.reviews);
   } catch (error) {

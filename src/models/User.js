@@ -9,6 +9,7 @@ const orderSchema = Schema({
     },
   ],
   Orders: [{ type: Schema.Types.ObjectId, ref: "Order" }],
+  isAdmin: { type: Boolean, required: true, default: false },
 });
 
 export default models.User || model("User", orderSchema);

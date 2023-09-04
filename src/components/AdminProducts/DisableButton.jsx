@@ -1,6 +1,6 @@
 "use_client";
 
-import { prodBulkUpdate, prodUpdate } from "@/utils/api";
+import { bulkUpdateProduct, updateProduct } from "@/utils/api";
 import { Button } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -13,7 +13,7 @@ export default function DisableButton({ id, enabled, setData, data }) {
       setIsLoading(true);
       if (typeof id === "object") {
         enabled = !enabled;
-        await prodBulkUpdate(id, { enabled });
+        await bulkUpdateProduct(id, { enabled });
         setData(data.map((e) => (id.includes(e._id) ? { ...e, enabled } : e)));
         setIsLoading(false);
         router.refresh();
@@ -22,7 +22,7 @@ export default function DisableButton({ id, enabled, setData, data }) {
 
       const formData = new FormData();
       formData.append("enabled", !enabled);
-      const product = await prodUpdate(id, formData);
+      const product = await updateProduct(id, formData);
       setData(data.map((e) => (e._id === id ? product : e)));
       setIsLoading(false);
       router.refresh();

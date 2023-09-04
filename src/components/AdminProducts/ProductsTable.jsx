@@ -1,7 +1,7 @@
 import AdminProducts from "./AdminProducts";
-import { prodGetAll } from "@/utils/api";
+import { getAllProducts } from "@/utils/api";
 
-const loadProducts = async () => await prodGetAll();
+const loadProducts = async () => await getAllProducts();
 
 const columns = [
   { name: "ID", uid: "_id", sortable: false },
