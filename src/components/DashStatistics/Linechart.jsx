@@ -48,7 +48,7 @@ var misoptions = {
             min : 0
         },
         x: {
-            ticks: { color: 'rgb(255, 99, 132)'}
+            ticks: { color: 'gray'}
         }
     },
     maintainAspectRatio: false,

@@ -31,7 +31,30 @@ const statusColorMap = {
   true: "success",
   false: "warning",
 };
-
+const prodFuncs = {
+  nameascending: (a, b) => a.name.localeCompare(b.name),
+  namedescending: (a, b) => b.name.localeCompare(a.name),
+  priceascending: (a, b) => a.price - b.price,
+  pricedescending: (a, b) => b.price - a.price,
+  stockascending: (a, b) => a.stock - b.stock,
+  stockdescending: (a, b) => b.stock - a.stock,
+  createdAtascending: (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+  createdAtdescending: (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+};
+const userFuncs = {
+  firstNameascending: (a, b) =>
+    (a.firstName || "ZZZZ").localeCompare(b.firstName || "ZZZZ", "en", {
+      sensitivity: "base",
+    }),
+  firstNamedescending: (a, b) =>
+    (b.firstName || "").localeCompare(a.firstName || "", "en", {
+      sensitivity: "base",
+    }),
+};
+const sortFuncs = {
+  product: prodFuncs,
+  user: userFuncs,
+};
 export default function AdminProducts({
   mode,
   defItems,
@@ -39,6 +62,7 @@ export default function AdminProducts({
   statusOptions,
   INITIAL_VISIBLE_COLUMNS,
 }) {
+  const sort = sortFuncs[mode];
   const [allItems, setAllItems] = React.useState(defItems);
   const [filterValue, setFilterValue] = React.useState("");
   const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
@@ -49,17 +73,6 @@ export default function AdminProducts({
     column: "name",
     direction: "ascending",
   });
-  const SortFunc = {
-    nameascending: (a, b) => a.name.localeCompare(b.name),
-    namedescending: (a, b) => b.name.localeCompare(a.name),
-    priceascending: (a, b) => a.price - b.price,
-    pricedescending: (a, b) => b.price - a.price,
-    stockascending: (a, b) => a.stock - b.stock,
-    stockdescending: (a, b) => b.stock - a.stock,
-    createdAtascending: (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
-    createdAtdescending: (a, b) =>
-      new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
-  };
 
   const [page, setPage] = React.useState(1);
 
@@ -72,7 +85,7 @@ export default function AdminProducts({
   }, [visibleColumns]);
 
   const filteredItems = React.useMemo(() => {
-    const sortF = SortFunc[sortDescriptor.column + sortDescriptor.direction];
+    const sortF = sort[sortDescriptor.column + sortDescriptor.direction];
     let filteredUsers = [...allItems].sort(sortF);
     if (hasSearchFilter) {
       filteredUsers = filteredUsers.filter((item) =>

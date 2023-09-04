@@ -1,6 +1,6 @@
 "use_client";
 
-import { prodBulkDelete, prodDelete } from "@/utils/api";
+import { bulkDeleteProduct, deleteProduct } from "@/utils/api";
 import { Button } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -12,14 +12,14 @@ export default function DeleteButton({ id, data, setData, cb }) {
     try {
       setIsLoading(true);
       if (typeof id === "object") {
-        await prodBulkDelete(id);
+        await bulkDeleteProduct(id);
         setData(data.filter((e) => !id.includes(e._id)));
         setIsLoading(false);
         cb(new Set([]));
         router.refresh();
         return;
       }
-      await prodDelete(id);
+      await deleteProduct(id);
       setData(data.filter((e) => e._id !== id));
       cb(new Set([]));
       setIsLoading(false);

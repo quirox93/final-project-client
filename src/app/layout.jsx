@@ -3,8 +3,7 @@ import { Providers } from "./providers";
 import { Inter } from "next/font/google";
 import NavBar from "../components/NavBar/NavBar";
 import { ClerkProvider, auth } from "@clerk/nextjs";
-import { CLERK_ORG_ID } from "@/utils/config";
-
+import { getUserById } from "@/utils/api";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -12,10 +11,17 @@ export const metadata = {
   description: "Trading Card Game seller",
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
   let isAdmin = false;
-  const { sessionClaims } = auth();
-  if (sessionClaims) isAdmin = Object.keys(sessionClaims?._orgs).includes(CLERK_ORG_ID);
+  const data = auth();
+  if (data.userId) {
+    try {
+      const user = await getUserById(data.userId);
+      isAdmin = user.dbData.isAdmin;
+    } catch (error) {
+      console.log(error);
+    }
+  }
   return (
     <html lang="en" className="light text-foreground bg-background">
       <body className={inter.className}>

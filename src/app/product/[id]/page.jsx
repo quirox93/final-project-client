@@ -22,6 +22,7 @@ import { selectedProducts } from "@/store/slice";
 import { useParams } from "next/navigation";
 import { PageWrapper } from "@/components/PageWrapper/PageWrapper";
 import StarRatings from "react-star-ratings";
+import ReviewsDetail from "@/components/ReviewsDetail/ReviewsDetail";
 
 export default function ProductDetail() {
   const dispatch = useDispatch();
@@ -29,6 +30,7 @@ export default function ProductDetail() {
     (state) => state.shopCart.selectionProducts
   );
   const [product, setProduct] = useState(null);
+  const [averageRating, setAverageRating] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [popoverOpen, setPopoverOpen] = useState(false);
   const [quantity, setQuantity] = useState(1);
@@ -55,6 +57,7 @@ export default function ProductDetail() {
         stock: data.stock,
         image: data.imag.secure_url,
         date: new Date(data.createdAt),
+        reviews: data.reviews,
       };
       const rawDate = alignedProduct.date;
       const formattedDate = `${rawDate.getDate()}/${
@@ -64,6 +67,15 @@ export default function ProductDetail() {
       alignedProduct.date = formattedDate;
 
       setProduct(alignedProduct);
+      const totalScores = alignedProduct.reviews.reduce(
+        (sum, review) => sum + review.score,
+        0
+      );
+      const avgRating =
+        alignedProduct.reviews.length > 0
+          ? totalScores / alignedProduct.reviews.length
+          : 0;
+      setAverageRating(avgRating);
     };
     fetchProduct();
   }, [id]);
@@ -118,10 +130,11 @@ export default function ProductDetail() {
   if (!product) {
     return;
   }
+
   return (
     <PageWrapper>
       <BreadCrumbs breadCrumbs={breadCrumbs} />
-      <div className="flex items-center justify-center mt-4">
+      <div className="flex-column items-center justify-center mt-4 sm:flex">
         <AlertModalStock
           isOpen={showModal}
           onClose={() => setShowModal(false)}
@@ -134,7 +147,7 @@ export default function ProductDetail() {
             alt={product.name}
           />
         </div>
-        <div className=" flex-1 ">
+        <div className=" flex-1 mr-1">
           <Card className="max-w-[400px] m-auto">
             <CardHeader className="flex gap-3">
               <Image
@@ -154,14 +167,16 @@ export default function ProductDetail() {
             <CardBody>
               <div className="flex flex-wrap items-center space-x-2 mb-2">
                 <StarRatings
-                  rating={5}
+                  rating={averageRating}
                   starRatedColor="#ffb829"
                   numberOfStars={5}
                   starDimension="20px"
                   starSpacing="2px"
                   name="rating"
                 />
-                <span className="text-yellow-500">{5}</span>
+                <span className="text-yellow-500">
+                  {averageRating.toFixed(1)}
+                </span>
 
                 <svg
                   width="6px"
@@ -171,8 +186,9 @@ export default function ProductDetail() {
                 >
                   <circle cx="3" cy="3" r="3" fill="#DBDBDB" />
                 </svg>
-
-                <span className="text-green-500">Verified</span>
+                {product.reviews.length > 0 && (
+                  <span className="text-green-500">Reviewed</span>
+                )}
               </div>
             </CardBody>
             <Divider />
@@ -244,6 +260,11 @@ export default function ProductDetail() {
           </Card>
         </div>
       </div>
+      {product.reviews.length > 0 && (
+        <div className="m-4">
+          <ReviewsDetail reviews={product.reviews} />
+        </div>
+      )}
     </PageWrapper>
   );
 }

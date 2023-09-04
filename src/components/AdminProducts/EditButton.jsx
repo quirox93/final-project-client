@@ -13,7 +13,7 @@ import {
 } from "@nextui-org/react";
 import NextImage from "next/image";
 import { useRouter } from "next/navigation";
-import { prodUpdate } from "@/utils/api";
+import { updateProduct } from "@/utils/api";
 
 export default function EditButton(props) {
   const router = useRouter();
@@ -119,7 +119,7 @@ export default function EditButton(props) {
               formData.append("imag", image);
 
               try {
-                const data = await prodUpdate(props.id, formData);
+                const data = await updateProduct(props.id, formData);
                 const newData = props.data.map((e) => (e._id === props.id ? data : e));
                 props.setData(newData);
                 router.refresh();

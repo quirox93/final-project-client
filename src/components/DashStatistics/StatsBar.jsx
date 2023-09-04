@@ -36,8 +36,13 @@ const [barOptions, setBarOptions] = useState({});
         {
           label: "Sales $",
           data: values,
-          borderColor: "rgb(53, 162, 235)",
-          backgroundColor: "rgb(53, 162, 235, 0.4)",
+          borderColor: "#0070F0",
+          backgroundColor: "#0070F0",
+          borderRadius: 25,
+          barPercentage: 0.5,
+          hoverBackgroundColor:"#519aed",
+          hoverBorderColor:"#0070F0"
+          
         },
       ],
     });

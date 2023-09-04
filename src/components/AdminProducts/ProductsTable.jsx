@@ -1,7 +1,7 @@
 import AdminProducts from "./AdminProducts";
-import { prodGetAll } from "@/utils/api";
+import { getAllProducts } from "@/utils/api";
 
-const loadProducts = async () => await prodGetAll();
+const loadProducts = async () => await getAllProducts();
 
 const columns = [
   { name: "ID", uid: "_id", sortable: false },
@@ -12,7 +12,7 @@ const columns = [
 ];
 
 const INITIAL_VISIBLE_COLUMNS = ["name", "createdAt", "stock", "price"];
-export const revalidate = 0;
+
 export default async function ProductsTable() {
   const statusOptions = [
     { name: "Active", uid: true, prop: "enabled" },
