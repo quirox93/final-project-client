@@ -23,6 +23,7 @@ function DetailOrder({
   onOpenChange,
   order,
   DateShipment,
+  statusColorMap
 }) {
   const pdfRef = useRef(null);
   const downloadPDF = () => {
@@ -164,7 +165,7 @@ function DetailOrder({
                 {/* tabla de articulos comprados */}
 
                 <div className="p-4">
-                  <DetailTableOrders order={order}/>
+                  <DetailTableOrders order={order} statusColorMap={statusColorMap}/>
                 </div>
               </ModalBody>
               <ModalFooter>

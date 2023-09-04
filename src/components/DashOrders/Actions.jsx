@@ -3,7 +3,7 @@ import { useDisclosure, Button } from "@nextui-org/react";
 import DetailOrder from "./DetailOrder";
 import { MdPageview } from "react-icons/md";
 
-function Actions({ order }) {
+function Actions({ order, statusColorMap }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   return (
@@ -18,6 +18,7 @@ function Actions({ order }) {
           isOpen={isOpen}
           onOpenChange={onOpenChange}
           order={order}
+          statusColorMap={statusColorMap}
         />
         <MdPageview size={25} />
       </Button>

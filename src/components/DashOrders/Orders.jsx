@@ -1,6 +1,8 @@
 import OrdersTable from "./OrdersTable";
 import { formatOrders, order } from "./data";
+import { getAllOrders } from "@/utils/api";
 
+const loaderOrders = async () => await getAllOrders();
 const columns = [
   { name: "Id", uid: "id", sortable: true },
   { name: "Name", uid: "name", sortable: true },
@@ -14,7 +16,7 @@ const columns = [
 const INITIAL_VISIBLE_COLUMNS = ["name", "status", "statusMp", "actions"];
 export const revalidate = 0;
 export default async function Orders() {
-  const orders = formatOrders(order);
+  const orders = formatOrders(await loaderOrders());
   const statusOptions = [
     { name: "Success", uid: "Success" },
     { name: "Sent", uid: "Sent" },

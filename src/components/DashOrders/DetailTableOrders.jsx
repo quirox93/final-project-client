@@ -9,7 +9,7 @@ import {
   Image,
 } from "@nextui-org/react";
 
-const DetailTableOrders = ({ order }) => {
+const DetailTableOrders = ({ order, statusColorMap }) => {
 
   return (
     <>
@@ -28,8 +28,8 @@ const DetailTableOrders = ({ order }) => {
       >
         <TableHeader>
           <TableColumn>Name</TableColumn>
-          <TableColumn>Status</TableColumn>
           <TableColumn>Price</TableColumn>
+          <TableColumn>Quantity</TableColumn>
           <TableColumn>Order Date</TableColumn>
         </TableHeader>
         <TableBody>
@@ -49,15 +49,33 @@ const DetailTableOrders = ({ order }) => {
               <TableCell>
                 <Chip
                   className="capitalize p-4"
-                  color="success"
+                  color={statusColorMap[order.status]}
                   size="sm"
                   variant="flat"
                 >
-                  {order.status}
+                  ${item.unit_price}
                 </Chip>
               </TableCell>
-              <TableCell>${item.unit_price}</TableCell>
-              <TableCell>{order.createdAt}</TableCell>
+              <TableCell>
+                <Chip
+                  className="capitalize p-4"
+                  color={statusColorMap[order.status]}
+                  size="sm"
+                  variant="flat"
+                >
+                 {`unit ${item.quantity}`}
+                </Chip>
+              </TableCell>
+              <TableCell>
+                <Chip
+                  className="capitalize p-4"
+                  color={statusColorMap[order.status]}
+                  size="sm"
+                  variant="flat"
+                >
+                 {order.createdAt}
+                </Chip>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

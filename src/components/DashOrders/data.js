@@ -1,13 +1,13 @@
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 
-export const dateFormat = (createdAt)=> {
+export const dateFormat = (createdAt) => {
   return new Date(createdAt).toGMTString("en-US");
-}
+};
 export const formatOrders = (items) => {
   const format = items.map((order) => {
     return {
-      id: Number(order._id),
+      id: order._id,
       mpId: order.mpId,
       status: order.status,
       name: order.payer.name,
@@ -18,14 +18,17 @@ export const formatOrders = (items) => {
       cp: order.payer.cp,
       products: order.items,
       createdAt: dateFormat(order.createdAt),
-      total: order.__v,
+      total: totalOrder(order.items),
       statusMp: order.mpStatus,
       phone: order.payer.phone,
+      
     };
   });
   return format;
 };
-
+const totalOrder = (items) => {
+  return items.reduce((total, item) => total + item.unit_price * item.quantity, 0);
+};
 export const captureView = (input) =>
   html2canvas(input).then((canvas) => {
     const imgData = canvas.toDataURL("image/png");

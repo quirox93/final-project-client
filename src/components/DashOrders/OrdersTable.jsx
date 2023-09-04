@@ -145,13 +145,13 @@ export default function OrdersTable({
         return <CalElapsedTime time={_order.createdAt} format={'dateFull'}/>;
       case "status":
         return (
-          <StatusOrder statusColorMap={statusColorMap} status={cellValue} statusOptions={statusOptions}/>
+          <StatusOrder statusColorMap={statusColorMap} status={cellValue} statusOptions={statusOptions} id={_order.mpId}/>
         );
       case "statusMp":
         return (
           <Chip
             className="capitalize"
-            color={statusColorMap[_order.statusMp]}
+            color="primary"
             size="sm"
             variant="flat"
           >
@@ -161,7 +161,7 @@ export default function OrdersTable({
       case "actions":
         return (
           <div className="relative flex justify-end items-center gap-2">
-            <Actions order={_order} />
+            <Actions order={_order} statusColorMap={statusColorMap}/>
           </div>
         );
       default:

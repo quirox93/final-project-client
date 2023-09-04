@@ -7,19 +7,20 @@ import {
   Button,
 } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
-import { getAllOrders } from "@/utils/api";
+import { updateOrder } from "@/utils/api";
 
-const StatusOrder = ({ status, statusColorMap, statusOptions }) => {
-  // const router = useRouter();
+const StatusOrder = ({ status, statusColorMap, statusOptions, id }) => {
+  const router = useRouter();
   const [selectedKeys, setSelectedKeys] = React.useState(status);
   const [isLoading, setIsLoading] = React.useState(false);
 
   const handleStatus = async (key) => {
     try {
       setIsLoading(true);
-      await getAllOrders();
+      await updateOrder(id, {status:key});
       setSelectedKeys(key);
       setIsLoading(false);
+      router.refresh();
     } catch (error) {
       setSelectedKeys("Pending");
       setIsLoading(false);
