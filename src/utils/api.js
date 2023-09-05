@@ -65,6 +65,17 @@ export async function getUserById(clerkId) {
   const data = await fetch(`${host}/user/${clerkId}`, { next: { revalidate: 0 } });
   return await data.json();
 }
+export async function updateUser(id, values) {
+  const data = await fetch(`${host}/order/${id}`, {
+    method: "PATCH",
+    body: JSON.stringify(values),
+    next: { revalidate: 0 },
+    headers: {
+      "Content-type": "application/json; charset=UTF-8",
+    },
+  });
+  return await data.json();
+}
 
 export async function getAllOrders() {
   const data = await fetch(`${host}/order`, { next: { revalidate: 0 } });
