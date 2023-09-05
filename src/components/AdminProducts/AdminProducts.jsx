@@ -26,12 +26,13 @@ import { capitalize } from "./utils";
 import FormNewProduct from "../FormNewProduct/FormNewProduct";
 import ProdButtonGroup from "./ProdButtonGroup";
 import MultiProdButtonGroup from "./MultiProdButtonGroup";
+import { formatDate } from "../PurchasedProducts/utils";
 
 const statusColorMap = {
   true: "success",
   false: "warning",
 };
-const prodFuncs = {
+const sort = {
   nameascending: (a, b) => a.name?.localeCompare(b.name),
   namedescending: (a, b) => b.name?.localeCompare(a.name),
   priceascending: (a, b) => a.price - b.price,
@@ -41,28 +42,13 @@ const prodFuncs = {
   createdAtascending: (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
   createdAtdescending: (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
 };
-const userFuncs = {
-  firstNameascending: (a, b) =>
-    (a.firstName || "ZZZZ").localeCompare(b.firstName || "ZZZZ", "en", {
-      sensitivity: "base",
-    }),
-  firstNamedescending: (a, b) =>
-    (b.firstName || "").localeCompare(a.firstName || "", "en", {
-      sensitivity: "base",
-    }),
-};
-const sortFuncs = {
-  product: prodFuncs,
-  user: userFuncs,
-};
+
 export default function AdminProducts({
-  mode,
   defItems,
   columns,
   statusOptions,
   INITIAL_VISIBLE_COLUMNS,
 }) {
-  const sort = sortFuncs[mode];
   const [allItems, setAllItems] = React.useState(defItems);
   const [filterValue, setFilterValue] = React.useState("");
   const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
@@ -115,22 +101,7 @@ export default function AdminProducts({
 
     switch (columnKey) {
       case "name":
-        return mode === "user" ? (
-          <User
-            avatarProps={{ radius: "lg", src: item.imag.secure_url }}
-            description={
-              <Chip
-                className="capitalize"
-                color={statusColorMap[item.enabled.toString()]}
-                size="sm"
-                variant="flat"
-              >
-                {item.enabled ? "Active" : "Paused"}
-              </Chip>
-            }
-            name={<p className=" font-bold">{cellValue}</p>}
-          ></User>
-        ) : (
+        return (
           <User
             avatarProps={{ radius: "lg", src: item.imag.secure_url }}
             description={
@@ -146,6 +117,8 @@ export default function AdminProducts({
             name={<p className=" font-bold">{cellValue}</p>}
           ></User>
         );
+      case "createdAt":
+        return formatDate(cellValue);
       default:
         return cellValue;
     }
@@ -189,21 +162,12 @@ export default function AdminProducts({
     const actions =
       selected.length === 1 && product ? (
         <ButtonGroup>
-          {mode === "user" ? (
-            <ProdButtonGroup
-              cb={setSelectedKeys}
-              product={product}
-              allItems={allItems}
-              setAllItems={setAllItems}
-            />
-          ) : (
-            <ProdButtonGroup
-              cb={setSelectedKeys}
-              product={product}
-              allItems={allItems}
-              setAllItems={setAllItems}
-            />
-          )}
+          <ProdButtonGroup
+            cb={setSelectedKeys}
+            product={product}
+            allItems={allItems}
+            setAllItems={setAllItems}
+          />
         </ButtonGroup>
       ) : (
         <ButtonGroup>
