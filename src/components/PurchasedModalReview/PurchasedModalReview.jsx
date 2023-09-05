@@ -15,23 +15,29 @@ import {
   Textarea,
 } from "@nextui-org/react";
 
-const PurchasedModalReview = ({ clerkId, itemId, itemReviews, updateReview }) => {
-  const existingReview = itemReviews.find((review) => review.clerkId === clerkId) ?? {
+const PurchasedModalReview = ({
+  clerkId,
+  itemId,
+  itemReviews,
+  updateReview,
+}) => {
+  const existingReview = itemReviews.find(
+    (review) => review.clerkId === clerkId
+  ) ?? {
     score: 0,
     message: "",
   };
 
-  
   const [rating, setRating] = useState(existingReview.score);
   const [isLoading, setIsLoading] = useState(false);
   const [description, setDescription] = useState(existingReview.message);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const router = useRouter();
 
- useEffect(() => {  
-   setRating(existingReview.score)
-   setDescription(existingReview.message)
- }, [existingReview.score, existingReview.message])
+  useEffect(() => {
+    setRating(existingReview.score);
+    setDescription(existingReview.message);
+  }, [existingReview.score, existingReview.message]);
 
   const handleSendReview = async () => {
     const reviewData = {
@@ -43,12 +49,10 @@ const PurchasedModalReview = ({ clerkId, itemId, itemReviews, updateReview }) =>
     try {
       setIsLoading(true);
       const response = await addReview(itemId, reviewData);
-      updateReview(clerkId, rating, description);
+      updateReview(itemId, clerkId, rating, description);
       router.refresh();
       setRating(reviewData.score);
       setDescription(reviewData.message);
-      console.log("Review sent:", response);
-
       setIsLoading(false);
       onOpenChange(false);
     } catch (error) {
@@ -65,7 +69,7 @@ const PurchasedModalReview = ({ clerkId, itemId, itemReviews, updateReview }) =>
   const handleDescriptionChange = (newDescription) => {
     setDescription(newDescription);
   };
-  
+
   return (
     <>
       <Button
@@ -92,7 +96,9 @@ const PurchasedModalReview = ({ clerkId, itemId, itemReviews, updateReview }) =>
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">Your Review</ModalHeader>
+              <ModalHeader className="flex flex-col gap-1">
+                Your Review
+              </ModalHeader>
               <ModalBody>
                 <p>How would you rate this product?</p>
                 <div className="flex flex-wrap items-center space-x-2 mb-2">
@@ -107,7 +113,11 @@ const PurchasedModalReview = ({ clerkId, itemId, itemReviews, updateReview }) =>
                     starSpacing="2px"
                     name="rating"
                   />
-                  <span className={rate[rating] ? rate[rating][1] : "text-primary-500"}>
+                  <span
+                    className={
+                      rate[rating] ? rate[rating][1] : "text-primary-500"
+                    }
+                  >
                     {rate[rating] ? rate[rating][0] : ""}
                   </span>
                 </div>
@@ -125,7 +135,11 @@ const PurchasedModalReview = ({ clerkId, itemId, itemReviews, updateReview }) =>
                 <Button color="danger" variant="flat" onPress={onClose}>
                   Close
                 </Button>
-                <Button color="primary" onPress={handleSendReview} isLoading={isLoading}>
+                <Button
+                  color="primary"
+                  onPress={handleSendReview}
+                  isLoading={isLoading}
+                >
                   Send
                 </Button>
               </ModalFooter>
