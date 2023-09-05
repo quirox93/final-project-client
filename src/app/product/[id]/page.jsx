@@ -5,11 +5,8 @@ import { useState, useEffect } from "react";
 import api from "../../../utils/axios";
 import AlertModalStock from "@/components/AlertModalStock";
 import BreadCrumbs from "@/components/BreadCrumbs/BreadCrumbs";
+import ProductPopOver from "@/components/ProductPopOver/ProductPopOver";
 import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  Button,
   Card,
   CardHeader,
   CardBody,
@@ -17,6 +14,7 @@ import {
   Divider,
   Chip,
   Image,
+  Input,
 } from "@nextui-org/react";
 import { selectedProducts } from "@/store/slice";
 import { useParams } from "next/navigation";
@@ -36,6 +34,7 @@ export default function ProductDetail() {
   const [quantity, setQuantity] = useState(1);
   const params = useParams();
   const { id } = params;
+  
 
   const breadCrumbs = [
     { name: "Home", url: "/" },
@@ -232,30 +231,35 @@ export default function ProductDetail() {
             </CardBody>
             <Divider />
             <CardFooter>
-              <Popover
-                placement="right"
-                offset={20}
-                showArrow
-                isOpen={popoverOpen}
-              >
-                <PopoverTrigger>
-                  <Button
-                    className="m-auto"
-                    color="primary"
-                    aria-label="Like"
-                    onClick={handleAddToCart}
-                    disabled={product.stock === 0}
-                  >
-                    Add to Cart
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent>
-                  <div className="px-1 py-2">
-                    <div className="text-small font-bold">Products</div>
-                    <div className="text-tiny">Added {quantity}</div>
-                  </div>
-                </PopoverContent>
-              </Popover>
+              <div className="flex-column justify-center items-center m-auto">
+                <Input
+                  type="number"
+                  label="Quantity"
+                  onChange={(e) => {
+                    let inputValue = parseInt(e.target.value);
+                    if (isNaN(inputValue) || inputValue < 1) {
+                      inputValue = 1;
+                    } else if (inputValue > product.stock) {
+                      inputValue = product.stock;
+                    }
+                    setQuantity(inputValue);
+                  }}
+                  value={quantity}
+                  color="primary"
+                  placeholder="0"
+                  labelPlacement="inside"
+                  className="mb-2"
+                  startContent={
+                    <div className="pointer-events-none flex items-center"></div>
+                  }
+                />
+                <ProductPopOver 
+                popoverOpen={popoverOpen}
+                handleAddToCart={handleAddToCart}
+                quantity={quantity}
+                stock={product.stock}
+                />
+              </div>
             </CardFooter>
           </Card>
         </div>
