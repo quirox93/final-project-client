@@ -32,8 +32,8 @@ const statusColorMap = {
   false: "warning",
 };
 const prodFuncs = {
-  nameascending: (a, b) => a.name.localeCompare(b.name),
-  namedescending: (a, b) => b.name.localeCompare(a.name),
+  nameascending: (a, b) => a.name?.localeCompare(b.name),
+  namedescending: (a, b) => b.name?.localeCompare(a.name),
   priceascending: (a, b) => a.price - b.price,
   pricedescending: (a, b) => b.price - a.price,
   stockascending: (a, b) => a.stock - b.stock,

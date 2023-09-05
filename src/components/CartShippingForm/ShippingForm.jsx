@@ -1,21 +1,27 @@
-"use client"
+"use client";
 import { useState, useEffect } from "react";
-import { Modal, ModalContent, useDisclosure, Button, ModalHeader, ModalBody, ModalFooter, Input } from "@nextui-org/react";
-import { newOrder, getUserById, updateProductStock } from "@/utils/api";
-import api from "@/utils/axios";
+import {
+  Modal,
+  ModalContent,
+  useDisclosure,
+  Button,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Input,
+} from "@nextui-org/react";
+import { newOrder, getUserById } from "@/utils/api";
 import { useRouter } from "next/navigation";
-import { useDispatch } from "react-redux";
-
 
 const userInitailLoad = async (userId) => {
-  const { clerkData } = await getUserById(userId)
+  const { clerkData } = await getUserById(userId);
   const userData = {
     firstName: clerkData.firstName,
     lastName: clerkData.lastName,
-    email: clerkData.emailAddresses[0].emailAddress
-  }
-  return userData
-}
+    email: clerkData.emailAddresses[0].emailAddress,
+  };
+  return userData;
+};
 
 const validateField = (fieldName, value) => {
   const validators = {
@@ -28,8 +34,7 @@ const validateField = (fieldName, value) => {
       message: "Only characters are accepted.",
     },
     email: {
-      validate: (value) =>
-        /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(value),
+      validate: (value) => /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(value),
       message: "Email not valid.",
     },
     postalCode: {
@@ -37,7 +42,10 @@ const validateField = (fieldName, value) => {
       message: "Postal code value execed limite max(10).",
     },
     phoneNumber: {
-      validate: (value) => /(\(?\d{3}\)?[- .]?\d{4}[- .]?\d\d\d\d)|(\(?\d{4}\)?[- .]?\d{3}[- .]?\d\d\d\d)|(\(?\d{5}\)?[- .]?\d{2}[- .]?\d\d\d\d)/.test(value),
+      validate: (value) =>
+        /(\(?\d{3}\)?[- .]?\d{4}[- .]?\d\d\d\d)|(\(?\d{4}\)?[- .]?\d{3}[- .]?\d\d\d\d)|(\(?\d{5}\)?[- .]?\d{2}[- .]?\d\d\d\d)/.test(
+          value
+        ),
       message: "Phone number not valid.",
     },
   };
@@ -50,11 +58,10 @@ const validateField = (fieldName, value) => {
 };
 
 const ShippingForm = ({ userId, cartItems }) => {
-
-  const [loading, setLoading] = useState()
-  const [disabled, setDisabled] = useState(true)
-  const router = useRouter()
-  const { isOpen, onOpen, onOpenChange } = useDisclosure()
+  const [loading, setLoading] = useState();
+  const [disabled, setDisabled] = useState(true);
+  const router = useRouter();
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const [shippingData, setShippingData] = useState({
     firstName: "",
@@ -64,7 +71,7 @@ const ShippingForm = ({ userId, cartItems }) => {
     number: "",
     phoneNumber: "",
     postalCode: "",
-    email: ""
+    email: "",
   });
 
   const [errors, setErrors] = useState({
@@ -75,9 +82,8 @@ const ShippingForm = ({ userId, cartItems }) => {
     number: "",
     phoneNumber: "",
     postalCode: "",
-    email: ""
+    email: "",
   });
-
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -88,16 +94,22 @@ const ShippingForm = ({ userId, cartItems }) => {
     setErrors({ ...errors, [name]: errorMessage });
   };
   useEffect(() => {
-    const requiredFields = ["firstName", "lastName", "street", "number", "phoneNumber", "postalCode", "email"];
+    const requiredFields = [
+      "firstName",
+      "lastName",
+      "street",
+      "number",
+      "phoneNumber",
+      "postalCode",
+      "email",
+    ];
     const hasErrors = requiredFields.some((field) => !!errors[field]);
     const allFieldsFilled = requiredFields.every((field) => !!shippingData[field]);
 
     setDisabled(hasErrors || !allFieldsFilled);
   }, [errors, shippingData]);
 
-
   useEffect(() => {
-
     const loadInitialData = async () => {
       try {
         const initialData = await userInitailLoad(userId);
@@ -117,7 +129,6 @@ const ShippingForm = ({ userId, cartItems }) => {
 
   return (
     <>
-     
       <Button className="font-bold" color="primary" onPress={onOpen}>
         Finalizar Compra
       </Button>
@@ -125,23 +136,15 @@ const ShippingForm = ({ userId, cartItems }) => {
         <ModalContent>
           {(onClose) => {
             const handleSubmit = async () => {
-              setLoading(true)
-              
+              setLoading(true);
+
               try {
-                
                 const items = cartItems.map((item) => ({
                   id: item.id,
                   quantity: item.quantity,
                   unit_price: item.price,
                 }));
-               for (const item of items) {
-                  const { data } = await api.get(`/product/${item.id}`);
-                  const updatedStock = data.stock - item.quantity
-                  await updateProductStock(item.id, updatedStock )
-                
-                  }
-                
-            
+
                 const payer = {
                   clerkId: userId,
                   name: shippingData.firstName.trim() + " " + shippingData.lastName.trim(),
@@ -150,13 +153,12 @@ const ShippingForm = ({ userId, cartItems }) => {
                   cp: shippingData.postalCode,
                   phone: shippingData.phoneNumber,
                 };
-            
+
                 const response = await newOrder(items, payer);
-                
+
                 router.push(response.paymentURL);
-                setLoading(false)
+                setLoading(false);
                 onClose();
-              
               } catch (error) {
                 console.log(error);
                 setLoading(false);
@@ -231,7 +233,6 @@ const ShippingForm = ({ userId, cartItems }) => {
                     isRequired
                   />
                   {errors.postalCode && <p className="text-danger">{errors.postalCode}</p>}
-
                 </ModalBody>
                 <ModalFooter className="flex justify-center">
                   <Button
