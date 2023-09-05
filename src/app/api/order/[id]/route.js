@@ -32,7 +32,7 @@ export async function GET(_, { params }) {
   }
 }
 
-export async function PUT(req, { params }) {
+export async function PATCH(req, { params }) {
   try {
     connectDB();
     const { id } = params;

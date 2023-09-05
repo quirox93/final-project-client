@@ -21,7 +21,7 @@ const PurchasedModalReview = ({ clerkId, itemId, itemReviews, updateReview }) =>
     message: "",
   };
 
-
+  
   const [rating, setRating] = useState(existingReview.score);
   const [isLoading, setIsLoading] = useState(false);
   const [description, setDescription] = useState(existingReview.message);

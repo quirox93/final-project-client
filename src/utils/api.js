@@ -55,6 +55,19 @@ export async function addReview(id, body) {
   });
   return await data.json();
 }
+
+export async function updateProductStock(id, newStock) {
+  const data = await fetch(`${host}/product/${id}`, {
+    method: "PATCH",
+    body: JSON.stringify({ stock: newStock }),
+    next: { revalidate: 0 },
+    headers: {
+      "Content-type": "application/json; charset=UTF-8",
+    },
+  });
+  return await data.json();
+}
+
 export async function getAllUsers() {
   const data = await fetch(`${host}/user`, { next: { revalidate: 0 } });
   return await data.json();
@@ -77,6 +90,18 @@ export async function newOrder(items, payer) {
   const data = await fetch(`${host}/order`, {
     method: "POST",
     body: JSON.stringify({ items, payer }),
+    next: { revalidate: 0 },
+    headers: {
+      "Content-type": "application/json; charset=UTF-8",
+    },
+  });
+  return await data.json();
+}
+
+export async function updateOrder(id, values) {
+  const data = await fetch(`${host}/order/${id}`, {
+    method: "PATCH",
+    body: JSON.stringify(values),
     next: { revalidate: 0 },
     headers: {
       "Content-type": "application/json; charset=UTF-8",

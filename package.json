@@ -19,6 +19,8 @@
     "eslint": "8.46.0",
     "eslint-config-next": "13.4.13",
     "framer-motion": "^10.16.1",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^2.5.1",
     "mercadopago": "^1.5.17",
     "mongoose": "^7.4.2",
     "mongoose-autopopulate": "^1.0.1",
