@@ -3,15 +3,16 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 // First, create the thunk
 export const selectedProducts = createAsyncThunk("content/selectedProducts", async (payload) => {
-  const { clerkId } = payload;
-  if (!clerkId) return [];
-  updateUser("user_2UDAMiSxw6OcggJBe0F1Ak9jL41", {
-    cart: [
-      {
-        id: "64d967c36baea30ee160c130",
-        quantity: 1,
-      },
-    ],
+  const { userId, items } = payload;
+  if (!userId) return [];
+  updateUser(userId, {
+    cart: items.map((e) => {
+      const res = {
+        id: e.id,
+        quantity: e.quantity,
+      };
+      return res;
+    }),
   });
   return [];
 });
