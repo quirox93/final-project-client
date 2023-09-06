@@ -66,7 +66,7 @@ export async function getUserById(clerkId) {
   return await data.json();
 }
 export async function updateUser(id, values) {
-  const data = await fetch(`${host}/order/${id}`, {
+  const data = await fetch(`${host}/user/${id}`, {
     method: "PATCH",
     body: JSON.stringify(values),
     next: { revalidate: 0 },

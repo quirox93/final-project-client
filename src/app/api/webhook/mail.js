@@ -15,9 +15,9 @@ export const transporter = nodemailer.createTransport({
   },
 });
 
-export const purchaseNotification = (dbOrder) => {
+export const purchaseNotification = (dbOrder, host) => {
   const generateTableRows = () => {
-    let tableRows = ""; 
+    let tableRows = "";
     let totalAmount = 0;
 
     dbOrder.items.forEach((item) => {
@@ -36,7 +36,7 @@ export const purchaseNotification = (dbOrder) => {
       `;
     });
 
-    return { tableRows, totalAmount }; 
+    return { tableRows, totalAmount };
   };
   const { tableRows, totalAmount } = generateTableRows();
   return {
@@ -105,11 +105,9 @@ body {
       </tr>
       ${tableRows} 
     </table>
-    <p>Total Amount: <strong>${totalAmount.toFixed(
-      2
-    )}</strong></p> 
+    <p>Total Amount: <strong>${totalAmount.toFixed(2)}</strong></p> 
 <p>Thank you for shopping with us!</p>
-<p><a class="button" href="https://example.com">Track Your Order</a></p>
+<p><a class="button" href="${host}/purchases">Track Your Order</a></p>
 <p>If you have any questions, feel free to contact our customer support.</p>
 <p>Best regards,</p>
 <p>The Online Store Team</p>
