@@ -1,6 +1,5 @@
 "use client";
 import { Bar } from "react-chartjs-2";
-import {values, day} from "./data.js";
 import { useState, useEffect } from "react";
 import {
   Chart as ChartJS,
@@ -21,28 +20,28 @@ ChartJS.register(
   Legend
 );
 
+const StatsBar = ({title, date, value}) => {
 
-const StatsBar = () => {
+  
   const [barData, setBarData] = useState({
     datasets: [],
   });
 
-const [barOptions, setBarOptions] = useState({});
+  const [barOptions, setBarOptions] = useState({});
 
   useEffect(() => {
     setBarData({
-      labels: day,
+      labels: date,
       datasets: [
         {
           label: "Sales $",
-          data: values,
+          data: value,
           borderColor: "#0070F0",
           backgroundColor: "#0070F0",
           borderRadius: 25,
           barPercentage: 0.5,
-          hoverBackgroundColor:"#519aed",
-          hoverBorderColor:"#0070F0"
-          
+          hoverBackgroundColor: "#519aed",
+          hoverBorderColor: "#0070F0",
         },
       ],
     });
@@ -53,13 +52,13 @@ const [barOptions, setBarOptions] = useState({});
         },
         title: {
           display: true,
-          text: "Daily Revenue",
+          text: title,
         },
       },
       maintainAspectRatio: false,
       responsive: true,
     });
-  }, []);
+  }, [date]);
   return <Bar options={barOptions} data={barData} />;
 };
 

@@ -17,7 +17,7 @@ import {
   Image,
   Input,
 } from "@nextui-org/react";
-import { selectedProducts } from "@/store/slice";
+import { fetchCartById, selectedProducts } from "@/store/slice";
 import { useParams } from "next/navigation";
 import { PageWrapper } from "@/components/PageWrapper/PageWrapper";
 import StarRatings from "react-star-ratings";
@@ -25,9 +25,7 @@ import ReviewsDetail from "@/components/ReviewsDetail/ReviewsDetail";
 
 export default function ProductDetail() {
   const dispatch = useDispatch();
-  const selectionProducts = useSelector(
-    (state) => state.shopCart.selectionProducts
-  );
+  const selectionProducts = useSelector((state) => state.shopCart.selectionProducts);
   const [product, setProduct] = useState(null);
   const [averageRating, setAverageRating] = useState(0);
   const [showModal, setShowModal] = useState(false);
@@ -35,7 +33,6 @@ export default function ProductDetail() {
   const [quantity, setQuantity] = useState(1);
   const params = useParams();
   const { id } = params;
-  
 
   const breadCrumbs = [
     { name: "Home", url: "/" },
@@ -67,14 +64,9 @@ export default function ProductDetail() {
       alignedProduct.date = formattedDate;
 
       setProduct(alignedProduct);
-      const totalScores = alignedProduct.reviews.reduce(
-        (sum, review) => sum + review.score,
-        0
-      );
+      const totalScores = alignedProduct.reviews.reduce((sum, review) => sum + review.score, 0);
       const avgRating =
-        alignedProduct.reviews.length > 0
-          ? totalScores / alignedProduct.reviews.length
-          : 0;
+        alignedProduct.reviews.length > 0 ? totalScores / alignedProduct.reviews.length : 0;
       setAverageRating(avgRating);
     };
     fetchProduct();
@@ -152,21 +144,12 @@ export default function ProductDetail() {
                   starSpacing="2px"
                   name="rating"
                 />
-                <span className="text-yellow-500">
-                  {averageRating.toFixed(1)}
-                </span>
+                <span className="text-yellow-500">{averageRating.toFixed(1)}</span>
 
-                <svg
-                  width="6px"
-                  height="6px"
-                  viewBox="0 0 6 6"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
+                <svg width="6px" height="6px" viewBox="0 0 6 6" xmlns="http://www.w3.org/2000/svg">
                   <circle cx="3" cy="3" r="3" fill="#DBDBDB" />
                 </svg>
-                {product.reviews.length > 0 && (
-                  <span className="text-green-500">Reviewed</span>
-                )}
+                {product.reviews.length > 0 && <span className="text-green-500">Reviewed</span>}
               </div>
             </CardBody>
             <Divider />
@@ -176,21 +159,11 @@ export default function ProductDetail() {
             <Divider />
             <CardBody>
               {product.stock === 0 ? (
-                <Chip
-                  className="capitalize"
-                  color="danger"
-                  size="sm"
-                  variant="flat"
-                >
+                <Chip className="capitalize" color="danger" size="sm" variant="flat">
                   Out of stock
                 </Chip>
               ) : (
-                <Chip
-                  className="capitalize"
-                  color="success"
-                  size="sm"
-                  variant="flat"
-                >
+                <Chip className="capitalize" color="success" size="sm" variant="flat">
                   Available
                 </Chip>
               )}
@@ -228,9 +201,7 @@ export default function ProductDetail() {
                   placeholder="0"
                   labelPlacement="inside"
                   className="mb-2"
-                  startContent={
-                    <div className="pointer-events-none flex items-center"></div>
-                  }
+                  startContent={<div className="pointer-events-none flex items-center"></div>}
                 />
                 <ProductPopOver 
                 popoverOpen={popoverOpen}
