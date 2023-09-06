@@ -3,6 +3,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import api from "../../../utils/axios";
+import { handleAddToCart } from "@/utils/cartUtils";
 import AlertModalStock from "@/components/AlertModalStock";
 import BreadCrumbs from "@/components/BreadCrumbs/BreadCrumbs";
 import ProductPopOver from "@/components/ProductPopOver/ProductPopOver";
@@ -92,38 +93,16 @@ export default function ProductDetail() {
     };
   }, [popoverOpen]);
 
-  const handleAddToCart = () => {
-    if (quantity > product.stock) {
-      setShowModal(true);
-      return;
-    }
-
-    const existingProduct = selectionProducts.find((p) => p.id === product.id);
-
-    if (existingProduct) {
-      const newQuantity = existingProduct.quantity + quantity;
-
-      if (newQuantity <= product.stock) {
-        const updatedSelectionProducts = selectionProducts.map((p) =>
-          p.id === product.id ? { ...p, quantity: newQuantity } : p
-        );
-
-        dispatch(selectedProducts(updatedSelectionProducts));
-        setPopoverOpen(true);
-      } else {
-        setShowModal(true);
-      }
-    } else {
-      const newProduct = {
-        ...product,
-        quantity: quantity,
-      };
-
-      dispatch(selectedProducts([...selectionProducts, newProduct]));
-      setPopoverOpen(true);
-    }
-
-    setQuantity(1);
+  const handleAddToCartWrapper = () => {
+    handleAddToCart({
+      id: product.id,
+      name : product.name,
+      image: product.image,
+      description: product.description,
+      stock: product.stock,
+      price: product.price,
+      quantity,
+    }, selectionProducts, dispatch, setShowModal, setPopoverOpen, selectedProducts, setQuantity);
   };
 
   if (!product) {
@@ -255,7 +234,7 @@ export default function ProductDetail() {
                 />
                 <ProductPopOver 
                 popoverOpen={popoverOpen}
-                handleAddToCart={handleAddToCart}
+                handleAddToCart={handleAddToCartWrapper}
                 quantity={quantity}
                 stock={product.stock}
                 />
