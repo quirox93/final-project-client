@@ -1,6 +1,6 @@
 import OrdersTable from "./OrdersTable";
 import { formatOrders } from "./data";
-import { getAllOrders, getUserById } from "@/utils/api";
+import { getAllOrders } from "@/utils/api";
 
 const loaderOrders = async () => await getAllOrders();
 
