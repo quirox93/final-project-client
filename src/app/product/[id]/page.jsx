@@ -5,11 +5,8 @@ import { useState, useEffect } from "react";
 import api from "../../../utils/axios";
 import AlertModalStock from "@/components/AlertModalStock";
 import BreadCrumbs from "@/components/BreadCrumbs/BreadCrumbs";
+import ProductPopOver from "@/components/ProductPopOver/ProductPopOver";
 import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  Button,
   Card,
   CardHeader,
   CardBody,
@@ -17,8 +14,9 @@ import {
   Divider,
   Chip,
   Image,
+  Input,
 } from "@nextui-org/react";
-import { selectedProducts } from "@/store/slice";
+import { fetchCartById, selectedProducts } from "@/store/slice";
 import { useParams } from "next/navigation";
 import { PageWrapper } from "@/components/PageWrapper/PageWrapper";
 import StarRatings from "react-star-ratings";
@@ -26,9 +24,7 @@ import ReviewsDetail from "@/components/ReviewsDetail/ReviewsDetail";
 
 export default function ProductDetail() {
   const dispatch = useDispatch();
-  const selectionProducts = useSelector(
-    (state) => state.shopCart.selectionProducts
-  );
+  const selectionProducts = useSelector((state) => state.shopCart.selectionProducts);
   const [product, setProduct] = useState(null);
   const [averageRating, setAverageRating] = useState(0);
   const [showModal, setShowModal] = useState(false);
@@ -67,14 +63,9 @@ export default function ProductDetail() {
       alignedProduct.date = formattedDate;
 
       setProduct(alignedProduct);
-      const totalScores = alignedProduct.reviews.reduce(
-        (sum, review) => sum + review.score,
-        0
-      );
+      const totalScores = alignedProduct.reviews.reduce((sum, review) => sum + review.score, 0);
       const avgRating =
-        alignedProduct.reviews.length > 0
-          ? totalScores / alignedProduct.reviews.length
-          : 0;
+        alignedProduct.reviews.length > 0 ? totalScores / alignedProduct.reviews.length : 0;
       setAverageRating(avgRating);
     };
     fetchProduct();
@@ -174,21 +165,12 @@ export default function ProductDetail() {
                   starSpacing="2px"
                   name="rating"
                 />
-                <span className="text-yellow-500">
-                  {averageRating.toFixed(1)}
-                </span>
+                <span className="text-yellow-500">{averageRating.toFixed(1)}</span>
 
-                <svg
-                  width="6px"
-                  height="6px"
-                  viewBox="0 0 6 6"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
+                <svg width="6px" height="6px" viewBox="0 0 6 6" xmlns="http://www.w3.org/2000/svg">
                   <circle cx="3" cy="3" r="3" fill="#DBDBDB" />
                 </svg>
-                {product.reviews.length > 0 && (
-                  <span className="text-green-500">Reviewed</span>
-                )}
+                {product.reviews.length > 0 && <span className="text-green-500">Reviewed</span>}
               </div>
             </CardBody>
             <Divider />
@@ -198,21 +180,11 @@ export default function ProductDetail() {
             <Divider />
             <CardBody>
               {product.stock === 0 ? (
-                <Chip
-                  className="capitalize"
-                  color="danger"
-                  size="sm"
-                  variant="flat"
-                >
+                <Chip className="capitalize" color="danger" size="sm" variant="flat">
                   Out of stock
                 </Chip>
               ) : (
-                <Chip
-                  className="capitalize"
-                  color="success"
-                  size="sm"
-                  variant="flat"
-                >
+                <Chip className="capitalize" color="success" size="sm" variant="flat">
                   Available
                 </Chip>
               )}
@@ -232,30 +204,33 @@ export default function ProductDetail() {
             </CardBody>
             <Divider />
             <CardFooter>
-              <Popover
-                placement="right"
-                offset={20}
-                showArrow
-                isOpen={popoverOpen}
-              >
-                <PopoverTrigger>
-                  <Button
-                    className="m-auto"
-                    color="primary"
-                    aria-label="Like"
-                    onClick={handleAddToCart}
-                    disabled={product.stock === 0}
-                  >
-                    Add to Cart
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent>
-                  <div className="px-1 py-2">
-                    <div className="text-small font-bold">Products</div>
-                    <div className="text-tiny">Added {quantity}</div>
-                  </div>
-                </PopoverContent>
-              </Popover>
+              <div className="flex-column justify-center items-center m-auto">
+                <Input
+                  type="number"
+                  label="Quantity"
+                  onChange={(e) => {
+                    let inputValue = parseInt(e.target.value);
+                    if (isNaN(inputValue) || inputValue < 1) {
+                      inputValue = 1;
+                    } else if (inputValue > product.stock) {
+                      inputValue = product.stock;
+                    }
+                    setQuantity(inputValue);
+                  }}
+                  value={quantity}
+                  color="primary"
+                  placeholder="0"
+                  labelPlacement="inside"
+                  className="mb-2"
+                  startContent={<div className="pointer-events-none flex items-center"></div>}
+                />
+                <ProductPopOver
+                  popoverOpen={popoverOpen}
+                  handleAddToCart={handleAddToCart}
+                  quantity={quantity}
+                  stock={product.stock}
+                />
+              </div>
             </CardFooter>
           </Card>
         </div>
