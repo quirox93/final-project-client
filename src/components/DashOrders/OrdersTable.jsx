@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import React from "react";
-import NameOrders from "./nameOrders";
+import NameOrders from "./NameOrders";
 import {formatDate} from "../PurchasedProducts/utils"
 import {
   Table,
