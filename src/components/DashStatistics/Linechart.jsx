@@ -12,7 +12,7 @@ import {
 } from "chart.js";
 
 const Linechart = ({ date, value, title }) => {
-    console.log(value)
+    
     ChartJS.register(
     CategoryScale,
     LinearScale,
