@@ -7,6 +7,10 @@ export async function getAllProducts() {
   const data = await fetch(`${host}/product`, { next: { revalidate: 0 } });
   return await data.json();
 }
+export async function getProductById(id) {
+  const data = await fetch(`${product}/user/${id}`, { next: { revalidate: 0 } });
+  return await data.json();
+}
 export async function updateProduct(id, body) {
   const data = await fetch(`${host}/product/${id}`, {
     method: "PUT",
