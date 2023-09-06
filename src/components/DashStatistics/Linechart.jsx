@@ -1,18 +1,19 @@
-import {values, day} from "./data.js";
-import { Line } from 'react-chartjs-2';
+import { Line } from "react-chartjs-2";
 import {
-    Chart as ChartJS,
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement,
-    Title,
-    Tooltip,
-    Legend,
-    Filler,
-} from 'chart.js';
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+  Filler,
+} from "chart.js";
 
-ChartJS.register(
+const Linechart = ({ date, value, title }) => {
+    console.log(value)
+    ChartJS.register(
     CategoryScale,
     LinearScale,
     PointElement,
@@ -21,46 +22,40 @@ ChartJS.register(
     Tooltip,
     Legend,
     Filler
-);
+  );
 
-
-var midata = {
-    labels: day,
-    datasets: [ // Cada una de las líneas del gráfico
-        {
-            label: 'Beneficios',
-            data: values,
-            tension: 0.5,
-            fill : true,
-            borderColor: 'rgb(255, 99, 132)',
-            backgroundColor: 'rgba(255, 99, 132, 0.5)',
-            pointRadius: 5,
-            pointBorderColor: 'rgba(255, 99, 132)',
-            pointBackgroundColor: 'rgba(255, 99, 132)',
-        },
-       
+  var midata = {
+    labels: date,
+    datasets: [
+      // Cada una de las líneas del gráfico
+      {
+        label: title,
+        data: value,
+        tension: 0.5,
+        fill: true,
+        borderColor: "rgb(255, 99, 132)",
+        backgroundColor: "rgba(255, 99, 132, 0.5)",
+        pointRadius: 5,
+        pointBorderColor: "rgba(255, 99, 132)",
+        pointBackgroundColor: "rgba(255, 99, 132)",
+      },
     ],
-};
+  };
 
-var misoptions = {
-    scales : {
-        y : {
-            min : 0
-        },
-        x: {
-            ticks: { color: 'gray'}
-        }
+  var misoptions = {
+    scales: {
+      y: {
+        min: 0,
+      },
+      x: {
+        ticks: { color: "gray" },
+      },
     },
     maintainAspectRatio: false,
     responsive: true,
-     
+  };
+
+  return <Line data={midata} options={misoptions} />;
 };
 
-const Linechart = () => {
-  return (
-    <Line data={midata} options={misoptions}/>
-  )
-}
-
-export default Linechart
-
+export default Linechart;

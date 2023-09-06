@@ -1,10 +1,11 @@
 import OrdersTable from "./OrdersTable";
-import { formatOrders, order } from "./data";
-import { getAllOrders } from "@/utils/api";
+import { formatOrders } from "./data";
+import { getAllOrders, getUserById } from "@/utils/api";
 
 const loaderOrders = async () => await getAllOrders();
+
 const columns = [
-  { name: "Id", uid: "id", sortable: true },
+  { name: "Id", uid: "id" },
   { name: "Name", uid: "name", sortable: true },
   { name: "Status", uid: "status", sortable: true },
   { name: "Purchase Date", uid: "createdAt", sortable: true },
@@ -13,10 +14,17 @@ const columns = [
   { name: "Actions", uid: "actions" },
 ];
 
-const INITIAL_VISIBLE_COLUMNS = ["name", "status", "statusMp", "actions"];
+const INITIAL_VISIBLE_COLUMNS = [
+  "name",
+  "status",
+  "statusMp",
+  "createdAt",
+  "actions",
+];
 export const revalidate = 0;
 export default async function Orders() {
   const orders = formatOrders(await loaderOrders());
+
   const statusOptions = [
     { name: "Success", uid: "Success" },
     { name: "Sent", uid: "Sent" },
