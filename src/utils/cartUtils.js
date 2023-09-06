@@ -39,7 +39,7 @@ export const handleAddToCart = (
     };
     const updatedSelectionProducts = [...selectionProducts, newProduct];
     if (userId) dispatch(selectedProducts({ userId, items: updatedSelectionProducts }));
-    else dispatch(selectedProducts([...selectionProducts, newProduct]));
+    else dispatch(selectedProducts(updatedSelectionProducts));
   }
 
   setQuantity(quantity);

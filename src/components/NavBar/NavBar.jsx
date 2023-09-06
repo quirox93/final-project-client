@@ -13,12 +13,19 @@ import {
   NavbarMenu,
   NavbarMenuItem,
 } from "@nextui-org/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import logo from "../../../public/LogoGod.svg";
 import Image from "next/image";
+import { useDispatch } from "react-redux";
+import { selectedProducts } from "@/store/slice";
 
-export default function NavBar({ isAdmin }) {
+export default function NavBar({ isAdmin, cart }) {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (cart) dispatch(selectedProducts(cart));
+  }, [cart]);
+
   const path = usePathname();
 
   const { isSignedIn } = useUser();
@@ -36,7 +43,7 @@ export default function NavBar({ isAdmin }) {
     { name: "Home", path: "/" },
     { name: "Cart", path: "/cart" },
     { name: "Products", path: "/dashboard/products" },
-    {name:"Purchases", path:"/purchases/id"}
+    { name: "Purchases", path: "/purchases/id" },
   ];
 
   return (

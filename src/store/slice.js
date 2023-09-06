@@ -5,6 +5,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 export const selectedProducts = createAsyncThunk("content/selectedProducts", async (payload) => {
   const { userId, items } = payload;
   if (!userId) return payload;
+  console.log(payload);
   updateUser(userId, {
     cart: items.map((e) => {
       const res = {
