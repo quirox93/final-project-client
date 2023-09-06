@@ -4,7 +4,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 // First, create the thunk
 export const selectedProducts = createAsyncThunk("content/selectedProducts", async (payload) => {
   const { userId, items } = payload;
-  if (!userId) return [];
+  if (!userId) return payload;
   updateUser(userId, {
     cart: items.map((e) => {
       const res = {
@@ -14,7 +14,7 @@ export const selectedProducts = createAsyncThunk("content/selectedProducts", asy
       return res;
     }),
   });
-  return [];
+  return items;
 });
 
 export const Slice = createSlice({
@@ -32,8 +32,8 @@ export const Slice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(selectedProducts.fulfilled, (state, { payload, meta }) => {
-      if (payload) state.selectionProducts = meta.arg;
+    builder.addCase(selectedProducts.fulfilled, (state, { payload }) => {
+      if (payload) state.selectionProducts = payload;
     });
   },
 });
