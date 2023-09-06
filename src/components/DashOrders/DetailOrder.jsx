@@ -30,7 +30,12 @@ function DetailOrder({
     const input = pdfRef.current;
     captureView(input);
   };
-
+  const statusOrder = (status) => {
+    if(status === 'Success') return 'Delivered';
+    if(status === 'Sent') return 'Order Shipped';
+    if(status === 'Pending') return 'Processing Order';
+    return 'cancelled order';
+  }
   return (
     <div>
       <Modal
@@ -92,12 +97,8 @@ function DetailOrder({
                     <h2 className="m-2 font-bold">Order summary</h2>
                     <h4 className="m-2 text-default-500 text-small">
                       Date of shipment:{" "}
-                      <span className=" text-orange-500">
-                        {order.status == "Success"
-                          ? "Enviado en XXX fecha"
-                          : order.status == "Pending"
-                          ? "Pending shipment"
-                          : "Canceled order"}
+                      <span className =" text-orange-500">
+                        {statusOrder(order.status)}
                       </span>
                     </h4>
                     <h4 className="m-2 text-default-500 text-small">
