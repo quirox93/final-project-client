@@ -1,13 +1,14 @@
-const { NextRequest, NextResponse } = require("next/server");
+const { NextResponse } = require("next/server");
 import mercadopago from "mercadopago";
-import { GMAIL_MAIL, GMAIL_PASS, MP_TOKEN } from "@/utils/config";
-import nodemailer from "nodemailer";
+import { MP_TOKEN } from "@/utils/config";
 import { getOrderById } from "@/utils/api";
 import { purchaseNotification, transporter } from "../mail";
 import Order from "@/models/Order";
 
 export async function POST(req) {
   try {
+    const host = req.nextUrl.origin;
+
     mercadopago.configure({
       access_token: MP_TOKEN,
     });
@@ -22,7 +23,7 @@ export async function POST(req) {
       if (status === "approved") {
         const dbOrder = await getOrderById(preference_id);
         await Order.findOneAndUpdate({ mpId: preference_id }, { mpStatus: status });
-        await transporter.sendMail(purchaseNotification(dbOrder));
+        await transporter.sendMail(purchaseNotification(dbOrder, host));
       }
     }
     return NextResponse.json({ message: "OK" }, { status: 200 });

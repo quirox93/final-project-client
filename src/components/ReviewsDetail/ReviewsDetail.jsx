@@ -3,7 +3,7 @@ import { rate } from "../PurchasedModalReview/utils";
 import StarRatings from "react-star-ratings";
 
 const ReviewsDetail = ({ reviews }) => {
-  console.log(reviews);
+  
 
   return (
     <div>

@@ -24,12 +24,12 @@ export async function POST(req) {
     connectDB();
     const data = await req.json();
     const host = req.nextUrl.origin;
-    let notification_url = host === "http://localhost:3000" ? "" : `${host}/api/payment/webhook`;
-    if (NOTIFICATION_URL) notification_url = NOTIFICATION_URL + "/api/payment/webhook";
+    let notification_url = host === "http://localhost:3000" ? "" : `${host}/api/webhook`;
+    if (NOTIFICATION_URL) notification_url = NOTIFICATION_URL + "/api/webhook";
     mercadopago.configure({
       access_token: MP_TOKEN,
     });
-    console.log(notification_url)
+    console.log(notification_url);
     const mpResult = await mercadopago.preferences.create({
       items: data.items,
       back_urls: {

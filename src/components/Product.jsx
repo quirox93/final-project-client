@@ -1,15 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import {
-  Button,
   Input,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
   Divider,
   Chip,
 } from "@nextui-org/react";
 import AlertModalStock from "./AlertModalStock";
+import ProductPopOver from "./ProductPopOver/ProductPopOver";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
@@ -150,24 +147,12 @@ export default function Product(props) {
               <div className="pointer-events-none flex items-center"></div>
             }
           />
-          <Popover placement="left" offset={60} showArrow isOpen={popoverOpen}>
-            <PopoverTrigger>
-              <Button
-                className=" flex mt-5  bg-primary rounded text-white m-auto  hover:shadow-lg hover:shadow-primary-500/50"
-                onClick={handleAddToCart}
-                disabled={props.stock === 0}
-                size="sm"
-              >
-                Add
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent>
-              <div className="px-1 py-2">
-                <div className="text-small font-bold">Products</div>
-                <div className="text-tiny">Added {quantity}</div>
-              </div>
-            </PopoverContent>
-          </Popover>
+          <ProductPopOver 
+            popoverOpen={popoverOpen}
+            handleAddToCart={handleAddToCart}
+            quantity={quantity}
+            stock={props.stock}
+          />
         </div>
       </div>
     </motion.div>
