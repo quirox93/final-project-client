@@ -17,12 +17,12 @@ import {
 } from "@nextui-org/react";
 
 const PurchasedProducts = ({ initOrders, clerkId }) => {
-  console.log(initOrders);
   const [orders, setOrders] = useState(initOrders);
 
-  const updateReview = (id, score, message) => {
+  const updateReview = (itemId, id, score, message) => {
     const newOrders = orders.map((e) => {
       e.items.map((product) => {
+        if (product._id._id !== itemId) return product;
         const review = product._id.reviews.find((r) => r.clerkId === id);
         if (review) {
           review.message = message;

@@ -7,6 +7,10 @@ export async function getAllProducts() {
   const data = await fetch(`${host}/product`, { next: { revalidate: 0 } });
   return await data.json();
 }
+export async function getProductById(id) {
+  const data = await fetch(`${host}/product/${id}`, { next: { revalidate: 0 } });
+  return await data.json();
+}
 export async function updateProduct(id, body) {
   const data = await fetch(`${host}/product/${id}`, {
     method: "PUT",
@@ -56,18 +60,6 @@ export async function addReview(id, body) {
   return await data.json();
 }
 
-export async function updateProductStock(id, newStock) {
-  const data = await fetch(`${host}/product/${id}`, {
-    method: "PATCH",
-    body: JSON.stringify({ stock: newStock }),
-    next: { revalidate: 0 },
-    headers: {
-      "Content-type": "application/json; charset=UTF-8",
-    },
-  });
-  return await data.json();
-}
-
 export async function getAllUsers() {
   const data = await fetch(`${host}/user`, { next: { revalidate: 0 } });
   return await data.json();
@@ -75,6 +67,17 @@ export async function getAllUsers() {
 
 export async function getUserById(clerkId) {
   const data = await fetch(`${host}/user/${clerkId}`, { next: { revalidate: 0 } });
+  return await data.json();
+}
+export async function updateUser(id, values) {
+  const data = await fetch(`${host}/user/${id}`, {
+    method: "PATCH",
+    body: JSON.stringify(values),
+    next: { revalidate: 0 },
+    headers: {
+      "Content-type": "application/json; charset=UTF-8",
+    },
+  });
   return await data.json();
 }
 

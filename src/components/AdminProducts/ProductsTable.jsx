@@ -24,7 +24,6 @@ export default async function ProductsTable() {
     <div className="p-4 z-0 flex flex-col relative justify-between gap-4 bg-content1 overflow-auto rounded-large shadow-small max-w-ld ">
       {
         <AdminProducts
-          mode={"product"}
           defItems={products.results}
           columns={columns}
           statusOptions={statusOptions}

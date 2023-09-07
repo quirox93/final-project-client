@@ -1,18 +1,29 @@
-"use client"
-import React from 'react';
-import { useDispatch } from 'react-redux';
-import { selectedProducts } from "@/store/slice";
-import { Button, Card, CardHeader, CardBody, CardFooter, Divider, Link, Image, Modal, ModalContent } from "@nextui-org/react";
-import { useRouter, useSearchParams } from 'next/navigation';
+"use client";
+import React from "react";
+import { useDispatch } from "react-redux";
+import { updateCart } from "@/store/slice";
+import {
+  Button,
+  Card,
+  CardHeader,
+  CardBody,
+  CardFooter,
+  Divider,
+  Link,
+  Image,
+  Modal,
+  ModalContent,
+} from "@nextui-org/react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const CartSuccess = ({ userId, isOpen, onClose }) => {
   const searchParams = useSearchParams(); // Obtener parámetros de la URL
   const router = useRouter();
   const dispatch = useDispatch();
-  dispatch(selectedProducts([]));
+  dispatch(updateCart([]));
 
-  const status = searchParams.get('status'); // Estado desde los parámetros de la URL
-  const paymentId = searchParams.get('payment_id'); // ID de pago desde los parámetros de la URL
+  const status = searchParams.get("status"); // Estado desde los parámetros de la URL
+  const paymentId = searchParams.get("payment_id"); // ID de pago desde los parámetros de la URL
 
   return (
     <Modal isOpen={isOpen} onOpenChange={onClose}>
