@@ -1,11 +1,11 @@
 export const handleAddToCart = (
   productData,
-  selectionProducts,
+  cartItems,
   dispatch,
   setShowModal,
   setPopoverOpen,
-  selectedProducts,
-  setQuantity
+  updateCart,
+  setQuantity,
 ) => {
   const { id, name, stock, price, quantity, image, description, userId } = productData;
   if (quantity > stock) {
@@ -13,7 +13,7 @@ export const handleAddToCart = (
     return;
   }
 
-  const existingProduct = selectionProducts.find((product) => product.id === id);
+  const existingProduct = cartItems.find((product) => product.id === id);
 
   if (existingProduct) {
     // Checkear si la cantidad total excede el stock disponible
@@ -22,11 +22,11 @@ export const handleAddToCart = (
       return;
     }
 
-    const updatedSelectionProducts = selectionProducts.map((product) =>
+    const items = cartItems.map((product) =>
       product.id === id ? { ...product, quantity: product.quantity + quantity } : product
     );
-    if (userId) dispatch(selectedProducts({ userId, items: updatedSelectionProducts }));
-    else dispatch(selectedProducts(updatedSelectionProducts));
+    if (userId) dispatch(updateCart({ userId, items }));
+    else dispatch(updateCart(items));
   } else {
     const newProduct = {
       id,
@@ -37,9 +37,9 @@ export const handleAddToCart = (
       description,
       quantity,
     };
-    const updatedSelectionProducts = [...selectionProducts, newProduct];
-    if (userId) dispatch(selectedProducts({ userId, items: updatedSelectionProducts }));
-    else dispatch(selectedProducts(updatedSelectionProducts));
+    const items = [...cartItems, newProduct];
+    if (userId) dispatch(updateCart({ userId, items }));
+    else dispatch(updateCart(items));
   }
 
   setQuantity(quantity);

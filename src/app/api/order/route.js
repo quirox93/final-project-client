@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import { MP_TOKEN, NOTIFICATION_URL } from "@/utils/config";
 import mercadopago from "mercadopago";
 import Product from "@/models/Product";
+import User from "@/models/User";
 
 export async function GET() {
   try {
@@ -40,7 +41,6 @@ export async function POST(req) {
       notification_url,
     });
     const mpId = mpResult.body.id;
-    console.log(mpResult.body.init_point);
 
     const orderData = {
       mpId,
@@ -50,10 +50,12 @@ export async function POST(req) {
     //crear orden si el stock es valido
     const newOrder = await new Order(orderData);
     await newOrder.save();
+    await User.findOneAndUpdate({ clerkId: data.payer.clerkId }, { cart: [] });
 
-    // const allOrder = await Order.find();
     return NextResponse.json({ paymentURL: mpResult.body.init_point }, { status: 201 });
   } catch (error) {
+    console.log(error.message);
+
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

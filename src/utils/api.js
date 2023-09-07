@@ -8,7 +8,7 @@ export async function getAllProducts() {
   return await data.json();
 }
 export async function getProductById(id) {
-  const data = await fetch(`${product}/user/${id}`, { next: { revalidate: 0 } });
+  const data = await fetch(`${host}/product/${id}`, { next: { revalidate: 0 } });
   return await data.json();
 }
 export async function updateProduct(id, body) {

@@ -14,7 +14,7 @@ export const metadata = {
 export default async function RootLayout({ children }) {
   let isAdmin = false;
   const data = auth();
-  let cart = null;
+  let cart = [];
   if (data.userId) {
     try {
       const user = await getUserById(data.userId);
@@ -34,8 +34,6 @@ export default async function RootLayout({ children }) {
         };
         return res;
       });
-      console.log(cart);
-      //dispatch(selectedProducts(cart));
     } catch (error) {
       console.log(error);
     }
@@ -46,7 +44,7 @@ export default async function RootLayout({ children }) {
       <body className={inter.className}>
         <ClerkProvider>
           <Providers>
-            <NavBar isAdmin={isAdmin} cart={cart} />
+            <NavBar isAdmin={isAdmin} userId={data.userId} cart={cart} />
             {children}
           </Providers>
         </ClerkProvider>

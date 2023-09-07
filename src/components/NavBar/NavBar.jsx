@@ -18,12 +18,12 @@ import { usePathname } from "next/navigation";
 import logo from "../../../public/LogoGod.svg";
 import Image from "next/image";
 import { useDispatch } from "react-redux";
-import { selectedProducts } from "@/store/slice";
+import { updateCart } from "@/store/slice";
 
-export default function NavBar({ isAdmin, cart }) {
+export default function NavBar({ isAdmin, cart, userId }) {
   const dispatch = useDispatch();
   useEffect(() => {
-    if (cart) dispatch(selectedProducts(cart));
+    if (cart.length) dispatch(updateCart(cart));
   }, [cart]);
 
   const path = usePathname();
@@ -90,7 +90,7 @@ export default function NavBar({ isAdmin, cart }) {
         )}
       </NavbarContent>
       <NavbarContent justify="end">
-        <NavbarItem>{<ShopCartIcon />}</NavbarItem>
+        <NavbarItem>{<ShopCartIcon userId={userId} />}</NavbarItem>
         <NavbarItem>{loginButton}</NavbarItem>
       </NavbarContent>
       <NavbarMenu>

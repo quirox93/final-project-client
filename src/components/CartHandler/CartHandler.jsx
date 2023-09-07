@@ -1,32 +1,30 @@
-"use client"
+"use client";
 import { useSelector, useDispatch } from "react-redux";
-import { selectedProducts, deletedProducts } from "@/store/slice";
+import { updateCart } from "@/store/slice";
 import CartTable from "@/components/CartTable/CartTable";
 
 const CartHandler = ({ userId }) => {
   const dispatch = useDispatch();
-  const selectedProduct = useSelector((state) => state.shopCart.selectionProducts);
-  
+  const cartItems = useSelector((state) => state.shopCart.cartItems);
+
   function handleRemoveFromCart(id) {
-    dispatch(deletedProducts(id));
+    const items = cartItems.filter((item) => item.id !== id);
+    dispatch(updateCart(userId ? { userId, items } : items));
   }
 
   const handleUpdateQuantity = (id, quantity) => {
     if (isNaN(quantity) || quantity < 0) {
       return;
     }
-    dispatch(
-      selectedProducts(
-        selectedProduct.map((item) =>
-          item.id === id ? { ...item, quantity: Number(quantity) } : item
-        )
-      )
+    const items = cartItems.map((item) =>
+      item.id === id ? { ...item, quantity: Number(quantity) } : item
     );
+    dispatch(updateCart(userId ? { userId, items } : items));
   };
   return (
     <CartTable
       userId={userId}
-      cartItems={selectedProduct}
+      cartItems={cartItems}
       removeFromCartFn={handleRemoveFromCart}
       updateQuantityFn={handleUpdateQuantity}
     />

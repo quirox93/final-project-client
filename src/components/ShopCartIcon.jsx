@@ -11,35 +11,35 @@ import {
   DropdownSection,
   cn,
 } from "@nextui-org/react";
-import { deletedProducts } from "@/store/slice";
+import { updateCart } from "@/store/slice";
 import { CartIcon } from "../assets/svg/CartIcon";
 import { DeleteDocumentIcon } from "@/assets/svg/DeleteDocumentIcon";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 
-const ShopCartIcon = () => {
+const ShopCartIcon = ({ userId }) => {
   const dispatch = useDispatch();
   const router = useRouter();
   const iconClasses = "text-xl text-default-500 pointer-events-none flex-shrink-0";
-  const selectedProducts = useSelector((state) => state.shopCart.selectionProducts);
+  const cartItems = useSelector((state) => state.shopCart.cartItems);
 
   /* Crea un mapa de cantidad por producto */
-  const productCountMap = selectedProducts.reduce((map, product) => {
+  const productCountMap = cartItems.reduce((map, product) => {
     map[product.id] = (map[product.id] || 0) + product.quantity;
     return map;
   }, {});
 
   /* Crea una instancia por productos con su respectiva cantidad */
-  const uniqueProducts = selectedProducts.map((product) => ({
+  const uniqueProducts = cartItems.map((product) => ({
     ...product,
     quantity: productCountMap[product.id],
   }));
 
-  const totalQuantity = selectedProducts.reduce((total, product) => {
+  const totalQuantity = cartItems.reduce((total, product) => {
     return total + product.quantity;
   }, 0);
 
-  const totalPrice = selectedProducts.reduce((total, product) => {
+  const totalPrice = cartItems.reduce((total, product) => {
     return total + product.price * product.quantity;
   }, 0);
 
@@ -74,7 +74,12 @@ const ShopCartIcon = () => {
                   </>
                 }
                 shortcut={
-                  <button onClick={() => dispatch(deletedProducts(product.id))}>
+                  <button
+                    onClick={() => {
+                      const items = cartItems.filter((item) => item.id !== product.id);
+                      dispatch(updateCart(userId ? { userId, items } : items));
+                    }}
+                  >
                     <DeleteDocumentIcon className={cn(iconClasses)} />
                   </button>
                 }
@@ -89,11 +94,7 @@ const ShopCartIcon = () => {
               className="text-primary"
               color="success"
               onClick={() => router.push("/cart")}
-              shortcut={
-                <button >
-                  Buy
-                </button>
-              }
+              shortcut={<button>Buy</button>}
               description={`Subtotal: $${totalPrice}`}
               startContent={
                 <Button

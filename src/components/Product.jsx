@@ -7,7 +7,7 @@ import ProductPopOver from "./ProductPopOver/ProductPopOver";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
-import { selectedProducts } from "@/store/slice";
+import { updateCart } from "@/store/slice";
 import { motion } from "framer-motion";
 
 
@@ -23,8 +23,8 @@ export default function Product({
 }) {
   const router = useRouter();
   const dispatch = useDispatch();
-  const selectionProducts = useSelector(
-    (state) => state.shopCart.selectionProducts
+  const cartItems = useSelector(
+    (state) => state.shopCart.cartItems
   );
   const [quantity, setQuantity] = useState(1);
   const [showModal, setShowModal] = useState(false);
@@ -53,7 +53,7 @@ export default function Product({
       price,
       quantity,
       userId
-    }, selectionProducts, dispatch, setShowModal, setPopoverOpen, selectedProducts, setQuantity);
+    }, cartItems, dispatch, setShowModal, setPopoverOpen, updateCart, setQuantity);
   };
   
   return (
