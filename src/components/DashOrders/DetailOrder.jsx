@@ -43,6 +43,7 @@ function DetailOrder({
         isOpen={isOpen}
         onOpenChange={onOpenChange}
         size="full"
+        scrollBehavior="outside"
       >
         <ModalContent>
           {(onClose) => (
@@ -169,11 +170,11 @@ function DetailOrder({
                   <DetailTableOrders order={order} statusColorMap={statusColorMap}/>
                 </div>
               </ModalBody>
-              <ModalFooter>
+              {/* <ModalFooter>
                 <Button color="danger" onPress={onClose}>
                   Close
                 </Button>
-              </ModalFooter>
+              </ModalFooter> */}
             </div>
           )}
         </ModalContent>
