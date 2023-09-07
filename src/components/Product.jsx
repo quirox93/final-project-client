@@ -85,7 +85,7 @@ export default function Product({
         >
           {name}{" "}
         </h2>
-        <p>{description}</p>
+        <p>{description.length > 35 ? description.substring(0,35) + "..." : description}</p>
         <Divider />
         <p>
           Price: <span className="font-bold">${price}</span>
