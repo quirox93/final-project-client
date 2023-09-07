@@ -4,10 +4,17 @@ import { VscGraph } from "react-icons/vsc";
 import { BiShoppingBag } from "react-icons/bi";
 import { AiOutlineUser } from "react-icons/ai";
 
-import { Link, Avatar, User, Divider } from "@nextui-org/react";
+import { Link, Avatar, Divider, Button } from "@nextui-org/react";
 import DateTime from "./DateTime";
 import NextLink from "next/link";
+import { useState } from "react";
+import { usePathname} from "next/navigation";
+
+
 const Sidebar = ({ Children }) => {
+  
+  const pathname = usePathname();
+  const url = pathname.split("/")[2];
   return (
     <div className="flex">
       <div className=" fixed h-screen p-4 bg-white border-r-[1px] flex flex-col justify-between transition-all">
@@ -36,19 +43,44 @@ const Sidebar = ({ Children }) => {
           <Divider className="my-2" />
           {/* Links */}
           <div className="flex flex-col items-center gap-8">
-            <Link as={NextLink} href="/dashboard/products" color="Primary">
+            <Link
+              isBlock
+              as={NextLink}
+              href="/dashboard/products"
+              color={url === 'products' ? 'default': 'primary'}
+              className={url === 'products' ? ' text-danger-500 cursor-not-allowed': 'primary'}
+              
+            >
               <RxDashboard size={20} className="mr-6 max-md:mr-0" />
               <div className=" max-md:hidden transition-all">Products</div>
             </Link>
-            <Link as={NextLink} href="/dashboard/statistics" color="Primary">
+            <Link
+              isBlock
+              as={NextLink}
+              href="/dashboard/statistics"
+              color={url === 'statistics' ? 'default': 'primary'}
+              className={url === 'statistics' ? ' text-danger-500 cursor-not-allowed': 'primary'}
+            >
               <VscGraph size={20} className="mr-6 max-md:mr-0" />
               <div className="max-md:hidden">Statistics</div>
             </Link>
-            <Link as={NextLink} href="/dashboard/orders" color="Primary">
+            <Link
+              isBlock
+              as={NextLink}
+              href="/dashboard/orders"
+              color={url === 'orders' ? 'default': 'primary'}
+              className={url === 'orders' ? ' text-danger-500 cursor-not-allowed': 'primary'}
+            >
               <BiShoppingBag size={20} className="mr-6 max-md:mr-0" />
               <div className="mr-5 max-md:hidden">Orders</div>
             </Link>
-            <Link as={NextLink} href="/dashboard/users" color="Primary">
+            <Link 
+            isBlock 
+            as={NextLink} 
+            href="/dashboard/users" 
+            color={url === 'users' ? 'default': 'primary'}
+            className={url === 'users' ? 'text-danger-500 cursor-not-allowed': 'primary'}
+            >
               <AiOutlineUser size={20} className="mr-6 max-md:mr-0" />
               <div className="mr-7 max-md:hidden">Users</div>
             </Link>

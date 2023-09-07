@@ -2,6 +2,7 @@ const { NextResponse } = require("next/server");
 import { connectDB } from "@/utils/mongoose";
 import { clerkClient } from "@clerk/nextjs";
 import User from "@/models/User";
+import Product from "@/models/Product";
 
 export async function GET(_, { params }) {
   try {
@@ -16,7 +17,12 @@ export async function GET(_, { params }) {
     }
 
     // Buscar el usuario en nuestra base de datos por el clerkId
-    let userFromDB = await User.findOne({ clerkId: id });
+    let userFromDB = await User.findOne({ clerkId: id })
+      .populate({
+        path: "cart._id",
+        model: Product,
+      })
+      .exec();
 
     if (!userFromDB) {
       // Si no se encuentra en la base de datos, crea un nuevo usuario

@@ -7,7 +7,7 @@ import SortButton from "./SortButton";
 import FilterModal from "./FilterModal";
 import SearchBar from "@/components/SearchBar";
 
-export default function Products() {
+export default function Products({userId}) {
   const items = 6;
   const [products, setProducts] = useState([]);
   const [page, setPage] = useState(1);
@@ -34,6 +34,7 @@ export default function Products() {
         image={product.imag.secure_url}
         date={product.createdAt}
         delay={index * 0.2}
+        userId={userId}
       />
     ))
   );

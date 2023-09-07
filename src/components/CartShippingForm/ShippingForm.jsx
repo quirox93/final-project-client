@@ -12,6 +12,8 @@ import {
 } from "@nextui-org/react";
 import { newOrder, getUserById } from "@/utils/api";
 import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { updateCart } from "@/store/slice";
 
 const userInitailLoad = async (userId) => {
   const { clerkData } = await getUserById(userId);
@@ -58,6 +60,7 @@ const validateField = (fieldName, value) => {
 };
 
 const ShippingForm = ({ userId, cartItems }) => {
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState();
   const [disabled, setDisabled] = useState(true);
   const router = useRouter();
@@ -156,6 +159,7 @@ const ShippingForm = ({ userId, cartItems }) => {
 
                 const response = await newOrder(items, payer);
 
+                dispatch(updateCart([]));
                 router.push(response.paymentURL);
                 setLoading(false);
                 onClose();

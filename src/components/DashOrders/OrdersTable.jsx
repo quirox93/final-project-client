@@ -1,7 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import React from "react";
-import CalElapsedTime from "./CalElapsedTime";
+import NameOrders from "./NameOrders";
+import {formatDate} from "../PurchasedProducts/utils"
 import {
   Table,
   TableHeader,
@@ -30,6 +31,20 @@ import { capitalize } from "@/components/AdminProducts/utils";
 
 import Actions from "./Actions";
 import StatusOrder from "./StatusOrder";
+
+const sort = {
+  nameascending: (a, b) => a.name.localeCompare(b.name),
+  namedescending: (a, b) => b.name.localeCompare(a.name),
+  statusascending: (a, b) => a.status.localeCompare(b.status),
+  statusdescending: (a, b) => b.status.localeCompare(a.status),
+  statusMpascending: (a, b) => a.statusMp.localeCompare(b.statusMp),
+  statusMpdescending: (a, b) => b.statusMp.localeCompare(a.statusMp),
+  createdAtascending: (a, b) =>
+    new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+  createdAtdescending: (a, b) =>
+    new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+};
+
 export default function OrdersTable({
   orders,
   columns,
@@ -50,8 +65,6 @@ export default function OrdersTable({
   });
   const [page, setPage] = React.useState(1);
 
-  const pages = Math.ceil(orders.length / rowsPerPage);
-
   const hasSearchFilter = Boolean(filterValue);
 
   const headerColumns = React.useMemo(() => {
@@ -63,24 +76,26 @@ export default function OrdersTable({
   }, [visibleColumns]);
 
   const filteredItems = React.useMemo(() => {
-    let filteredUsers = [...orders];
-
+    const sortF = sort[sortDescriptor.column + sortDescriptor.direction];
+    let filteredUsers = [...orders].sort(sortF);
     if (hasSearchFilter) {
-      filteredUsers = filteredUsers.filter((user) =>
-        user.name.toLowerCase().includes(filterValue.toLowerCase())
+      filteredUsers = filteredUsers.filter((item) =>
+        item.name.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
     if (
       statusFilter !== "all" &&
       Array.from(statusFilter).length !== statusOptions.length
     ) {
-      filteredUsers = filteredUsers.filter((user) =>
-        Array.from(statusFilter).includes(user.status)
+      filteredUsers = filteredUsers.filter((item) =>
+        Array.from(statusFilter).includes(item.status)
       );
     }
 
     return filteredUsers;
-  }, [orders, filterValue, statusFilter]);
+  }, [orders, filterValue, statusFilter, sortDescriptor]);
+
+  const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
   const items = React.useMemo(() => {
     const start = (page - 1) * rowsPerPage;
@@ -89,35 +104,11 @@ export default function OrdersTable({
     return filteredItems.slice(start, end);
   }, [page, filteredItems, rowsPerPage]);
 
-  const sortedItems = React.useMemo(() => {
-    return [...items].sort((a, b) => {
-      const first = a[sortDescriptor.column];
-      const second = b[sortDescriptor.column];
-      const cmp = first < second ? -1 : first > second ? 1 : 0;
-
-      return sortDescriptor.direction === "descending" ? -cmp : cmp;
-    });
-  }, [sortDescriptor, items]);
-
   const renderCell = React.useCallback((_order, columnKey) => {
     const cellValue = _order[columnKey];
     switch (columnKey) {
       case "name":
-        return (
-          <User
-            avatarProps={{
-              icon: <HiShoppingBag size={15} className=" text-white" />,
-              color: "secondary",
-            }}
-            classNames={{
-              description: "text-default-500",
-            }}
-            description={_order.email}
-            name={cellValue}
-          >
-            {_order.email}
-          </User>
-        );
+        return <NameOrders order={_order} cellValue={cellValue} />;
       case "total":
         return (
           <div>
@@ -142,26 +133,27 @@ export default function OrdersTable({
         );
 
       case "createdAt":
-        return <CalElapsedTime time={_order.createdAt} format={'dateFull'}/>;
+        return (formatDate(cellValue));
+
       case "status":
-        return (
-          <StatusOrder statusColorMap={statusColorMap} status={cellValue} statusOptions={statusOptions} id={_order.mpId}/>
+          return (
+          <StatusOrder
+            statusColorMap={statusColorMap}
+            status={cellValue}
+            statusOptions={statusOptions}
+            id={_order.mpId}
+          />
         );
       case "statusMp":
         return (
-          <Chip
-            className="capitalize"
-            color="primary"
-            size="sm"
-            variant="flat"
-          >
+          <Chip className="capitalize" color="primary" size="sm" variant="flat">
             {cellValue}
           </Chip>
         );
       case "actions":
         return (
           <div className="relative flex justify-end items-center gap-2">
-            <Actions order={_order} statusColorMap={statusColorMap}/>
+            <Actions order={_order} statusColorMap={statusColorMap} />
           </div>
         );
       default:
@@ -370,7 +362,7 @@ export default function OrdersTable({
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody emptyContent={"No orders found"} items={sortedItems}>
+      <TableBody emptyContent={"No orders found"} items={items}>
         {(item) => {
           return (
             <TableRow key={item.id}>

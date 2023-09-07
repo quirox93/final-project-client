@@ -2,39 +2,30 @@ import { updateUser } from "@/utils/api";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 // First, create the thunk
-export const selectedProducts = createAsyncThunk("content/selectedProducts", async (payload) => {
-  const { clerkId } = payload;
-  if (!clerkId) return [];
-  updateUser("user_2UDAMiSxw6OcggJBe0F1Ak9jL41", {
-    cart: [
-      {
-        id: "64d967c36baea30ee160c130",
-        quantity: 1,
-      },
-    ],
+export const updateCart = createAsyncThunk("content/updateCart", async (payload) => {
+  const { userId, items } = payload;
+  if (!userId) return payload;
+  updateUser(userId, {
+    cart: items.map((e) => {
+      const res = {
+        id: e.id,
+        quantity: e.quantity,
+      };
+      return res;
+    }),
   });
-  return [];
+  return items;
 });
 
 export const Slice = createSlice({
   name: "shopCart",
   initialState: {
-    selectionProducts: [],
+    cartItems: [],
   },
-  reducers: {
-    deletedProducts: (state, action) => {
-      if (action.payload) {
-        state.selectionProducts = state.selectionProducts.filter(
-          (product) => product.id !== action.payload
-        );
-      }
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(selectedProducts.fulfilled, (state, { payload, meta }) => {
-      if (payload) state.selectionProducts = meta.arg;
+    builder.addCase(updateCart.fulfilled, (state, { payload }) => {
+      state.cartItems = payload;
     });
   },
 });
-
-export const { deletedProducts } = Slice.actions;

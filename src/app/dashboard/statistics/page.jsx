@@ -1,15 +1,6 @@
-import { RecentOrders, StatisticsBar, TopCard } from "@/components/DashStatistics/index.js";
-
+import Statistics from "@/components/DashStatistics/Statistics";
 const statisticsPage = () => {
-  return (
-    <>
-      <TopCard />
-      <div className="p-4 grid md:grid-cols-3 grid-cols-1 gap-4">
-        <StatisticsBar />
-        <RecentOrders />
-      </div>
-    </>
-  );
+  return <Statistics />;
 };
 
 export default statisticsPage;

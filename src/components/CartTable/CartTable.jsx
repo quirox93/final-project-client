@@ -50,7 +50,7 @@ const CartTable = ({
                 bottomContent={
                   <div className="flex justify-between items-center p-4 bg-primary-200 rounded-lg">
                     <span className="text-lg font-bold">
-                      Total: ${calculateTotal(cartItems)}
+                      Total: ${calculateTotal(cartItems).toFixed(2)}
                     </span>
                     {cartItems.length === 0 ? null : (
                       <div>
@@ -92,7 +92,7 @@ const CartTable = ({
                           min={1}
                         />
                       </TableCell>
-                      <TableCell>${calculateSubtotal(item.price, item.quantity)}</TableCell>
+                      <TableCell>${calculateSubtotal(item.price, item.quantity).toFixed(2)}</TableCell>
                       <TableCell>
                         <Button
                           size="small"
