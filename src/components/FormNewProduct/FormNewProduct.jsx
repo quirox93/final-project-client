@@ -9,6 +9,7 @@ import {
   Button,
   useDisclosure,
   Input,
+  Textarea,
   Image,
 } from "@nextui-org/react";
 import api from "@/utils/axios";
@@ -17,13 +18,13 @@ import { useRouter } from "next/navigation";
 const inputStateInitial = {
   name: "",
   description: "",
-  price: "0",
-  stock: "0",
+  price: "1",
+  stock: "1",
 };
 
 const errorsStateInitial = {
-  name: "Nombre requerido",
-  description: "Descripción requerida",
+  name: "Name required",
+  description: "Description required",
   price: "",
   stock: "",
 };
@@ -50,34 +51,49 @@ export default function FormNewProduct({ data, setData }) {
     switch (name) {
       case "name":
         if (value.length === 0) {
-          newErrors.name = "Nombre requerido";
+          newErrors.name = "Name required";
           setButtonDisabled(true);
-        } else if (value.length > 40) {
-          newErrors.name = "Nombre no puede tener más de 50 caracteres";
+        } else if (value.length > 60) {
+          newErrors.name = "Name must be less than 60 chararcters";
           setButtonDisabled(true);
         } else {
           newErrors.name = "";
-          setButtonDisabled(false);
         }
         break;
       case "description":
         if (value.length === 0) {
-          newErrors.description = "Descripción requerida";
+          newErrors.description = "Description required";
           setButtonDisabled(true);
         } else {
           newErrors.description = "";
-          setButtonDisabled(false);
+        }
+        break;
+      case "price":
+        if (value.length === 0) {
+          newErrors.price = "Price required";
+          setButtonDisabled(true);
+        } else if (value <= 0) {
+          newErrors.price = "Price must be more than 0";
+          setButtonDisabled(true);
+        } else {
+          newErrors.price = "";
         }
         break;
       case "stock":
-        if (value.includes(".")) {
-          newErrors.stock = "El stock debe ser un número entero";
+        if (value.length === 0) {
+          newErrors.stock = "Stock required";
+          setButtonDisabled(true);
+        } else if (value <= 0) {
+          newErrors.stock = "Stock must be more than 0";
+          setButtonDisabled(true);
+        } else if (value.includes(".")) {
+          newErrors.stock = "Stock must be whole number";
           setButtonDisabled(true);
         } else {
           newErrors.stock = "";
-          setButtonDisabled(false);
         }
         break;
+  
       default:
         break;
     }
@@ -122,11 +138,15 @@ export default function FormNewProduct({ data, setData }) {
                   formData.append("price", input.price);
                   formData.append("stock", input.stock);
                   formData.append("imag", image);
-                  const { data: product } = await api.post("/product", formData, {
-                    headers: {
-                      "Content-Type": "multipart/form-data",
-                    },
-                  });
+                  const { data: product } = await api.post(
+                    "/product",
+                    formData,
+                    {
+                      headers: {
+                        "Content-Type": "multipart/form-data",
+                      },
+                    }
+                  );
                   alert("Producto Creado!");
                   setData([...data, product]);
                   setInput(inputStateInitial);
@@ -147,7 +167,9 @@ export default function FormNewProduct({ data, setData }) {
             };
             return (
               <>
-                <ModalHeader className="flex flex-col gap-1">New Product</ModalHeader>
+                <ModalHeader className="flex flex-col gap-1">
+                  New Product
+                </ModalHeader>
                 <ModalBody>
                   <Input
                     autoFocus
@@ -159,15 +181,18 @@ export default function FormNewProduct({ data, setData }) {
                     isRequired
                   />
                   {errors.name && <p className="text-danger">{errors.name}</p>}
-                  <Input
+                  <Textarea
                     label="Description"
+                    minRows={0}
                     value={input.description}
                     variant="bordered"
                     name="description"
                     onChange={handleInputChange}
                     isRequired
                   />
-                  {errors.description && <p className="text-danger">{errors.description}</p>}
+                  {errors.description && (
+                    <p className="text-danger">{errors.description}</p>
+                  )}
                   <Input
                     label="Price"
                     type="number"
@@ -175,7 +200,11 @@ export default function FormNewProduct({ data, setData }) {
                     variant="bordered"
                     name="price"
                     onChange={handleInputChange}
+                    isRequired
                   />
+                  {errors.price && (
+                    <p className="text-danger">{errors.price}</p>
+                  )}
                   <Input
                     label="Stock"
                     type="number"
@@ -183,11 +212,26 @@ export default function FormNewProduct({ data, setData }) {
                     variant="bordered"
                     name="stock"
                     onChange={handleInputChange}
+                    isRequired
                   />
-                  {errors.stock && <p className="text-danger">{errors.stock}</p>}
-                  <input type="file" accept="image/*" name="image" onChange={handleImage} />
+                  {errors.stock && (
+                    <p className="text-danger">{errors.stock}</p>
+                  )}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    name="image"
+                    onChange={handleImage}
+                  />
                   <div className="flex justify-center">
-                    {image && <Image width={150} height={150} alt={input?.name} src={image} />}
+                    {image && (
+                      <Image
+                        width={150}
+                        height={150}
+                        alt={input?.name}
+                        src={image}
+                      />
+                    )}
                   </div>
                 </ModalBody>
                 <ModalFooter>
