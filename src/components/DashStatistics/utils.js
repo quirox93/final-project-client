@@ -146,8 +146,10 @@ export const dataStatsBar = (orders, date) => {
     const date = year - i;
     const ventasAño = orders
       .filter((compra) => new Date(compra.createdAt).getFullYear() === date)
-      .reduce((total, compra) => total + compra.total, 0);
-    return { date, total: ventasAño };
+      .reduce((total, compra) => total + compra.total, 0)
+      const obj = {date, total: ventasAño}
+    
+      return obj;
   });
 };
 export const getCurrentDate = () => {

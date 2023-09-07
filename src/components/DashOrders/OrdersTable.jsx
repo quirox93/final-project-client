@@ -136,7 +136,7 @@ export default function OrdersTable({
         return (formatDate(cellValue));
 
       case "status":
-        return (
+          return (
           <StatusOrder
             statusColorMap={statusColorMap}
             status={cellValue}
