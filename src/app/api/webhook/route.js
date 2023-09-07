@@ -2,7 +2,7 @@ const { NextResponse } = require("next/server");
 import mercadopago from "mercadopago";
 import { MP_TOKEN } from "@/utils/config";
 import { getOrderById } from "@/utils/api";
-import { purchaseNotification } from "./mail";
+import { purchaseNotification, transporter } from "./mail";
 
 import Order from "@/models/Order";
 

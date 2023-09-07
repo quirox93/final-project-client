@@ -20,8 +20,10 @@ const StatisticsBar = ({ orders }) => {
     if (selected === "month") {
       return month[item.date - 1];
     }
+    
     return item.date;
   });
+  
   const value = arrayDate.map((item) => {
     return item.total;
   });

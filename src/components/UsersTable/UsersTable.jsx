@@ -14,7 +14,7 @@ export const revalidate = 0;
 export default async function UsersTable() {
   const statusOptions = [
     { name: "Admin", uid: true, prop: "isAdmin" },
-    { name: "User", uid: false, prop: "isAdmin" },
+    { name: "User", uid: false, prop: "User" },
   ];
   const users = await loadUsers();
   // console.log(users);

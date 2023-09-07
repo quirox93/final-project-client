@@ -8,9 +8,8 @@ import {
   Chip,
   Image,
 } from "@nextui-org/react";
-
 const DetailTableOrders = ({ order, statusColorMap }) => {
-
+  
   return (
     <>
       <h1 className="text-2xl font-bold mb-4">Content of the order</h1>
@@ -21,7 +20,7 @@ const DetailTableOrders = ({ order, statusColorMap }) => {
         bottomContent={
           <div className="flex justify-between items-center p-4 bg-primary-200 rounded-lg">
             <span className="text-lg font-bold">
-              {`Total: $ ${order.total}`}
+              {`Total: $ ${parseFloat(order.total.toFixed(2))} `}
             </span>
           </div>
         }
@@ -63,7 +62,7 @@ const DetailTableOrders = ({ order, statusColorMap }) => {
                   size="sm"
                   variant="flat"
                 >
-                 {`unit ${item.quantity}`}
+                  {`unit ${item.quantity}`}
                 </Chip>
               </TableCell>
               <TableCell>
@@ -73,7 +72,7 @@ const DetailTableOrders = ({ order, statusColorMap }) => {
                   size="sm"
                   variant="flat"
                 >
-                 {order.createdAt}
+                  {order.createdAt}
                 </Chip>
               </TableCell>
             </TableRow>
