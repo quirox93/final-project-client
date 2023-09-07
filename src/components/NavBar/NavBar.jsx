@@ -42,9 +42,9 @@ export default function NavBar({ isAdmin, cart, userId }) {
   const menuItems = [
     { name: "Home", path: "/" },
     { name: "Cart", path: "/cart" },
-    { name: "Products", path: "/dashboard/products" },
-    { name: "Purchases", path: "/purchases/id" },
+    {name:"Purchases", path:"/purchases"}
   ];
+  if (isAdmin) menuItems.push({ name: "Dashboard", path: "/dashboard/products" },);
 
   return (
     <Navbar isBordered onMenuOpenChange={setIsMenuOpen}>
