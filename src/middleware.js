@@ -10,7 +10,12 @@ export default authMiddleware({
   publicRoutes: ["/", "/api(.*)", "/product(.*)"],
   //ignoredRoutes: ["/api"],
   async afterAuth(auth, req, evt) {
-    const adminRoutes = ["/dashboard/products", "/dashboard/statistics"];
+    const adminRoutes = [
+      "/dashboard/products",
+      "/dashboard/statistics",
+      "/dashboard/users",
+      "/dashboard/orders",
+    ];
 
     // handle users who aren't authenticated
     if (!auth.userId && !auth.isPublicRoute) {
