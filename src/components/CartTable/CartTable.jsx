@@ -48,8 +48,8 @@ const CartTable = ({
               <Table
                 aria-label="Cart items"
                 bottomContent={
-                  <div className="flex justify-between items-center p-4 bg-primary-200 rounded-lg">
-                    <span className="text-lg font-bold">
+                  <div className="flex-column items-center justify-between p-4 bg-primary-200 rounded-lg xm:flex">
+                    <span className="text-lg font-bold ">
                       Total: ${calculateTotal(cartItems).toFixed(2)}
                     </span>
                     {cartItems.length === 0 ? null : (
@@ -61,6 +61,7 @@ const CartTable = ({
                 }
               >
                 <TableHeader>
+                  <TableColumn>Image</TableColumn>
                   <TableColumn>Name</TableColumn>
                   <TableColumn>Price</TableColumn>
                   <TableColumn>Quantity</TableColumn>
@@ -70,8 +71,11 @@ const CartTable = ({
                 <TableBody>
                   {cartItems.map((item) => (
                     <TableRow key={item.id}>
+                      <TableCell>
+                      <Image width={60} height={60} src={item.image} alt={item.name} />
+                      </TableCell>
                       <TableCell className="flex items-center">
-                        <Image width={50} height={50} src={item.image} alt={item.name} />
+                        
                         <div className="ml-2">{item.name}</div>
                       </TableCell>
                       <TableCell>${item.price}</TableCell>
