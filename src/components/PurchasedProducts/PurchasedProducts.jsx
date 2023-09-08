@@ -59,7 +59,7 @@ const PurchasedProducts = ({ initOrders, clerkId }) => {
             <Table
               aria-label={`Items for Order ${order._id}`}
               bottomContent={
-                <div className="flex-column  items-center p-4 bg-primary-200 rounded-lg md:flex">
+                <div className="flex-column  items-center p-4 bg-primary-200 rounded-lg sm:flex">
                   <h1 className="pr-2 text-lg font-bold">Order ID:</h1>
                   <Snippet>{order._id}</Snippet>
                   <h1 className="ml-auto mt-3 text-lg font-bold md:mt-0">
