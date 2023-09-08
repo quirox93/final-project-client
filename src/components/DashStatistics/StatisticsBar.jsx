@@ -53,7 +53,7 @@ const StatisticsBar = ({ orders }) => {
               </div>
             }
           >
-            <div className=" lg:h-[55vh] h-[35vh] flex justify-center">
+            <div className="lg:h-[51vh] h-[35vh]  flex justify-center pb-5">
               <StatsBar
                 date={date}
                 title={
@@ -76,7 +76,7 @@ const StatisticsBar = ({ orders }) => {
               </div>
             }
           >
-            <div className=" lg:h-[55vh] h-[35vh] flex justify-center">
+            <div className=" lg:h-[51vh] h-[35vh]  flex justify-center pb-5">
               <Linechart date={date}
                 title={
                   selected === "day"
@@ -97,7 +97,7 @@ const StatisticsBar = ({ orders }) => {
               </div>
             }
           >
-            <div className=" lg:h-[55vh] h-[35vh] flex justify-center">
+            <div className=" lg:h-[51vh] h-[35vh]  flex justify-center pb-5">
               <PieChart date={date}
                 title={
                   selected === "day"
