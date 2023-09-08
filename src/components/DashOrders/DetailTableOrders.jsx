@@ -16,9 +16,9 @@ const DetailTableOrders = ({ order, statusColorMap }) => {
       <Table
         aria-label="Order items"
         shadow="none"
-        className=" rounded-medium border-2"
+        className=" rounded-medium border-2 "
         bottomContent={
-          <div className="flex justify-between items-center p-4 bg-primary-200 rounded-lg">
+          <div className="flex justify-start items-center p-4 bg-primary-200 rounded-lg max-sm:p-2">
             <span className="text-lg font-bold">
               {`Total: $ ${parseFloat(order.total.toFixed(2))} `}
             </span>
@@ -29,7 +29,7 @@ const DetailTableOrders = ({ order, statusColorMap }) => {
           <TableColumn>Name</TableColumn>
           <TableColumn>Price</TableColumn>
           <TableColumn>Quantity</TableColumn>
-          <TableColumn>Order Date</TableColumn>
+          <TableColumn className="max-sm:hidden">Order Date</TableColumn>
         </TableHeader>
         <TableBody>
           {order.products?.map((item) => (
@@ -42,14 +42,15 @@ const DetailTableOrders = ({ order, statusColorMap }) => {
                     "https://res.cloudinary.com/db8y8eb5s/image/upload/v1691969460/products/ct8vgfnd2cepvevgqjxm.webp"
                   }
                   alt={"galaticus"}
+                  className="max-sm:hidden"
                 />
                 <div className="ml-2">galaticus</div>
               </TableCell>
               <TableCell>
                 <Chip
-                  className="capitalize p-4"
+                  className="capitalize p-4 max-sm:p-0 max-sm:text-xs"
                   color={statusColorMap[order.status]}
-                  size="sm"
+                  size="sm max-sm:lg"
                   variant="flat"
                 >
                   ${item.unit_price}
@@ -62,10 +63,10 @@ const DetailTableOrders = ({ order, statusColorMap }) => {
                   size="sm"
                   variant="flat"
                 >
-                  {`unit ${item.quantity}`}
+                  {`«${item.quantity}`}
                 </Chip>
               </TableCell>
-              <TableCell>
+              <TableCell className="max-sm:hidden">
                 <Chip
                   className="capitalize p-4"
                   color={statusColorMap[order.status]}

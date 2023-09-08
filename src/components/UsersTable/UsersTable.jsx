@@ -20,7 +20,7 @@ export default async function UsersTable() {
   // console.log(users);
 
   return (
-    <div className="p-4 z-0 flex flex-col relative justify-between gap-4 bg-content1 overflow-auto rounded-large shadow-small max-w-ld ">
+    <div className="p-4 z-0 flex flex-col relative justify-between gap-4 bg-content1 overflow-auto rounded-large shadow-small max-w-ld mt-5">
       {
         <UsersInfo
           defItems={users}

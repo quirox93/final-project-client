@@ -83,14 +83,14 @@ function DetailOrder({
                     >
                       download
                     </Button>
-                    <Button
+                    {/* <Button
                       color="primary"
                       variant="bordered"
                       startContent={<MdReviews size={20} />}
                       className="mx-2 p-5"
                     >
                       Request a review
-                    </Button>
+                    </Button> */}
                   </div>
                 </div>
                 <div className="flex justify-between gap-10 my-2">
@@ -124,7 +124,7 @@ function DetailOrder({
                         }
                         radius="sm"
                         variant="bordered"
-                        className="m-2"
+                        className="m-2 max-sm:py-6"
                       >
                         Mercado Pago
                       </Chip>

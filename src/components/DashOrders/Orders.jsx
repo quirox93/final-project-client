@@ -39,7 +39,7 @@ export default async function Orders() {
   };
 
   return (
-    <div className="p-4 z-0 flex flex-col relative justify-between gap-4 bg-content1 overflow-auto rounded-large shadow-small max-w-ld ">
+    <div className="p-4 z-0 flex flex-col relative justify-between gap-4 bg-content1 overflow-auto rounded-large shadow-small max-w-ld mr-5 mt-5">
       {
         <OrdersTable
           orders={orders}
