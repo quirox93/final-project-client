@@ -9,6 +9,7 @@ import {
   Button,
   useDisclosure,
   Input,
+  Textarea,
   Image,
 } from "@nextui-org/react";
 import NextImage from "next/image";
@@ -19,6 +20,7 @@ export default function EditButton(props) {
   const router = useRouter();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [buttonDisabled, setButtonDisabled] = useState(true);
+  const [isEdited, setIsEdited] = useState(false);
   const [image, setImage] = useState("");
   const [input, setInput] = useState({
     name: props.name,
@@ -36,7 +38,7 @@ export default function EditButton(props) {
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-
+    console.log({name, value})
     let newErrors = { ...errors };
     newErrors[name] = "";
 
@@ -47,34 +49,49 @@ export default function EditButton(props) {
     switch (name) {
       case "name":
         if (value.length === 0) {
-          newErrors.name = "Nombre requerido";
+          newErrors.name = "Name required";
           setButtonDisabled(true);
-        } else if (value.length > 40) {
-          newErrors.name = "Nombre no puede tener más de 50 caracteres";
+        } else if (value.length > 60) {
+          newErrors.name = "Name must be less than 60 chararcters";
           setButtonDisabled(true);
         } else {
           newErrors.name = "";
-          setButtonDisabled(false);
         }
         break;
       case "description":
         if (value.length === 0) {
-          newErrors.description = "Descripción requerida";
+          newErrors.description = "Description required";
           setButtonDisabled(true);
         } else {
           newErrors.description = "";
-          setButtonDisabled(false);
+        }
+        break;
+      case "price":
+        if (value.length === 0) {
+          newErrors.price = "Price required";
+          setButtonDisabled(true);
+        } else if (value <= 0) {
+          newErrors.price = "Price must be more than 0";
+          setButtonDisabled(true);
+        } else {
+          newErrors.price = "";
         }
         break;
       case "stock":
-        if (value.includes(".")) {
-          newErrors.stock = "El stock debe ser un número entero";
+        if (value.length === 0) {
+          newErrors.stock = "Stock required";
+          setButtonDisabled(true);
+        } else if (value <= 0) {
+          newErrors.stock = "Stock must be more than 0";
+          setButtonDisabled(true);
+        } else if (value.includes(".")) {
+          newErrors.stock = "Stock must be whole number";
           setButtonDisabled(true);
         } else {
           newErrors.stock = "";
-          setButtonDisabled(false);
         }
         break;
+
       default:
         break;
     }
@@ -89,8 +106,10 @@ export default function EditButton(props) {
       setInput({ ...input, image: onLoadEvent.target.result });
     };
     reader.readAsDataURL(event.target.files[0]);
+    if (!Object.values(errors).some((error) => error !== "")) {
+      setButtonDisabled(false);
+    }
   }
-
   return (
     <>
       <Button
@@ -120,7 +139,11 @@ export default function EditButton(props) {
 
               try {
                 const data = await updateProduct(props.id, formData);
-                const newData = props.data.map((e) => (e._id === props.id ? data : e));
+                console.log({data, props})
+
+                const newData = props.data.map((e) =>
+                  e._id === props.id ? data : e
+                );
                 props.setData(newData);
                 router.refresh();
                 onClose();
@@ -145,7 +168,7 @@ export default function EditButton(props) {
                     isRequired
                   />
                   {errors.name && <p className="text-danger">{errors.name}</p>}
-                  <Input
+                  <Textarea
                     label="Description"
                     value={input.description}
                     variant="bordered"
@@ -153,7 +176,9 @@ export default function EditButton(props) {
                     onChange={handleChange}
                     isRequired
                   />
-                  {errors.description && <p className="text-danger">{errors.description}</p>}
+                  {errors.description && (
+                    <p className="text-danger">{errors.description}</p>
+                  )}
                   <Input
                     label="Price"
                     type="number"
@@ -162,6 +187,9 @@ export default function EditButton(props) {
                     name="price"
                     onChange={handleChange}
                   />
+                  {errors.price && (
+                    <p className="text-danger">{errors.price}</p>
+                  )}
                   <Input
                     label="Stock"
                     type="number"
@@ -170,7 +198,9 @@ export default function EditButton(props) {
                     name="stock"
                     onChange={handleChange}
                   />
-                  {errors.stock && <p className="text-danger">{errors.stock}</p>}
+                  {errors.stock && (
+                    <p className="text-danger">{errors.stock}</p>
+                  )}
                   <input
                     //label="Image"
                     type="file"
@@ -196,7 +226,11 @@ export default function EditButton(props) {
                   <Button color="danger" variant="flat" onClick={onClose}>
                     Close
                   </Button>
-                  <Button color="primary" onPress={handleSubmit} isDisabled={buttonDisabled}>
+                  <Button
+                    color="primary"
+                    onPress={handleSubmit}
+                    isDisabled={buttonDisabled}
+                  >
                     Update
                   </Button>
                 </ModalFooter>
