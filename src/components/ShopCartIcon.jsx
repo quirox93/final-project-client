@@ -95,7 +95,7 @@ const ShopCartIcon = ({ userId }) => {
               color="success"
               onClick={() => router.push("/cart")}
               shortcut={<button>Buy</button>}
-              description={`Subtotal: $${totalPrice}`}
+              description={`Subtotal: $${totalPrice.toFixed(2)}`}
               startContent={
                 <Button
                   radius="full"
