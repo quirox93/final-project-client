@@ -85,11 +85,11 @@ export default function Products({userId}) {
       <div className="flex justify-center">
         {total ? <Pagination onChange={setPage} total={total} page={page} initialPage={1} /> : ""}
       </div>
-      <div className="flex mt-10 justify-evenly">
+      <div className="flex mt-3 justify-evenly">
         <SortButton onSortChange={handleSortChange} />
         <FilterModal cb={handleFilter} />
       </div>
-      <div className="flex flex-wrap justify-center">{map}</div>
+      <div className="flex flex-wrap gap-5 justify-center">{map}</div>
     </div>
   );
 }

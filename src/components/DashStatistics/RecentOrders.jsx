@@ -18,7 +18,7 @@ const RecentOrders = ({ orders }) => {
             return (
               <Popover placement="right-end" key={id} color={"primary"}>
                 <PopoverTrigger className=" w-full bg-gray-50 hover:bg-gray-100 rounded-lg my-3 p-2">
-                  <Button className="flex justify-start h-unit-2xl">
+                  <Button className="flex justify-start h-unit-2xl ">
                     <div className="bg-purple-100 rounded-lg p-3">
                       <HiShoppingBag className="text-purple-800" />
                     </div>

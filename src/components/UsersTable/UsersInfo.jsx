@@ -39,24 +39,15 @@ const sort = {
     (b.firstName || "").localeCompare(a.firstName || "", "en", {
       sensitivity: "base",
     }),
-  createdAtascending: (a, b) =>
-    new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
-  createdAtdescending: (a, b) =>
-    new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+  createdAtascending: (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+  createdAtdescending: (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
 };
 
-export default function UsersInfo({
-  defItems,
-  columns,
-  statusOptions,
-  INITIAL_VISIBLE_COLUMNS,
-}) {
+export default function UsersInfo({ defItems, columns, statusOptions, INITIAL_VISIBLE_COLUMNS }) {
   const [allItems, setAllItems] = React.useState(defItems);
   const [filterValue, setFilterValue] = React.useState("");
   const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
-  const [visibleColumns, setVisibleColumns] = React.useState(
-    new Set(INITIAL_VISIBLE_COLUMNS)
-  );
+  const [visibleColumns, setVisibleColumns] = React.useState(new Set(INITIAL_VISIBLE_COLUMNS));
   const [statusFilter, setStatusFilter] = React.useState("all");
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [sortDescriptor, setSortDescriptor] = React.useState({
@@ -71,9 +62,7 @@ export default function UsersInfo({
   const headerColumns = React.useMemo(() => {
     if (visibleColumns === "all") return columns;
 
-    return columns.filter((column) =>
-      Array.from(visibleColumns).includes(column.uid)
-    );
+    return columns.filter((column) => Array.from(visibleColumns).includes(column.uid));
   }, [visibleColumns]);
 
   const filteredItems = React.useMemo(() => {
@@ -85,10 +74,7 @@ export default function UsersInfo({
         return name.toLowerCase().includes(filterValue.toLowerCase());
       });
     }
-    if (
-      statusFilter !== "all" &&
-      Array.from(statusFilter).length !== statusOptions.length
-    ) {
+    if (statusFilter !== "all" && Array.from(statusFilter).length !== statusOptions.length) {
       filteredUsers = filteredUsers.filter((item) => {
         const isAdmin = item[statusOptions[0].prop] || false;
         return isAdmin.toString() == Array.from(statusFilter)[0];
@@ -121,7 +107,15 @@ export default function UsersInfo({
           </User>
         );
       case "role":
-          return <StatusUser status={item.isAdmin} id={item.id} cellValue={cellValue}/>;
+        return (
+          <StatusUser
+            setAllItems={setAllItems}
+            allItems={allItems}
+            status={item.isAdmin}
+            id={item.id}
+            cellValue={cellValue}
+          />
+        );
       // return `${item.isAdmin ?? false}`;
       case "createdAt":
         return formatDate(cellValue);
@@ -180,10 +174,7 @@ export default function UsersInfo({
           <div className="flex gap-3">
             <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
-                <Button
-                  endContent={<ChevronDownIcon className="text-small" />}
-                  variant="flat"
-                >
+                <Button endContent={<ChevronDownIcon className="text-small" />} variant="flat">
                   Status
                 </Button>
               </DropdownTrigger>
@@ -204,10 +195,7 @@ export default function UsersInfo({
             </Dropdown>
             <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
-                <Button
-                  endContent={<ChevronDownIcon className="text-small" />}
-                  variant="flat"
-                >
+                <Button endContent={<ChevronDownIcon className="text-small" />} variant="flat">
                   Columns
                 </Button>
               </DropdownTrigger>
@@ -229,9 +217,7 @@ export default function UsersInfo({
           </div>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-default-400 text-small">
-            Total {allItems.length} Users
-          </span>
+          <span className="text-default-400 text-small">Total {allItems.length} Users</span>
           <label className="flex items-center text-default-400 text-small">
             Rows per page:
             <select
@@ -270,20 +256,10 @@ export default function UsersInfo({
           onChange={setPage}
         />
         <div className="hidden sm:flex w-[30%] justify-end gap-2">
-          <Button
-            isDisabled={pages === 1}
-            size="sm"
-            variant="flat"
-            onPress={onPreviousPage}
-          >
+          <Button isDisabled={pages === 1} size="sm" variant="flat" onPress={onPreviousPage}>
             Previous
           </Button>
-          <Button
-            isDisabled={pages === 1}
-            size="sm"
-            variant="flat"
-            onPress={onNextPage}
-          >
+          <Button isDisabled={pages === 1} size="sm" variant="flat" onPress={onNextPage}>
             Next
           </Button>
         </div>
@@ -298,7 +274,7 @@ export default function UsersInfo({
       bottomContent={bottomContent}
       bottomContentPlacement="outside"
       classNames={{
-        wrapper: "max-h-[400px]",
+        wrapper: "max-h-[400px] max-sm:max-h-max",
       }}
       selectedKeys={selectedKeys}
       selectionMode="single"
@@ -310,11 +286,7 @@ export default function UsersInfo({
     >
       <TableHeader columns={headerColumns}>
         {(column) => (
-          <TableColumn
-            key={column.uid}
-            align={"start"}
-            allowsSorting={column.sortable}
-          >
+          <TableColumn key={column.uid} align={"start"} allowsSorting={column.sortable}>
             {column.name}
           </TableColumn>
         )}
@@ -323,9 +295,7 @@ export default function UsersInfo({
         {(item) => {
           return (
             <TableRow key={item.id}>
-              {(columnKey) => (
-                <TableCell>{renderCell(item, columnKey)}</TableCell>
-              )}
+              {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
             </TableRow>
           );
         }}

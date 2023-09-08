@@ -49,11 +49,11 @@ const StatisticsBar = ({ orders }) => {
             title={
               <div className="flex items-center space-x-2">
                 <BsFillBarChartFill />
-                <span>Bars</span>
+                <span className="max-sm:hidden">Bars</span>
               </div>
             }
           >
-            <div className=" lg:h-[55vh] h-[35vh] flex justify-center">
+            <div className="lg:h-[51vh] h-[35vh]  flex justify-center pb-5">
               <StatsBar
                 date={date}
                 title={
@@ -72,11 +72,11 @@ const StatisticsBar = ({ orders }) => {
             title={
               <div className="flex items-center space-x-2">
                 <FaChartLine />
-                <span>Lines</span>
+                <span className="max-sm:hidden">Lines</span>
               </div>
             }
           >
-            <div className=" lg:h-[55vh] h-[35vh] flex justify-center">
+            <div className=" lg:h-[51vh] h-[35vh]  flex justify-center pb-5">
               <Linechart date={date}
                 title={
                   selected === "day"
@@ -93,11 +93,11 @@ const StatisticsBar = ({ orders }) => {
             title={
               <div className="flex items-center space-x-2">
                 <HiOutlineChartPie />
-                <span>Circular</span>
+                <span className="max-sm:hidden">Circular</span>
               </div>
             }
           >
-            <div className=" lg:h-[55vh] h-[35vh] flex justify-center">
+            <div className=" lg:h-[51vh] h-[35vh]  flex justify-center pb-5">
               <PieChart date={date}
                 title={
                   selected === "day"

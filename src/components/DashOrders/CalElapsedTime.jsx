@@ -39,7 +39,7 @@ const CalElapsedTime = ({ time, format }) => {
   const timeElapsed = calculateElapsedTime(time);
   return (
     <div className="bg-transparent p-0" key={time}>
-      {timeElapsed[format]}
+      <div className="max-sm:hidden">{timeElapsed[format]}</div>
     </div>
   );
 };

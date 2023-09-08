@@ -7,7 +7,7 @@ function Actions({ order, statusColorMap }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   return (
-    <div className="relative flex justify-end items-center gap-2">
+    <>
       <Button
         isIconOnly
         className="bg-transparent text-lg text-primary-500 cursor-pointer active:opacity-50"
@@ -22,7 +22,7 @@ function Actions({ order, statusColorMap }) {
         />
         <MdPageview size={25} />
       </Button>
-    </div>
+    </>
   );
 }
 export default Actions;

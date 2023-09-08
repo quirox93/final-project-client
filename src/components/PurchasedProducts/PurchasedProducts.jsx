@@ -59,16 +59,17 @@ const PurchasedProducts = ({ initOrders, clerkId }) => {
             <Table
               aria-label={`Items for Order ${order._id}`}
               bottomContent={
-                <div className="flex items-center p-4 bg-primary-200 rounded-lg">
+                <div className="flex-column  items-center p-4 bg-primary-200 rounded-lg sm:flex">
                   <h1 className="pr-2 text-lg font-bold">Order ID:</h1>
                   <Snippet>{order._id}</Snippet>
-                  <h1 className="ml-auto text-lg font-bold">
-                    Total: ${calculateTotal(order.items)}
+                  <h1 className="ml-auto mt-3 text-lg font-bold md:mt-0">
+                    Total: ${calculateTotal(order.items).toFixed(2)}
                   </h1>
                 </div>
               }
             >
               <TableHeader>
+                <TableColumn>Image</TableColumn>
                 <TableColumn>Name</TableColumn>
                 <TableColumn>Status</TableColumn>
                 <TableColumn>Mercado Pago</TableColumn>
@@ -79,14 +80,17 @@ const PurchasedProducts = ({ initOrders, clerkId }) => {
               <TableBody>
                 {order?.items?.map((item, index) => (
                   <TableRow key={index}>
-                    <TableCell className="flex items-center">
-                      <Link as={NextLink} href={`/product/${item._id._id}`}>
-                        <Image
-                          width={50}
-                          height={50}
+                    <TableCell>
+                    <Image
+                          width={60}
+                          height={60}
                           src={item._id.imag.secure_url}
                           alt={item._id.name}
                         />
+                    </TableCell>
+                    <TableCell className="flex items-center">
+                      <Link as={NextLink} href={`/product/${item._id._id}`}>
+                        
                         <div className="ml-2">{item._id.name}</div>
                       </Link>
                     </TableCell>

@@ -152,9 +152,9 @@ export default function OrdersTable({
         );
       case "actions":
         return (
-          <div className="relative flex justify-end items-center gap-2">
+          <>
             <Actions order={_order} statusColorMap={statusColorMap} />
-          </div>
+          </>
         );
       default:
         return cellValue;
@@ -316,25 +316,6 @@ export default function OrdersTable({
     );
   }, [selectedKeys, items.length, page, pages, hasSearchFilter]);
 
-  const classNames = React.useMemo(
-    () => ({
-      wrapper: ["max-h-[400px]", "max-w-3xl"],
-      th: ["bg-transparent", "text-default-600", "border-b", "border-divider"],
-      td: [
-        // changing the rows border radius
-        // first
-        "group-data-[first=true]:first:before:rounded-none",
-        "group-data-[first=true]:last:before:rounded-none",
-        // middle
-        "group-data-[middle=true]:before:rounded-none",
-        // last
-        "group-data-[last=true]:first:before:rounded-none",
-        "group-data-[last=true]:last:before:rounded-none",
-      ],
-    }),
-    []
-  );
-
   return (
     <Table
       isCompact
@@ -342,7 +323,9 @@ export default function OrdersTable({
       aria-label="Items table"
       bottomContent={bottomContent}
       bottomContentPlacement="outside"
-      classNames={classNames}
+      classNames={{
+        wrapper: "max-h-[400px max-sm:max-h-max]",
+      }}
       selectedKeys={selectedKeys}
       selectionMode="single"
       sortDescriptor={sortDescriptor}
