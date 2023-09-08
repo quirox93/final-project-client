@@ -6,7 +6,11 @@ import { clerkClient } from "@clerk/nextjs";
 export async function GET() {
   try {
     connectDB();
-    const users = await clerkClient.users.getUserList();
+    const users = await clerkClient.users.getUserList({
+      orderBy: "-created_at",
+      limit: 50,
+    });
+    console.log(users);
     const dbUsers = await User.find();
     const fullData = users.map((user) => {
       const dbUser = dbUsers.find(({ clerkId }) => clerkId === user.id);
