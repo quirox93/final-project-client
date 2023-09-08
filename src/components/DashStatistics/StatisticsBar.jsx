@@ -49,7 +49,7 @@ const StatisticsBar = ({ orders }) => {
             title={
               <div className="flex items-center space-x-2">
                 <BsFillBarChartFill />
-                <span>Bars</span>
+                <span className="max-sm:hidden">Bars</span>
               </div>
             }
           >
@@ -72,7 +72,7 @@ const StatisticsBar = ({ orders }) => {
             title={
               <div className="flex items-center space-x-2">
                 <FaChartLine />
-                <span>Lines</span>
+                <span className="max-sm:hidden">Lines</span>
               </div>
             }
           >
@@ -93,7 +93,7 @@ const StatisticsBar = ({ orders }) => {
             title={
               <div className="flex items-center space-x-2">
                 <HiOutlineChartPie />
-                <span>Circular</span>
+                <span className="max-sm:hidden">Circular</span>
               </div>
             }
           >

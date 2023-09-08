@@ -298,7 +298,7 @@ export default function UsersInfo({
       bottomContent={bottomContent}
       bottomContentPlacement="outside"
       classNames={{
-        wrapper: "max-h-[400px]",
+        wrapper: "max-h-[400px] max-sm:max-h-max",
       }}
       selectedKeys={selectedKeys}
       selectionMode="single"
