@@ -14,21 +14,14 @@ import {
   Dropdown,
   DropdownMenu,
   DropdownItem,
-  Chip,
   User,
   Pagination,
-  ButtonGroup,
-  Spacer,
 } from "@nextui-org/react";
 import { SearchIcon } from "../AdminProducts/SearchIcon";
 import { ChevronDownIcon } from "../AdminProducts/ChevronDownIcon";
 import { capitalize } from "../AdminProducts/utils";
 import { formatDate } from "../PurchasedProducts/utils";
 import StatusUser from "./StatusUser";
-const statusColorMap = {
-  true: "success",
-  false: "warning",
-};
 
 const sort = {
   nameascending: (a, b) =>
@@ -39,15 +32,24 @@ const sort = {
     (b.firstName || "").localeCompare(a.firstName || "", "en", {
       sensitivity: "base",
     }),
-  createdAtascending: (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
-  createdAtdescending: (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+  createdAtascending: (a, b) =>
+    new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+  createdAtdescending: (a, b) =>
+    new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
 };
 
-export default function UsersInfo({ defItems, columns, statusOptions, INITIAL_VISIBLE_COLUMNS }) {
+export default function UsersInfo({
+  defItems,
+  columns,
+  statusOptions,
+  INITIAL_VISIBLE_COLUMNS,
+}) {
   const [allItems, setAllItems] = React.useState(defItems);
   const [filterValue, setFilterValue] = React.useState("");
   const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
-  const [visibleColumns, setVisibleColumns] = React.useState(new Set(INITIAL_VISIBLE_COLUMNS));
+  const [visibleColumns, setVisibleColumns] = React.useState(
+    new Set(INITIAL_VISIBLE_COLUMNS)
+  );
   const [statusFilter, setStatusFilter] = React.useState("all");
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [sortDescriptor, setSortDescriptor] = React.useState({
@@ -62,7 +64,9 @@ export default function UsersInfo({ defItems, columns, statusOptions, INITIAL_VI
   const headerColumns = React.useMemo(() => {
     if (visibleColumns === "all") return columns;
 
-    return columns.filter((column) => Array.from(visibleColumns).includes(column.uid));
+    return columns.filter((column) =>
+      Array.from(visibleColumns).includes(column.uid)
+    );
   }, [visibleColumns]);
 
   const filteredItems = React.useMemo(() => {
@@ -74,7 +78,10 @@ export default function UsersInfo({ defItems, columns, statusOptions, INITIAL_VI
         return name.toLowerCase().includes(filterValue.toLowerCase());
       });
     }
-    if (statusFilter !== "all" && Array.from(statusFilter).length !== statusOptions.length) {
+    if (
+      statusFilter !== "all" &&
+      Array.from(statusFilter).length !== statusOptions.length
+    ) {
       filteredUsers = filteredUsers.filter((item) => {
         const isAdmin = item[statusOptions[0].prop] || false;
         return isAdmin.toString() == Array.from(statusFilter)[0];
@@ -157,8 +164,6 @@ export default function UsersInfo({ defItems, columns, statusOptions, INITIAL_VI
   }, []);
 
   const topContent = React.useMemo(() => {
-    let selected = Array.from(selectedKeys);
-
     return (
       <div className="flex flex-col gap-4">
         <div className="flex justify-between gap-3 items-end">
@@ -174,7 +179,10 @@ export default function UsersInfo({ defItems, columns, statusOptions, INITIAL_VI
           <div className="flex gap-3">
             <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
-                <Button endContent={<ChevronDownIcon className="text-small" />} variant="flat">
+                <Button
+                  endContent={<ChevronDownIcon className="text-small" />}
+                  variant="flat"
+                >
                   Status
                 </Button>
               </DropdownTrigger>
@@ -195,7 +203,10 @@ export default function UsersInfo({ defItems, columns, statusOptions, INITIAL_VI
             </Dropdown>
             <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
-                <Button endContent={<ChevronDownIcon className="text-small" />} variant="flat">
+                <Button
+                  endContent={<ChevronDownIcon className="text-small" />}
+                  variant="flat"
+                >
                   Columns
                 </Button>
               </DropdownTrigger>
@@ -217,7 +228,9 @@ export default function UsersInfo({ defItems, columns, statusOptions, INITIAL_VI
           </div>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-default-400 text-small">Total {allItems.length} Users</span>
+          <span className="text-default-400 text-small">
+            Total {allItems.length} Users
+          </span>
           <label className="flex items-center text-default-400 text-small">
             Rows per page:
             <select
@@ -256,10 +269,20 @@ export default function UsersInfo({ defItems, columns, statusOptions, INITIAL_VI
           onChange={setPage}
         />
         <div className="hidden sm:flex w-[30%] justify-end gap-2">
-          <Button isDisabled={pages === 1} size="sm" variant="flat" onPress={onPreviousPage}>
+          <Button
+            isDisabled={pages === 1}
+            size="sm"
+            variant="flat"
+            onPress={onPreviousPage}
+          >
             Previous
           </Button>
-          <Button isDisabled={pages === 1} size="sm" variant="flat" onPress={onNextPage}>
+          <Button
+            isDisabled={pages === 1}
+            size="sm"
+            variant="flat"
+            onPress={onNextPage}
+          >
             Next
           </Button>
         </div>
@@ -286,7 +309,11 @@ export default function UsersInfo({ defItems, columns, statusOptions, INITIAL_VI
     >
       <TableHeader columns={headerColumns}>
         {(column) => (
-          <TableColumn key={column.uid} align={"start"} allowsSorting={column.sortable}>
+          <TableColumn
+            key={column.uid}
+            align={"start"}
+            allowsSorting={column.sortable}
+          >
             {column.name}
           </TableColumn>
         )}
@@ -295,7 +322,9 @@ export default function UsersInfo({ defItems, columns, statusOptions, INITIAL_VI
         {(item) => {
           return (
             <TableRow key={item.id}>
-              {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
+              {(columnKey) => (
+                <TableCell>{renderCell(item, columnKey)}</TableCell>
+              )}
             </TableRow>
           );
         }}

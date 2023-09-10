@@ -10,7 +10,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateCart } from "@/store/slice";
 import { motion } from "framer-motion";
 import NextImage from "next/image";
-export default function Product({ id, name, image, description, price, stock, delay, userId }) {
+export default function Product({
+  id,
+  name,
+  image,
+  description,
+  price,
+  stock,
+  delay,
+  userId,
+}) {
   const router = useRouter();
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.shopCart.cartItems);
@@ -59,7 +68,11 @@ export default function Product({ id, name, image, description, price, stock, de
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.3, delay: delay }}
     >
-      <AlertModalStock isOpen={showModal} onClose={() => setShowModal(false)} name={name} />
+      <AlertModalStock
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        name={name}
+      />
       <div className="p-2 overflow-hidden h-[65px] flex  justify-center items-center">
         <h2
           className="text-lg  sm:text-base  font-bold cursor-pointer text-center"
@@ -82,17 +95,31 @@ export default function Product({ id, name, image, description, price, stock, de
           />
         </div>
         <div className="text-black  flex-1 p-1 space-y-3">
-          <p>{description.length > 35 ? description.substring(0, 35) + "..." : description}</p>
+          <p>
+            {description.length > 35
+              ? description.substring(0, 35) + "..."
+              : description}
+          </p>
           <Divider />
           <p>
             Price: <span className="font-bold">${price}</span>
           </p>
           {stock === 0 ? (
-            <Chip className="capitalize" color="danger" size="sm" variant="flat">
+            <Chip
+              className="capitalize"
+              color="danger"
+              size="sm"
+              variant="flat"
+            >
               Out of stock
             </Chip>
           ) : (
-            <Chip className="capitalize" color="success" size="sm" variant="flat">
+            <Chip
+              className="capitalize"
+              color="success"
+              size="sm"
+              variant="flat"
+            >
               Available
             </Chip>
           )}
@@ -126,7 +153,9 @@ export default function Product({ id, name, image, description, price, stock, de
             placeholder="0"
             labelPlacement="inside"
             className="mb-2  w-36"
-            startContent={<div className="pointer-events-none flex items-center"></div>}
+            startContent={
+              <div className="pointer-events-none flex items-center"></div>
+            }
           />
           <ProductPopOver
             popoverOpen={popoverOpen}

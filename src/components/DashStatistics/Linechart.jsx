@@ -12,8 +12,7 @@ import {
 } from "chart.js";
 
 const Linechart = ({ date, value, title }) => {
-    
-    ChartJS.register(
+  ChartJS.register(
     CategoryScale,
     LinearScale,
     PointElement,

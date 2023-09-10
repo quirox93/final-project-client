@@ -23,17 +23,18 @@ const RecentOrders = ({ orders }) => {
                       <HiShoppingBag className="text-purple-800" />
                     </div>
                     <div className="pl-4">
-                      <p className="text-gray-800 font-bold">${parseFloat(order.total.toFixed(2))}</p>
+                      <p className="text-gray-800 font-bold">
+                        ${parseFloat(order.total.toFixed(2))}
+                      </p>
                       <p className="text-gray-400 text-sm">{order.name}</p>
                     </div>
                     <div className="lg:flex md:hidden absolute right-6 text-sm">
-                    <CalElapsedTime
-                      time={order.createdAt}
-                      format={"orderTime"}
-                    />
-                  </div>
+                      <CalElapsedTime
+                        time={order.createdAt}
+                        format={"orderTime"}
+                      />
+                    </div>
                   </Button>
-              
                 </PopoverTrigger>
                 <PopoverContent>
                   <div className="px-1 py-2">
@@ -48,7 +49,8 @@ const RecentOrders = ({ orders }) => {
               </Popover>
             );
           })
-          .reverse().slice(0 , 12)}
+          .reverse()
+          .slice(0, 12)}
       </ul>
     </div>
   );

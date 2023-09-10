@@ -41,7 +41,7 @@ const PurchasedProducts = ({ initOrders, clerkId }) => {
     });
     setOrders(newOrders);
   };
-  
+
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">Your Purchased Items</h1>
@@ -81,16 +81,15 @@ const PurchasedProducts = ({ initOrders, clerkId }) => {
                 {order?.items?.map((item, index) => (
                   <TableRow key={index}>
                     <TableCell>
-                    <Image
-                          width={60}
-                          height={60}
-                          src={item._id.imag.secure_url}
-                          alt={item._id.name}
-                        />
+                      <Image
+                        width={60}
+                        height={60}
+                        src={item._id.imag.secure_url}
+                        alt={item._id.name}
+                      />
                     </TableCell>
                     <TableCell className="flex items-center">
                       <Link as={NextLink} href={`/product/${item._id._id}`}>
-                        
                         <div className="ml-2">{item._id.name}</div>
                       </Link>
                     </TableCell>

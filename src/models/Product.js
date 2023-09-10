@@ -45,7 +45,8 @@ const productSchema = Schema(
       },
       secure_url: {
         type: String,
-        default: "https://product-images.tcgplayer.com/fit-in/420x420/455949.jpg",
+        default:
+          "https://product-images.tcgplayer.com/fit-in/420x420/455949.jpg",
       },
     },
     enabled: {

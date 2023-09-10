@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import NextLink from "next/link";
 import ShopCartIcon from "../ShopCartIcon";

@@ -3,14 +3,12 @@ import {
   ModalContent,
   ModalHeader,
   ModalBody,
-  ModalFooter,
   Button,
   Divider,
   Chip,
 } from "@nextui-org/react";
 
 import { AiOutlineFilePdf } from "react-icons/ai";
-import { MdReviews } from "react-icons/md";
 import { BsArrowReturnLeft } from "react-icons/bs";
 import { SiMercadopago } from "react-icons/si";
 import DetailTableOrders from "./DetailTableOrders";
@@ -18,24 +16,18 @@ import DetailTableOrders from "./DetailTableOrders";
 import { useRef } from "react";
 import { captureView } from "./data";
 
-function DetailOrder({
-  isOpen,
-  onOpenChange,
-  order,
-  DateShipment,
-  statusColorMap
-}) {
+function DetailOrder({ isOpen, onOpenChange, order, statusColorMap }) {
   const pdfRef = useRef(null);
   const downloadPDF = () => {
     const input = pdfRef.current;
     captureView(input);
   };
   const statusOrder = (status) => {
-    if(status === 'Success') return 'Delivered';
-    if(status === 'Sent') return 'Order Shipped';
-    if(status === 'Pending') return 'Processing Order';
-    return 'cancelled order';
-  }
+    if (status === "Success") return "Delivered";
+    if (status === "Sent") return "Order Shipped";
+    if (status === "Pending") return "Processing Order";
+    return "cancelled order";
+  };
   return (
     <div>
       <Modal
@@ -98,7 +90,7 @@ function DetailOrder({
                     <h2 className="m-2 font-bold">Order summary</h2>
                     <h4 className="m-2 text-default-500 text-small">
                       Date of shipment:{" "}
-                      <span className =" text-orange-500">
+                      <span className=" text-orange-500">
                         {statusOrder(order.status)}
                       </span>
                     </h4>
@@ -167,7 +159,10 @@ function DetailOrder({
                 {/* tabla de articulos comprados */}
 
                 <div className="p-4">
-                  <DetailTableOrders order={order} statusColorMap={statusColorMap}/>
+                  <DetailTableOrders
+                    order={order}
+                    statusColorMap={statusColorMap}
+                  />
                 </div>
               </ModalBody>
               {/* <ModalFooter>

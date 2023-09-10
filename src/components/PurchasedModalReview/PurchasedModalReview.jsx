@@ -48,7 +48,7 @@ const PurchasedModalReview = ({
 
     try {
       setIsLoading(true);
-      const response = await addReview(itemId, reviewData);
+      await addReview(itemId, reviewData);
       updateReview(itemId, clerkId, rating, description);
       router.refresh();
       setRating(reviewData.score);

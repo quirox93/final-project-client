@@ -5,14 +5,13 @@ const SearchBar = ({ onSearch }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const handleSearch = () => {
     onSearch(searchQuery);
-  
   };
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
       handleSearch();
     }
   };
-  
+
   return (
     <div className="mb-3 flex w-full items-center justify-center ">
       <div className=" relative w-full  max-w-md flex flex-wrap items-stretch">

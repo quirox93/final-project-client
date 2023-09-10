@@ -1,7 +1,6 @@
 import { User } from "@nextui-org/react";
 
-function NameOrders ({ order, cellValue })  {
-
+function NameOrders({ order, cellValue }) {
   return (
     <>
       <User
@@ -18,5 +17,5 @@ function NameOrders ({ order, cellValue })  {
       </User>
     </>
   );
-};
+}
 export default NameOrders;

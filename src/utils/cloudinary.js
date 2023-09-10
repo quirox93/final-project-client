@@ -1,5 +1,9 @@
 import { v2 as cloudinary } from "cloudinary";
-import { CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET } from "./config.js";
+import {
+  CLOUDINARY_CLOUD_NAME,
+  CLOUDINARY_API_KEY,
+  CLOUDINARY_API_SECRET,
+} from "./config.js";
 
 cloudinary.config({
   cloud_name: CLOUDINARY_CLOUD_NAME,
@@ -16,10 +20,13 @@ export const uploadImag = async (file) => {
   formData.append("timestamp", signData.timestamp);
   formData.append("signature", signData.signature);
   formData.append("folder", "products");
-  const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, {
-    method: "POST",
-    body: formData,
-  }).then((r) => r.json());
+  const res = await fetch(
+    `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`,
+    {
+      method: "POST",
+      body: formData,
+    }
+  ).then((r) => r.json());
   return res;
 };
 

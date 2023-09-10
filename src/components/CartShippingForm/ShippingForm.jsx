@@ -36,7 +36,8 @@ const validateField = (fieldName, value) => {
       message: "Only characters are accepted.",
     },
     email: {
-      validate: (value) => /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(value),
+      validate: (value) =>
+        /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(value),
       message: "Email not valid.",
     },
     postalCode: {
@@ -45,7 +46,7 @@ const validateField = (fieldName, value) => {
     },
     phoneNumber: {
       validate: (value) =>
-      /^((?:\(?\d{3}\)?[-]?\d{4}|\(?\d{4}\)?[-]?\d{3}|\(?\d{5}\)?[-]?\d{2})[-]?\d{4})$/.test(
+        /^((?:\(?\d{3}\)?[-]?\d{4}|\(?\d{4}\)?[-]?\d{3}|\(?\d{5}\)?[-]?\d{2})[-]?\d{4})$/.test(
           value
         ),
       message: "Phone number not valid.",
@@ -88,7 +89,7 @@ const ShippingForm = ({ userId, cartItems }) => {
     email: "",
   });
 
-  const [showForm, setShowForm] = useState(false); 
+  const [showForm, setShowForm] = useState(false);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -110,7 +111,9 @@ const ShippingForm = ({ userId, cartItems }) => {
       "email",
     ];
     const hasErrors = requiredFields.some((field) => !!errors[field]);
-    const allFieldsFilled = requiredFields.every((field) => !!shippingData[field]);
+    const allFieldsFilled = requiredFields.every(
+      (field) => !!shippingData[field]
+    );
 
     setDisabled(hasErrors || !allFieldsFilled);
   }, [errors, shippingData]);
@@ -123,7 +126,7 @@ const ShippingForm = ({ userId, cartItems }) => {
           ...prevData,
           ...initialData,
         }));
-        setShowForm(true); 
+        setShowForm(true);
       } catch (error) {
         console.error(error);
       }
@@ -146,7 +149,8 @@ const ShippingForm = ({ userId, cartItems }) => {
 
       const payer = {
         clerkId: userId,
-        name: shippingData.firstName.trim() + " " + shippingData.lastName.trim(),
+        name:
+          shippingData.firstName.trim() + " " + shippingData.lastName.trim(),
         email: shippingData.email,
         address: shippingData.street.trim() + " " + shippingData.number.trim(),
         cp: shippingData.postalCode,
@@ -158,11 +162,9 @@ const ShippingForm = ({ userId, cartItems }) => {
       dispatch(updateCart([]));
       router.push(response.paymentURL);
       setLoading(false);
-      onClose();
     } catch (error) {
       console.log(error);
       setLoading(false);
-      onClose();
     }
   };
 
@@ -175,7 +177,9 @@ const ShippingForm = ({ userId, cartItems }) => {
         <ModalContent>
           {showForm && (
             <div>
-              <ModalHeader className="flex flex-col gap-1">Shipping Information</ModalHeader>
+              <ModalHeader className="flex flex-col gap-1">
+                Shipping Information
+              </ModalHeader>
               <ModalBody>
                 <Input
                   autoFocus
@@ -186,7 +190,9 @@ const ShippingForm = ({ userId, cartItems }) => {
                   onChange={handleInputChange}
                   isRequired
                 />
-                {errors.firstName && <p className="text-danger">{errors.firstName}</p>}
+                {errors.firstName && (
+                  <p className="text-danger">{errors.firstName}</p>
+                )}
                 <Input
                   label="Last Name"
                   value={shippingData.lastName}
@@ -195,7 +201,9 @@ const ShippingForm = ({ userId, cartItems }) => {
                   onChange={handleInputChange}
                   isRequired
                 />
-                {errors.lastName && <p className="text-danger">{errors.lastName}</p>}
+                {errors.lastName && (
+                  <p className="text-danger">{errors.lastName}</p>
+                )}
                 <Input
                   label="E-Mail"
                   value={shippingData.email}
@@ -213,7 +221,9 @@ const ShippingForm = ({ userId, cartItems }) => {
                   onChange={handleInputChange}
                   isRequired
                 />
-                {errors.street && <p className="text-danger">{errors.street}</p>}
+                {errors.street && (
+                  <p className="text-danger">{errors.street}</p>
+                )}
                 <Input
                   label="Address (Number)"
                   value={shippingData.number}
@@ -223,7 +233,9 @@ const ShippingForm = ({ userId, cartItems }) => {
                   onChange={handleInputChange}
                   isRequired
                 />
-                {errors.number && <p className="text-danger">{errors.number}</p>}
+                {errors.number && (
+                  <p className="text-danger">{errors.number}</p>
+                )}
                 <Input
                   label="Phone Number"
                   value={shippingData.phoneNumber}
@@ -234,7 +246,9 @@ const ShippingForm = ({ userId, cartItems }) => {
                   onChange={handleInputChange}
                   isRequired
                 />
-                {errors.phoneNumber && <p className="text-danger">{errors.phoneNumber}</p>}
+                {errors.phoneNumber && (
+                  <p className="text-danger">{errors.phoneNumber}</p>
+                )}
                 <Input
                   label="Postal Code"
                   value={shippingData.postalCode}
@@ -243,7 +257,9 @@ const ShippingForm = ({ userId, cartItems }) => {
                   onChange={handleInputChange}
                   isRequired
                 />
-                {errors.postalCode && <p className="text-danger">{errors.postalCode}</p>}
+                {errors.postalCode && (
+                  <p className="text-danger">{errors.postalCode}</p>
+                )}
               </ModalBody>
               <ModalFooter className="flex justify-center">
                 <Button
