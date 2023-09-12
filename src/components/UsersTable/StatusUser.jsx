@@ -1,10 +1,9 @@
 import React from "react";
 import { Button } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
-import { updateUser} from "@/utils/api";
+import { updateUser } from "@/utils/api";
 
-const StatusUser = ({ status, id }) => {
-
+const StatusUser = ({ status, id, allItems, setAllItems }) => {
   const router = useRouter();
   const [selectedKeys, setSelectedKeys] = React.useState(status);
   const [isLoading, setIsLoading] = React.useState(false);
@@ -19,6 +18,10 @@ const StatusUser = ({ status, id }) => {
       await updateUser(id, { isAdmin: key });
       setIsLoading(false);
       setSelectedKeys(key);
+      const newData = allItems.map((e) =>
+        e.id === id ? { ...e, isAdmin: key } : e
+      );
+      setAllItems(newData);
       router.refresh();
     } catch (error) {
       setSelectedKeys(selectedKeys);

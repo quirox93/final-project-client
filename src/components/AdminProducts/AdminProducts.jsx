@@ -39,8 +39,10 @@ const sort = {
   pricedescending: (a, b) => b.price - a.price,
   stockascending: (a, b) => a.stock - b.stock,
   stockdescending: (a, b) => b.stock - a.stock,
-  createdAtascending: (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
-  createdAtdescending: (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+  createdAtascending: (a, b) =>
+    new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+  createdAtdescending: (a, b) =>
+    new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
 };
 
 export default function AdminProducts({
@@ -52,7 +54,9 @@ export default function AdminProducts({
   const [allItems, setAllItems] = React.useState(defItems);
   const [filterValue, setFilterValue] = React.useState("");
   const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
-  const [visibleColumns, setVisibleColumns] = React.useState(new Set(INITIAL_VISIBLE_COLUMNS));
+  const [visibleColumns, setVisibleColumns] = React.useState(
+    new Set(INITIAL_VISIBLE_COLUMNS)
+  );
   const [statusFilter, setStatusFilter] = React.useState("all");
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [sortDescriptor, setSortDescriptor] = React.useState({
@@ -67,7 +71,9 @@ export default function AdminProducts({
   const headerColumns = React.useMemo(() => {
     if (visibleColumns === "all") return columns;
 
-    return columns.filter((column) => Array.from(visibleColumns).includes(column.uid));
+    return columns.filter((column) =>
+      Array.from(visibleColumns).includes(column.uid)
+    );
   }, [visibleColumns]);
 
   const filteredItems = React.useMemo(() => {
@@ -78,9 +84,14 @@ export default function AdminProducts({
         item.name.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
-    if (statusFilter !== "all" && Array.from(statusFilter).length !== statusOptions.length) {
+    if (
+      statusFilter !== "all" &&
+      Array.from(statusFilter).length !== statusOptions.length
+    ) {
       filteredUsers = filteredUsers.filter((item) =>
-        Array.from(statusFilter).includes(item[statusOptions[0].prop].toString())
+        Array.from(statusFilter).includes(
+          item[statusOptions[0].prop].toString()
+        )
       );
     }
 
@@ -194,7 +205,10 @@ export default function AdminProducts({
           <div className="flex gap-3">
             <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
-                <Button endContent={<ChevronDownIcon className="text-small" />} variant="flat">
+                <Button
+                  endContent={<ChevronDownIcon className="text-small" />}
+                  variant="flat"
+                >
                   Status
                 </Button>
               </DropdownTrigger>
@@ -215,7 +229,10 @@ export default function AdminProducts({
             </Dropdown>
             <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
-                <Button endContent={<ChevronDownIcon className="text-small" />} variant="flat">
+                <Button
+                  endContent={<ChevronDownIcon className="text-small" />}
+                  variant="flat"
+                >
                   Columns
                 </Button>
               </DropdownTrigger>
@@ -238,7 +255,9 @@ export default function AdminProducts({
           </div>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-default-400 text-small">Total {allItems.length} products</span>
+          <span className="text-default-400 text-small">
+            Total {allItems.length} products
+          </span>
           {selected.length ? actions : ""}
           <Spacer y={8} />
           <label className="flex items-center text-default-400 text-small">
@@ -284,10 +303,20 @@ export default function AdminProducts({
           onChange={setPage}
         />
         <div className="hidden sm:flex w-[30%] justify-end gap-2">
-          <Button isDisabled={pages === 1} size="sm" variant="flat" onPress={onPreviousPage}>
+          <Button
+            isDisabled={pages === 1}
+            size="sm"
+            variant="flat"
+            onPress={onPreviousPage}
+          >
             Previous
           </Button>
-          <Button isDisabled={pages === 1} size="sm" variant="flat" onPress={onNextPage}>
+          <Button
+            isDisabled={pages === 1}
+            size="sm"
+            variant="flat"
+            onPress={onNextPage}
+          >
             Next
           </Button>
         </div>
@@ -302,7 +331,7 @@ export default function AdminProducts({
       bottomContent={bottomContent}
       bottomContentPlacement="outside"
       classNames={{
-        wrapper: "max-h-[400px]",
+        wrapper: "max-h-[400px] max-sm:max-h-max",
       }}
       selectedKeys={selectedKeys}
       selectionMode="multiple"
@@ -314,7 +343,11 @@ export default function AdminProducts({
     >
       <TableHeader columns={headerColumns}>
         {(column) => (
-          <TableColumn key={column.uid} align={"start"} allowsSorting={column.sortable}>
+          <TableColumn
+            key={column.uid}
+            align={"start"}
+            allowsSorting={column.sortable}
+          >
             {column.name}
           </TableColumn>
         )}
@@ -322,7 +355,9 @@ export default function AdminProducts({
       <TableBody emptyContent={"No items found"} items={items}>
         {(item) => (
           <TableRow key={item._id}>
-            {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
+            {(columnKey) => (
+              <TableCell>{renderCell(item, columnKey)}</TableCell>
+            )}
           </TableRow>
         )}
       </TableBody>

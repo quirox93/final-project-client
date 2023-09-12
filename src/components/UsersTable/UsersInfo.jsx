@@ -14,21 +14,14 @@ import {
   Dropdown,
   DropdownMenu,
   DropdownItem,
-  Chip,
   User,
   Pagination,
-  ButtonGroup,
-  Spacer,
 } from "@nextui-org/react";
 import { SearchIcon } from "../AdminProducts/SearchIcon";
 import { ChevronDownIcon } from "../AdminProducts/ChevronDownIcon";
 import { capitalize } from "../AdminProducts/utils";
 import { formatDate } from "../PurchasedProducts/utils";
 import StatusUser from "./StatusUser";
-const statusColorMap = {
-  true: "success",
-  false: "warning",
-};
 
 const sort = {
   nameascending: (a, b) =>
@@ -121,7 +114,15 @@ export default function UsersInfo({
           </User>
         );
       case "role":
-          return <StatusUser status={item.isAdmin} id={item.id} cellValue={cellValue}/>;
+        return (
+          <StatusUser
+            setAllItems={setAllItems}
+            allItems={allItems}
+            status={item.isAdmin}
+            id={item.id}
+            cellValue={cellValue}
+          />
+        );
       // return `${item.isAdmin ?? false}`;
       case "createdAt":
         return formatDate(cellValue);
@@ -163,8 +164,6 @@ export default function UsersInfo({
   }, []);
 
   const topContent = React.useMemo(() => {
-    let selected = Array.from(selectedKeys);
-
     return (
       <div className="flex flex-col gap-4">
         <div className="flex justify-between gap-3 items-end">
@@ -298,7 +297,7 @@ export default function UsersInfo({
       bottomContent={bottomContent}
       bottomContentPlacement="outside"
       classNames={{
-        wrapper: "max-h-[400px]",
+        wrapper: "max-h-[400px] max-sm:max-h-max",
       }}
       selectedKeys={selectedKeys}
       selectionMode="single"

@@ -132,6 +132,7 @@ const PurchasedProducts = ({ initOrders, clerkId }) => {
                     <TableCell className="flex items-center">
                       <Link as={NextLink} href={`/product/${item._id._id}`}>
                         <div className="ml-2 text-xs xm:text-sm sm:text-base">{item._id.name}</div>
+
                       </Link>
                     </TableCell>
 

@@ -1,4 +1,4 @@
-import { authMiddleware, redirectToSignIn, clerkClient } from "@clerk/nextjs";
+import { authMiddleware, redirectToSignIn } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 import { getUserById } from "./utils/api";
 
@@ -9,7 +9,7 @@ import { getUserById } from "./utils/api";
 export default authMiddleware({
   publicRoutes: ["/", "/api(.*)", "/product(.*)"],
   //ignoredRoutes: ["/api"],
-  async afterAuth(auth, req, evt) {
+  async afterAuth(auth, req) {
     const adminRoutes = [
       "/dashboard/products",
       "/dashboard/statistics",

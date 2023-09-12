@@ -77,7 +77,16 @@ export default function DashProducts() {
   return (
     <ul role="list" className="w-[50vw] text-xs">
       <div className="flex justify-center mb-5">
-        {total ? <Pagination onChange={setPage} total={total} page={page} initialPage={1} /> : ""}
+        {total ? (
+          <Pagination
+            onChange={setPage}
+            total={total}
+            page={page}
+            initialPage={1}
+          />
+        ) : (
+          ""
+        )}
       </div>
       <li className="gap-1 grid grid-flow-col grid-cols-4">
         <DashText info="Name" />

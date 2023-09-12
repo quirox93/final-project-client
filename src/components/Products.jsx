@@ -7,7 +7,7 @@ import SortButton from "./SortButton";
 import FilterModal from "./FilterModal";
 import SearchBar from "@/components/SearchBar";
 
-export default function Products({userId}) {
+export default function Products({ userId }) {
   const items = 6;
   const [products, setProducts] = useState([]);
   const [page, setPage] = useState(1);
@@ -78,18 +78,27 @@ export default function Products({userId}) {
   };
 
   useEffect(getData, [page, sortType, filters]);
-  
+
   return (
     <div>
       <SearchBar onSearch={handleSearch} />
       <div className="flex justify-center">
-        {total ? <Pagination onChange={setPage} total={total} page={page} initialPage={1} /> : ""}
+        {total ? (
+          <Pagination
+            onChange={setPage}
+            total={total}
+            page={page}
+            initialPage={1}
+          />
+        ) : (
+          ""
+        )}
       </div>
-      <div className="flex mt-10 justify-evenly">
+      <div className="flex mt-3 justify-evenly">
         <SortButton onSortChange={handleSortChange} />
         <FilterModal cb={handleFilter} />
       </div>
-      <div className="flex flex-wrap justify-center">{map}</div>
+      <div className="flex flex-wrap gap-5 justify-center">{map}</div>
     </div>
   );
 }

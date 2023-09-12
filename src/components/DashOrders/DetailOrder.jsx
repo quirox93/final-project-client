@@ -3,14 +3,12 @@ import {
   ModalContent,
   ModalHeader,
   ModalBody,
-  ModalFooter,
   Button,
   Divider,
   Chip,
 } from "@nextui-org/react";
 
 import { AiOutlineFilePdf } from "react-icons/ai";
-import { MdReviews } from "react-icons/md";
 import { BsArrowReturnLeft } from "react-icons/bs";
 import { SiMercadopago } from "react-icons/si";
 import DetailTableOrders from "./DetailTableOrders";
@@ -18,24 +16,18 @@ import DetailTableOrders from "./DetailTableOrders";
 import { useRef } from "react";
 import { captureView } from "./data";
 
-function DetailOrder({
-  isOpen,
-  onOpenChange,
-  order,
-  DateShipment,
-  statusColorMap
-}) {
+function DetailOrder({ isOpen, onOpenChange, order, statusColorMap }) {
   const pdfRef = useRef(null);
   const downloadPDF = () => {
     const input = pdfRef.current;
     captureView(input);
   };
   const statusOrder = (status) => {
-    if(status === 'Success') return 'Delivered';
-    if(status === 'Sent') return 'Order Shipped';
-    if(status === 'Pending') return 'Processing Order';
-    return 'cancelled order';
-  }
+    if (status === "Success") return "Delivered";
+    if (status === "Sent") return "Order Shipped";
+    if (status === "Pending") return "Processing Order";
+    return "cancelled order";
+  };
   return (
     <div>
       <Modal
@@ -83,14 +75,14 @@ function DetailOrder({
                     >
                       download
                     </Button>
-                    <Button
+                    {/* <Button
                       color="primary"
                       variant="bordered"
                       startContent={<MdReviews size={20} />}
                       className="mx-2 p-5"
                     >
                       Request a review
-                    </Button>
+                    </Button> */}
                   </div>
                 </div>
                 <div className="flex justify-between gap-10 my-2">
@@ -98,7 +90,7 @@ function DetailOrder({
                     <h2 className="m-2 font-bold">Order summary</h2>
                     <h4 className="m-2 text-default-500 text-small">
                       Date of shipment:{" "}
-                      <span className =" text-orange-500">
+                      <span className=" text-orange-500">
                         {statusOrder(order.status)}
                       </span>
                     </h4>
@@ -124,7 +116,7 @@ function DetailOrder({
                         }
                         radius="sm"
                         variant="bordered"
-                        className="m-2"
+                        className="m-2 max-sm:py-6"
                       >
                         Mercado Pago
                       </Chip>
@@ -167,7 +159,10 @@ function DetailOrder({
                 {/* tabla de articulos comprados */}
 
                 <div className="p-4">
-                  <DetailTableOrders order={order} statusColorMap={statusColorMap}/>
+                  <DetailTableOrders
+                    order={order}
+                    statusColorMap={statusColorMap}
+                  />
                 </div>
               </ModalBody>
               {/* <ModalFooter>

@@ -22,7 +22,11 @@ const FilterModal = ({ cb }) => {
 
   return (
     <>
-      <Button className="font-bold hover:shadow-lg hover:shadow-primary-500/50" onPress={onOpen} color="primary">
+      <Button
+        className="font-bold hover:shadow-lg hover:shadow-primary-500/50"
+        onPress={onOpen}
+        color="primary"
+      >
         Filter
       </Button>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="top-center">
@@ -34,7 +38,9 @@ const FilterModal = ({ cb }) => {
             };
             return (
               <>
-                <ModalHeader className="flex flex-col gap-1">Filters</ModalHeader>
+                <ModalHeader className="flex flex-col gap-1">
+                  Filters
+                </ModalHeader>
                 <ModalBody>
                   <RadioGroup
                     value={stock}

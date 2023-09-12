@@ -20,7 +20,8 @@ import { useRouter } from "next/navigation";
 const ShopCartIcon = ({ userId }) => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const iconClasses = "text-xl text-default-500 pointer-events-none flex-shrink-0";
+  const iconClasses =
+    "text-xl text-default-500 pointer-events-none flex-shrink-0";
   const cartItems = useSelector((state) => state.shopCart.cartItems);
 
   /* Crea un mapa de cantidad por producto */
@@ -48,7 +49,12 @@ const ShopCartIcon = ({ userId }) => {
       <Dropdown shouldBlockScroll={false} className="mr-6 w-max max-h-unit-72">
         <Badge color="danger" content={totalQuantity} shape="circle">
           <DropdownTrigger>
-            <Button radius="full" isIconOnly aria-label="more than 99 notifications" variant="dark">
+            <Button
+              radius="full"
+              isIconOnly
+              aria-label="more than 99 notifications"
+              variant="dark"
+            >
               <CartIcon size={30} />
             </Button>
           </DropdownTrigger>
@@ -67,16 +73,24 @@ const ShopCartIcon = ({ userId }) => {
                 closeOnSelect={false}
                 startContent={
                   <>
-                    <img src={product.image} alt={product.name} className="w-12 h-12" />
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      className="w-12 h-12"
+                    />
                     {product.quantity > 0 && (
-                      <span className="ml-2 text-sm text-gray-500">×{product.quantity}</span>
+                      <span className="ml-2 text-sm text-gray-500">
+                        ×{product.quantity}
+                      </span>
                     )}
                   </>
                 }
                 shortcut={
                   <button
                     onClick={() => {
-                      const items = cartItems.filter((item) => item.id !== product.id);
+                      const items = cartItems.filter(
+                        (item) => item.id !== product.id
+                      );
                       dispatch(updateCart(userId ? { userId, items } : items));
                     }}
                   >
@@ -95,7 +109,7 @@ const ShopCartIcon = ({ userId }) => {
               color="success"
               onClick={() => router.push("/cart")}
               shortcut={<button>Buy</button>}
-              description={`Subtotal: $${totalPrice}`}
+              description={`Subtotal: $${totalPrice.toFixed(2)}`}
               startContent={
                 <Button
                   radius="full"

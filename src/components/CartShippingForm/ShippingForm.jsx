@@ -36,16 +36,17 @@ const validateField = (fieldName, value) => {
       message: "Only characters are accepted.",
     },
     email: {
-      validate: (value) => /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(value),
+      validate: (value) =>
+        /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(value),
       message: "Email not valid.",
     },
     postalCode: {
       validate: (value) => /^\d{1,10}$/.test(value),
-      message: "Postal code value execed limite max(10).",
+      message: "Postal code not valid.",
     },
     phoneNumber: {
       validate: (value) =>
-        /(\(?\d{3}\)?[- .]?\d{4}[- .]?\d\d\d\d)|(\(?\d{4}\)?[- .]?\d{3}[- .]?\d\d\d\d)|(\(?\d{5}\)?[- .]?\d{2}[- .]?\d\d\d\d)/.test(
+        /^((?:\(?\d{3}\)?[-]?\d{4}|\(?\d{4}\)?[-]?\d{3}|\(?\d{5}\)?[-]?\d{2})[-]?\d{4})$/.test(
           value
         ),
       message: "Phone number not valid.",
@@ -61,7 +62,7 @@ const validateField = (fieldName, value) => {
 
 const ShippingForm = ({ userId, cartItems }) => {
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState();
+  const [loading, setLoading] = useState(false);
   const [disabled, setDisabled] = useState(true);
   const router = useRouter();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -88,6 +89,8 @@ const ShippingForm = ({ userId, cartItems }) => {
     email: "",
   });
 
+  const [showForm, setShowForm] = useState(false);
+
   const handleInputChange = (event) => {
     const { name, value } = event.target;
 
@@ -96,6 +99,7 @@ const ShippingForm = ({ userId, cartItems }) => {
     setShippingData({ ...shippingData, [name]: value });
     setErrors({ ...errors, [name]: errorMessage });
   };
+
   useEffect(() => {
     const requiredFields = [
       "firstName",
@@ -107,7 +111,9 @@ const ShippingForm = ({ userId, cartItems }) => {
       "email",
     ];
     const hasErrors = requiredFields.some((field) => !!errors[field]);
-    const allFieldsFilled = requiredFields.every((field) => !!shippingData[field]);
+    const allFieldsFilled = requiredFields.every(
+      (field) => !!shippingData[field]
+    );
 
     setDisabled(hasErrors || !allFieldsFilled);
   }, [errors, shippingData]);
@@ -120,15 +126,47 @@ const ShippingForm = ({ userId, cartItems }) => {
           ...prevData,
           ...initialData,
         }));
+        setShowForm(true);
       } catch (error) {
         console.error(error);
       }
     };
 
-    if (isOpen) {
+    if (isOpen && !showForm) {
       loadInitialData();
     }
-  }, [isOpen, userId]);
+  }, [isOpen, userId, showForm]);
+
+  const handleSubmit = async () => {
+    setLoading(true);
+
+    try {
+      const items = cartItems.map((item) => ({
+        id: item.id,
+        quantity: item.quantity,
+        unit_price: item.price,
+      }));
+
+      const payer = {
+        clerkId: userId,
+        name:
+          shippingData.firstName.trim() + " " + shippingData.lastName.trim(),
+        email: shippingData.email,
+        address: shippingData.street.trim() + " " + shippingData.number.trim(),
+        cp: shippingData.postalCode,
+        phone: shippingData.phoneNumber,
+      };
+
+      const response = await newOrder(items, payer);
+
+      dispatch(updateCart([]));
+      router.push(response.paymentURL);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
+  };
 
   return (
     <>
@@ -137,122 +175,106 @@ const ShippingForm = ({ userId, cartItems }) => {
       </Button>
       <Modal isOpen={isOpen} placement="mid-center" onOpenChange={onOpenChange}>
         <ModalContent>
-          {(onClose) => {
-            const handleSubmit = async () => {
-              setLoading(true);
-
-              try {
-                const items = cartItems.map((item) => ({
-                  id: item.id,
-                  quantity: item.quantity,
-                  unit_price: item.price,
-                }));
-
-                const payer = {
-                  clerkId: userId,
-                  name: shippingData.firstName.trim() + " " + shippingData.lastName.trim(),
-                  email: shippingData.email,
-                  address: shippingData.street.trim() + " " + shippingData.number.trim(),
-                  cp: shippingData.postalCode,
-                  phone: shippingData.phoneNumber,
-                };
-
-                const response = await newOrder(items, payer);
-
-                dispatch(updateCart([]));
-                router.push(response.paymentURL);
-                setLoading(false);
-                onClose();
-              } catch (error) {
-                console.log(error);
-                setLoading(false);
-                onClose();
-              }
-            };
-            return (
-              <>
-                <ModalHeader className="flex flex-col gap-1">Shipping Information</ModalHeader>
-                <ModalBody>
-                  <Input
-                    autoFocus
-                    label="First Name"
-                    value={shippingData.firstName}
-                    variant="bordered"
-                    name="firstName"
-                    onChange={handleInputChange}
-                    isRequired
-                  />
-                  {errors.firstName && <p className="text-danger">{errors.firstName}</p>}
-                  <Input
-                    label="Last Name"
-                    value={shippingData.lastName}
-                    variant="bordered"
-                    name="lastName"
-                    onChange={handleInputChange}
-                    isRequired
-                  />
-                  {errors.lastName && <p className="text-danger">{errors.lastName}</p>}
-                  <Input
-                    label="E-Mail"
-                    value={shippingData.email}
-                    variant="bordered"
-                    name="email"
-                    onChange={handleInputChange}
-                    isRequired
-                  />
-                  {errors.email && <p className="text-danger">{errors.email}</p>}
-                  <Input
-                    label="Address (Street)"
-                    value={shippingData.street}
-                    variant="bordered"
-                    name="street"
-                    onChange={handleInputChange}
-                    isRequired
-                  />
-                  {errors.street && <p className="text-danger">{errors.street}</p>}
-                  <Input
-                    label="Address (Number)"
-                    value={shippingData.number}
-                    variant="bordered"
-                    name="number"
-                    onChange={handleInputChange}
-                    isRequired
-                  />
-                  {errors.number && <p className="text-danger">{errors.number}</p>}
-                  <Input
-                    label="Phone Number"
-                    value={shippingData.phoneNumber}
-                    variant="bordered"
-                    name="phoneNumber"
-                    onChange={handleInputChange}
-                    isRequired
-                  />
-                  {errors.phoneNumber && <p className="text-danger">{errors.phoneNumber}</p>}
-                  <Input
-                    label="Postal Code"
-                    value={shippingData.postalCode}
-                    variant="bordered"
-                    name="postalCode"
-                    onChange={handleInputChange}
-                    isRequired
-                  />
-                  {errors.postalCode && <p className="text-danger">{errors.postalCode}</p>}
-                </ModalBody>
-                <ModalFooter className="flex justify-center">
-                  <Button
-                    color="primary"
-                    radius="full"
-                    size="lg"
-                    isLoading={loading}
-                    isDisabled={disabled}
-                    onClick={handleSubmit}
-                  >
-                    Submit
-                  </Button>
-                </ModalFooter>
-              </>
-            );
-          }}
+          {showForm && (
+            <div>
+              <ModalHeader className="flex flex-col gap-1">
+                Shipping Information
+              </ModalHeader>
+              <ModalBody>
+                <Input
+                  autoFocus
+                  label="First Name"
+                  value={shippingData.firstName}
+                  variant="bordered"
+                  name="firstName"
+                  onChange={handleInputChange}
+                  isRequired
+                />
+                {errors.firstName && (
+                  <p className="text-danger">{errors.firstName}</p>
+                )}
+                <Input
+                  label="Last Name"
+                  value={shippingData.lastName}
+                  variant="bordered"
+                  name="lastName"
+                  onChange={handleInputChange}
+                  isRequired
+                />
+                {errors.lastName && (
+                  <p className="text-danger">{errors.lastName}</p>
+                )}
+                <Input
+                  label="E-Mail"
+                  value={shippingData.email}
+                  variant="bordered"
+                  name="email"
+                  onChange={handleInputChange}
+                  isRequired
+                />
+                {errors.email && <p className="text-danger">{errors.email}</p>}
+                <Input
+                  label="Address (Street)"
+                  value={shippingData.street}
+                  variant="bordered"
+                  name="street"
+                  onChange={handleInputChange}
+                  isRequired
+                />
+                {errors.street && (
+                  <p className="text-danger">{errors.street}</p>
+                )}
+                <Input
+                  label="Address (Number)"
+                  value={shippingData.number}
+                  variant="bordered"
+                  name="number"
+                  type="number"
+                  onChange={handleInputChange}
+                  isRequired
+                />
+                {errors.number && (
+                  <p className="text-danger">{errors.number}</p>
+                )}
+                <Input
+                  label="Phone Number"
+                  value={shippingData.phoneNumber}
+                  variant="bordered"
+                  name="phoneNumber"
+                  placeholder="0223-1234567..., 02231234567 "
+                  type="tel"
+                  onChange={handleInputChange}
+                  isRequired
+                />
+                {errors.phoneNumber && (
+                  <p className="text-danger">{errors.phoneNumber}</p>
+                )}
+                <Input
+                  label="Postal Code"
+                  value={shippingData.postalCode}
+                  variant="bordered"
+                  name="postalCode"
+                  onChange={handleInputChange}
+                  isRequired
+                />
+                {errors.postalCode && (
+                  <p className="text-danger">{errors.postalCode}</p>
+                )}
+              </ModalBody>
+              <ModalFooter className="flex justify-center">
+                <Button
+                  color="primary"
+                  radius="full"
+                  size="lg"
+                  isLoading={loading}
+                  isDisabled={disabled}
+                  onClick={handleSubmit}
+                >
+                  Submit
+                </Button>
+              </ModalFooter>
+            </div>
+          )}
         </ModalContent>
       </Modal>
     </>

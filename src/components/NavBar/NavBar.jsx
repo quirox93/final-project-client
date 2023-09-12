@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import NextLink from "next/link";
 import ShopCartIcon from "../ShopCartIcon";
@@ -47,7 +48,10 @@ export default function NavBar({ isAdmin, cart, userId }) {
   if (isAdmin) menuItems.push({ name: "Dashboard", path: "/dashboard/products" },);
 
   return (
-    <Navbar isBordered onMenuOpenChange={setIsMenuOpen}>
+    <Navbar 
+    isBordered
+    isMenuOpen={isMenuOpen}
+    onMenuOpenChange={setIsMenuOpen}>
       <NavbarContent>
         <NavbarMenuToggle
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
@@ -102,6 +106,7 @@ export default function NavBar({ isAdmin, cart, userId }) {
               className="w-full"
               href={item.path}
               size="lg"
+              onPress={() => setIsMenuOpen(!isMenuOpen)}
             >
               {item.name}
             </Link>

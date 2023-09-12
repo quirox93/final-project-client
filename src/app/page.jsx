@@ -7,8 +7,8 @@ export default function Home() {
   return (
     <>
       <PageWrapper>
-        <div className="m-8">
-          <Products userId={userId}/>
+        <div className="m-3">
+          <Products userId={userId} />
         </div>
       </PageWrapper>
     </>

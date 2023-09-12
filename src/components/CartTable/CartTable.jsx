@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useState } from "react";
 import AlertModalStock from "@/components/AlertModalStock";
 import { DeleteDocumentIcon } from "@/assets/svg/DeleteDocumentIcon";
@@ -20,7 +20,7 @@ const CartTable = ({
   cartItems,
   removeFromCartFn,
   updateQuantityFn,
-  userId
+  userId,
 }) => {
   const [showStockModal, setShowStockModal] = useState(false);
   const [modalItemName, setModalItemName] = useState("");
@@ -57,7 +57,7 @@ const CartTable = ({
                         <ShippingForm cartItems={cartItems} userId={userId} />
                       </div>
                     )}
-                  </div> 
+                  </div>
                 }
               >
                 <TableHeader>
@@ -72,10 +72,14 @@ const CartTable = ({
                   {cartItems.map((item) => (
                     <TableRow key={item.id}>
                       <TableCell>
-                      <Image width={60} height={60} src={item.image} alt={item.name} />
+                        <Image
+                          width={60}
+                          height={60}
+                          src={item.image}
+                          alt={item.name}
+                        />
                       </TableCell>
                       <TableCell className="flex items-center">
-                        
                         <div className="ml-2">{item.name}</div>
                       </TableCell>
                       <TableCell>${item.price}</TableCell>
@@ -96,7 +100,12 @@ const CartTable = ({
                           min={1}
                         />
                       </TableCell>
-                      <TableCell>${calculateSubtotal(item.price, item.quantity).toFixed(2)}</TableCell>
+                      <TableCell>
+                        $
+                        {calculateSubtotal(item.price, item.quantity).toFixed(
+                          2
+                        )}
+                      </TableCell>
                       <TableCell>
                         <Button
                           size="small"
@@ -121,7 +130,6 @@ const CartTable = ({
           name={modalItemName}
         />
       )}
-     
     </div>
   );
 };

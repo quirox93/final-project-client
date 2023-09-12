@@ -13,7 +13,10 @@ export async function GET(_, { params }) {
     const clerkUser = await clerkClient.users.getUser(id);
 
     if (!clerkUser) {
-      return NextResponse.json({ error: "the user does not exist" }, { status: 404 });
+      return NextResponse.json(
+        { error: "the user does not exist" },
+        { status: 404 }
+      );
     }
 
     // Buscar el usuario en nuestra base de datos por el clerkId
@@ -42,6 +45,7 @@ export async function GET(_, { params }) {
 
     return NextResponse.json(combinedUser);
   } catch (error) {
+    console.log({ error: error.message });
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }
@@ -53,14 +57,20 @@ export async function PATCH(req, { params }) {
     const values = await req.json();
 
     // findOneAndUpdate para actualizar solo 'cart'
-    const updatedUser = await User.findOneAndUpdate({ clerkId: id }, values, { new: true });
+    const updatedUser = await User.findOneAndUpdate({ clerkId: id }, values, {
+      new: true,
+    });
 
     if (!updatedUser) {
-      return NextResponse.json({ error: "User not found in the database" }, { status: 404 });
+      return NextResponse.json(
+        { error: "User not found in the database" },
+        { status: 404 }
+      );
     }
 
     return NextResponse.json(updatedUser);
   } catch (error) {
+    console.log({ error: error.message });
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
@@ -79,6 +89,7 @@ export async function DELETE(_, { params }) {
 
     return NextResponse.json({ message: "User deleted" });
   } catch (error) {
+    console.log(error.message);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

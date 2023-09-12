@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { Bar } from "react-chartjs-2";
 import { useState, useEffect } from "react";
@@ -20,9 +21,7 @@ ChartJS.register(
   Legend
 );
 
-const StatsBar = ({title, date, value}) => {
-
-  
+const StatsBar = ({ title, date, value }) => {
   const [barData, setBarData] = useState({
     datasets: [],
   });

@@ -17,7 +17,7 @@ const StatusOrder = ({ status, statusColorMap, statusOptions, id }) => {
   const handleStatus = async (key) => {
     try {
       setIsLoading(true);
-      await updateOrder(id, {status:key});
+      await updateOrder(id, { status: key });
       setSelectedKeys(key);
       setIsLoading(false);
       router.refresh();

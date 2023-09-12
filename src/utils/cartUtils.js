@@ -5,9 +5,10 @@ export const handleAddToCart = (
   setShowModal,
   setPopoverOpen,
   updateCart,
-  setQuantity,
+  setQuantity
 ) => {
-  const { id, name, stock, price, quantity, image, description, userId } = productData;
+  const { id, name, stock, price, quantity, image, description, userId } =
+    productData;
   if (quantity > stock) {
     setShowModal(true);
     return;
@@ -23,7 +24,9 @@ export const handleAddToCart = (
     }
 
     const items = cartItems.map((product) =>
-      product.id === id ? { ...product, quantity: product.quantity + quantity } : product
+      product.id === id
+        ? { ...product, quantity: product.quantity + quantity }
+        : product
     );
     if (userId) dispatch(updateCart({ userId, items }));
     else dispatch(updateCart(items));
