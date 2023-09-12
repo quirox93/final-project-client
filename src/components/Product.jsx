@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
-import { Input, Divider, Chip } from "@nextui-org/react";
+import { Input, Divider, Chip, Image } from "@nextui-org/react";
 import { handleAddToCart } from "@/utils/cartUtils";
 import AlertModalStock from "./AlertModalStock";
 import ProductPopOver from "./ProductPopOver/ProductPopOver";
@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { updateCart } from "@/store/slice";
 import { motion } from "framer-motion";
+import {nextImage} from "next/image";
 
 export default function Product({
   id,
@@ -83,9 +84,10 @@ export default function Product({
       </div>
       <Divider />
       <div className="flex items-center min-h-[220px]">
-        <div className="flex-1 p-1">
-          <img
-            className=" cursor-pointer min-w-[100px] "
+        <div className="flex flex-1 p-1 justify-center">
+          <Image
+            className=" cursor-pointer max-w-[200px]  "
+            as={nextImage}
             src={image}
             alt={name}
             width={200}
