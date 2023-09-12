@@ -87,6 +87,7 @@ export default function Product({
           <Image
             className="h-[200px] w-fit object-contain"
             as={NextImage}
+
             src={image}
             alt={name}
             width={200}
