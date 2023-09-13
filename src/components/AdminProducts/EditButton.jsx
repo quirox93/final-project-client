@@ -20,7 +20,6 @@ export default function EditButton(props) {
   const router = useRouter();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [buttonDisabled, setButtonDisabled] = useState(true);
-  const [isEdited, setIsEdited] = useState(false);
   const [image, setImage] = useState("");
   const [input, setInput] = useState({
     name: props.name,
@@ -38,7 +37,7 @@ export default function EditButton(props) {
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-    console.log({name, value})
+    console.log({ name, value });
     let newErrors = { ...errors };
     newErrors[name] = "";
 
@@ -139,7 +138,7 @@ export default function EditButton(props) {
 
               try {
                 const data = await updateProduct(props.id, formData);
-                console.log({data, props})
+                console.log({ data, props });
 
                 const newData = props.data.map((e) =>
                   e._id === props.id ? data : e

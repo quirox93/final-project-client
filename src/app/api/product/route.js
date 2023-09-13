@@ -8,10 +8,14 @@ export async function GET(req) {
   try {
     connectDB();
     const query = Object.fromEntries(new URL(req.url).searchParams.entries());
-    const products = filterItems(await Product.find({ isDeleted: false }), query);
+    const products = filterItems(
+      await Product.find({ isDeleted: false }),
+      query
+    );
     return NextResponse.json(products);
   } catch (error) {
-    return NextResponse.json({ error: message.message }, { status: 500 });
+    console.log({ error: error.message });
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
 
@@ -38,6 +42,7 @@ export async function POST(req) {
     const savedProduct = await newProduct.save();
     return NextResponse.json(savedProduct, { status: 201 });
   } catch (error) {
+    console.log({ error: error.message });
     if (error._message == "Product validation failed.")
       return NextResponse.json({ error: error.message }, { status: 400 });
     return NextResponse.json({ error: error.message }, { status: 500 });

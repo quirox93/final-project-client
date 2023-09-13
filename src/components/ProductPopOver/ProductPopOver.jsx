@@ -5,7 +5,7 @@ import {
   Button,
 } from "@nextui-org/react";
 
-const ProductPopOver = ({popoverOpen, handleAddToCart, quantity, stock}) => {
+const ProductPopOver = ({ popoverOpen, handleAddToCart, quantity, stock }) => {
   return (
     <Popover placement="left" offset={60} showArrow isOpen={popoverOpen}>
       <PopoverTrigger>

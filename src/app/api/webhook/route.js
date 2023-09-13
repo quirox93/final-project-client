@@ -23,7 +23,10 @@ export async function POST(req) {
 
       if (status === "approved") {
         const dbOrder = await getOrderById(preference_id);
-        await Order.findOneAndUpdate({ mpId: preference_id }, { mpStatus: status });
+        await Order.findOneAndUpdate(
+          { mpId: preference_id },
+          { mpStatus: status }
+        );
         await transporter.sendMail(purchaseNotification(dbOrder, host));
       }
     }

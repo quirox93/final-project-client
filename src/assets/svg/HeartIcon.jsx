@@ -5,7 +5,6 @@ export const HeartIcon = ({
   size,
   height,
   width,
-  label,
   ...props
 }) => {
   return (

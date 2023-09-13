@@ -1,10 +1,8 @@
 const { NextResponse } = require("next/server");
 import { connectDB } from "@/utils/mongoose";
 import Order from "@/models/Order";
-import mongoose from "mongoose";
 import { MP_TOKEN, NOTIFICATION_URL } from "@/utils/config";
 import mercadopago from "mercadopago";
-import Product from "@/models/Product";
 import User from "@/models/User";
 
 export async function GET() {
@@ -15,6 +13,7 @@ export async function GET() {
 
     return NextResponse.json(orders);
   } catch (error) {
+    console.log({ error: error.message });
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
@@ -25,7 +24,8 @@ export async function POST(req) {
     connectDB();
     const data = await req.json();
     const host = req.nextUrl.origin;
-    let notification_url = host === "http://localhost:3000" ? "" : `${host}/api/webhook`;
+    let notification_url =
+      host === "http://localhost:3000" ? "" : `${host}/api/webhook`;
     if (NOTIFICATION_URL) notification_url = NOTIFICATION_URL + "/api/webhook";
     mercadopago.configure({
       access_token: MP_TOKEN,
@@ -52,10 +52,12 @@ export async function POST(req) {
     await newOrder.save();
     await User.findOneAndUpdate({ clerkId: data.payer.clerkId }, { cart: [] });
 
-    return NextResponse.json({ paymentURL: mpResult.body.init_point }, { status: 201 });
+    return NextResponse.json(
+      { paymentURL: mpResult.body.init_point },
+      { status: 201 }
+    );
   } catch (error) {
-    console.log(error.message);
-
+    console.log({ error: error.message });
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

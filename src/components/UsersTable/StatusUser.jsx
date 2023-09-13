@@ -18,7 +18,9 @@ const StatusUser = ({ status, id, allItems, setAllItems }) => {
       await updateUser(id, { isAdmin: key });
       setIsLoading(false);
       setSelectedKeys(key);
-      const newData = allItems.map((e) => (e.id === id ? { ...e, isAdmin: key } : e));
+      const newData = allItems.map((e) =>
+        e.id === id ? { ...e, isAdmin: key } : e
+      );
       setAllItems(newData);
       router.refresh();
     } catch (error) {

@@ -7,7 +7,9 @@ const HeaderDash = () => {
 
   return (
     <div className="items-center bg-background p-2">
-      <div className="text-foreground first-letter:uppercase text-3xl font-bold">{path}</div>
+      <div className="text-foreground first-letter:uppercase text-3xl font-bold">
+        {path}
+      </div>
       <div className="text-lime-500 text-xs font-normal">
         <DateTime suppressHydrationWarning={true} />
       </div>

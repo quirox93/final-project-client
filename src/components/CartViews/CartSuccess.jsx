@@ -59,7 +59,11 @@ const CartSuccess = ({ userId, isOpen, onClose }) => {
           </CardBody>
           <Divider />
           <CardFooter>
-            <Link isExternal showAnchorIcon href="https://developers.mercadopago.com">
+            <Link
+              isExternal
+              showAnchorIcon
+              href="https://developers.mercadopago.com"
+            >
               https://developers.mercadopago.com
             </Link>
           </CardFooter>

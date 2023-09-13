@@ -7,9 +7,14 @@ export async function GET(_, { params }) {
   try {
     connectDB();
     const products = await Product.findById(params.id);
-    if (!products) return NextResponse.json({ message: "Product not found " }, { status: 404 });
+    if (!products)
+      return NextResponse.json(
+        { message: "Product not found " },
+        { status: 404 }
+      );
     return NextResponse.json(products);
   } catch (error) {
+    console.log({ error: error.message });
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
@@ -19,7 +24,10 @@ export async function PUT(req, { params }) {
     connectDB();
     if (params.id === "bulk") {
       const data = await req.json();
-      const productsUpdated = await Product.updateMany({ _id: { $in: data.array } }, data.values);
+      const productsUpdated = await Product.updateMany(
+        { _id: { $in: data.array } },
+        data.values
+      );
       return NextResponse.json(productsUpdated);
     }
 
@@ -37,6 +45,7 @@ export async function PUT(req, { params }) {
     });
     return NextResponse.json(product);
   } catch (error) {
+    console.log({ error: error.message });
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
@@ -52,11 +61,20 @@ export async function DELETE(req, { params }) {
       );
       return NextResponse.json(productsDeleted);
     }
-    const productDeleted = await Product.findByIdAndUpdate(params.id, { isDeleted: true });
+    const productDeleted = await Product.findByIdAndUpdate(params.id, {
+      isDeleted: true,
+    });
     if (!productDeleted)
-      return NextResponse.json({ message: "Product not found." }, { status: 404 });
-    return NextResponse.json({ message: "Product successfully deleted.", productDeleted });
+      return NextResponse.json(
+        { message: "Product not found." },
+        { status: 404 }
+      );
+    return NextResponse.json({
+      message: "Product successfully deleted.",
+      productDeleted,
+    });
   } catch (error) {
+    console.log({ error: error.message });
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

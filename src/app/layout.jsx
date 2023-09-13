@@ -2,7 +2,7 @@ import "./globals.css";
 import { Providers } from "./providers";
 import { Inter } from "next/font/google";
 import NavBar from "../components/NavBar/NavBar";
-import { ClerkProvider, auth, currentUser } from "@clerk/nextjs";
+import { ClerkProvider, auth } from "@clerk/nextjs";
 import { getUserById } from "@/utils/api";
 const inter = Inter({ subsets: ["latin"] });
 

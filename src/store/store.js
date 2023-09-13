@@ -4,23 +4,23 @@ import storage from "redux-persist/lib/storage";
 import { Slice } from "./slice";
 
 const persistConfig = {
-  key: "root", 
-  version:1,
-  storage, 
+  key: "root",
+  version: 1,
+  storage,
 };
 
 const persistedReducer = persistReducer(persistConfig, Slice.reducer);
 
 const store = configureStore({
   reducer: {
-    shopCart: persistedReducer, 
+    shopCart: persistedReducer,
   },
   middleware: (getDefaultMiddleware) =>
-  getDefaultMiddleware({
-    serializableCheck: {
-      ignoredActions: [PERSIST],
-    },
-  }),
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [PERSIST],
+      },
+    }),
 });
 
 const persistor = persistStore(store);

@@ -93,7 +93,7 @@ export default function FormNewProduct({ data, setData }) {
           newErrors.stock = "";
         }
         break;
-  
+
       default:
         break;
     }

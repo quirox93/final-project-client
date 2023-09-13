@@ -9,7 +9,6 @@ import {
   Image,
 } from "@nextui-org/react";
 const DetailTableOrders = ({ order, statusColorMap }) => {
-  
   return (
     <>
       <h1 className="text-2xl font-bold mb-4">Content of the order</h1>

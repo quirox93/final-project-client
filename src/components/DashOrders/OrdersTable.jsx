@@ -2,7 +2,7 @@
 "use client";
 import React from "react";
 import NameOrders from "./NameOrders";
-import {formatDate} from "../PurchasedProducts/utils"
+import { formatDate } from "../PurchasedProducts/utils";
 import {
   Table,
   TableHeader,
@@ -17,14 +17,11 @@ import {
   DropdownMenu,
   DropdownItem,
   Chip,
-  User,
   Pagination,
   Popover,
   PopoverTrigger,
   PopoverContent,
 } from "@nextui-org/react";
-import { HiShoppingBag } from "react-icons/hi";
-
 import { SearchIcon } from "@/components/AdminProducts/SearchIcon";
 import { ChevronDownIcon } from "@/components/AdminProducts/ChevronDownIcon";
 import { capitalize } from "@/components/AdminProducts/utils";
@@ -133,10 +130,10 @@ export default function OrdersTable({
         );
 
       case "createdAt":
-        return (formatDate(cellValue));
+        return formatDate(cellValue);
 
       case "status":
-          return (
+        return (
           <StatusOrder
             statusColorMap={statusColorMap}
             status={cellValue}

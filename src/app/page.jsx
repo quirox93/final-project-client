@@ -8,7 +8,7 @@ export default function Home() {
     <>
       <PageWrapper>
         <div className="m-3">
-          <Products userId={userId}/>
+          <Products userId={userId} />
         </div>
       </PageWrapper>
     </>

@@ -4,15 +4,12 @@ import { VscGraph } from "react-icons/vsc";
 import { BiShoppingBag } from "react-icons/bi";
 import { AiOutlineUser } from "react-icons/ai";
 
-import { Link, Avatar, Divider, Button } from "@nextui-org/react";
-import DateTime from "./DateTime";
-import NextLink from "next/link";
-import { useState } from "react";
-import { usePathname} from "next/navigation";
+import { Link, Divider } from "@nextui-org/react";
 
+import NextLink from "next/link";
+import { usePathname } from "next/navigation";
 
 const Sidebar = ({ Children }) => {
-  
   const pathname = usePathname();
   const url = pathname.split("/")[2];
   return (
@@ -47,9 +44,12 @@ const Sidebar = ({ Children }) => {
               isBlock
               as={NextLink}
               href="/dashboard/products"
-              color={url === 'products' ? 'default': 'primary'}
-              className={url === 'products' ? ' text-danger-500 cursor-not-allowed': 'primary'}
-              
+              color={url === "products" ? "default" : "primary"}
+              className={
+                url === "products"
+                  ? " text-danger-500 cursor-not-allowed"
+                  : "primary"
+              }
             >
               <RxDashboard size={20} className="mr-6 max-sm:mr-0" />
               <div className=" max-sm:hidden transition-all">Products</div>
@@ -58,8 +58,12 @@ const Sidebar = ({ Children }) => {
               isBlock
               as={NextLink}
               href="/dashboard/statistics"
-              color={url === 'statistics' ? 'default': 'primary'}
-              className={url === 'statistics' ? ' text-danger-500 cursor-not-allowed': 'primary'}
+              color={url === "statistics" ? "default" : "primary"}
+              className={
+                url === "statistics"
+                  ? " text-danger-500 cursor-not-allowed"
+                  : "primary"
+              }
             >
               <VscGraph size={20} className="mr-6 max-sm:mr-0" />
               <div className="max-sm:hidden">Statistics</div>
@@ -68,18 +72,26 @@ const Sidebar = ({ Children }) => {
               isBlock
               as={NextLink}
               href="/dashboard/orders"
-              color={url === 'orders' ? 'default': 'primary'}
-              className={url === 'orders' ? ' text-danger-500 cursor-not-allowed': 'primary'}
+              color={url === "orders" ? "default" : "primary"}
+              className={
+                url === "orders"
+                  ? " text-danger-500 cursor-not-allowed"
+                  : "primary"
+              }
             >
               <BiShoppingBag size={20} className="mr-6 max-sm:mr-0" />
               <div className="mr-5 max-sm:hidden">Orders</div>
             </Link>
-            <Link 
-            isBlock 
-            as={NextLink} 
-            href="/dashboard/users" 
-            color={url === 'users' ? 'default': 'primary'}
-            className={url === 'users' ? 'text-danger-500 cursor-not-allowed': 'primary'}
+            <Link
+              isBlock
+              as={NextLink}
+              href="/dashboard/users"
+              color={url === "users" ? "default" : "primary"}
+              className={
+                url === "users"
+                  ? "text-danger-500 cursor-not-allowed"
+                  : "primary"
+              }
             >
               <AiOutlineUser size={20} className="mr-6 max-sm:mr-0" />
               <div className="mr-7 max-sm:hidden">Users</div>

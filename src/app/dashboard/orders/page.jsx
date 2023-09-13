@@ -1,11 +1,7 @@
-import Orders from "@/components/DashOrders/Orders"
- 
-const OrdersPage = () => {
-  return (
-    
-    <Orders />
-    
-  )
-}
+import Orders from "@/components/DashOrders/Orders";
 
-export default OrdersPage
+const OrdersPage = () => {
+  return <Orders />;
+};
+
+export default OrdersPage;

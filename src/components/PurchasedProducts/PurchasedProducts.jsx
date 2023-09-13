@@ -41,7 +41,7 @@ const PurchasedProducts = ({ initOrders, clerkId }) => {
     });
     setOrders(newOrders);
   };
-  
+
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">Your Purchased Items</h1>
@@ -59,80 +59,88 @@ const PurchasedProducts = ({ initOrders, clerkId }) => {
             <Table
               aria-label={`Items for Order ${order._id}`}
               bottomContent={
-                <div className="flex-column  items-center p-4 bg-primary-200 rounded-lg sm:flex">
-                  <h1 className="pr-2 text-lg font-bold">Order ID:</h1>
+                <div className="flex-column  items-center p-4 justify-between bg-primary-200 rounded-lg lg:flex">
+                  <div className="flex-column p-1 items-center justify-between xm:flex">
+                  <h1 className="pr-2 text-sm font-bold sm:text-base">Order ID:</h1>
                   <Snippet>{order._id}</Snippet>
-                  <h1 className="ml-auto mt-3 text-lg font-bold md:mt-0">
-                    Total: ${calculateTotal(order.items).toFixed(2)}
-                  </h1>
+
+                  </div>
+                  <div className="flex p-1 items-center justify-between">
+                  <h1 className="font-bold text-sm mr-2 sm:text-base">Order Status:</h1>
+                  <Chip
+                    className="capitalize"
+                    color="success"
+                    size="sm"
+                    variant="flat"
+                  >
+                    {order.status}
+                  </Chip>
+
+                  </div>
+                  <div className="flex p-1 items-center justify-between">
+                  <h1 className="font-bold text-sm mr-2 sm:text-base">Mercado Pago Status:</h1>
+                  {order.mpStatus !== "approved" ? (
+                    <Link
+                      href={`https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=${order.mpId}`}
+                    >
+                      <Chip
+                        className="capitalize"
+                        color="primary"
+                        size="sm"
+                        variant="solid"
+                      >
+                        {order.mpStatus}
+                      </Chip>
+                    </Link>
+                  ) : (
+                    <Chip
+                      className="capitalize"
+                      color="primary"
+                      size="sm"
+                      variant="bordered"
+                    >
+                      {order.mpStatus}
+                    </Chip>
+                  )}
+
+                  </div>
+                  <div className="flex p-1 items-center justify-between">
+                    <h1 className="font-bold text-sm mr-2 sm:text-base">Total:</h1>
+                    <p className="font-bold text-sm md:mt-0 sm:text-base">${calculateTotal(order.items).toFixed(2)}</p>
+                  </div>
                 </div>
               }
             >
               <TableHeader>
-                <TableColumn>Image</TableColumn>
+                <TableColumn className="hidden sm:table-cell">Image</TableColumn>
                 <TableColumn>Name</TableColumn>
-                <TableColumn>Status</TableColumn>
-                <TableColumn>Mercado Pago</TableColumn>
                 <TableColumn>Price</TableColumn>
-                <TableColumn>Quantity</TableColumn>
+                
                 <TableColumn>Review</TableColumn>
               </TableHeader>
               <TableBody>
                 {order?.items?.map((item, index) => (
                   <TableRow key={index}>
-                    <TableCell>
-                    <Image
-                          width={60}
-                          height={60}
-                          src={item._id.imag.secure_url}
-                          alt={item._id.name}
-                        />
+                    <TableCell className="hidden sm:table-cell">
+                      <Image
+                        width={60}
+                        height={60}
+                        src={item._id.imag.secure_url}
+                        alt={item._id.name}
+                      />
                     </TableCell>
                     <TableCell className="flex items-center">
                       <Link as={NextLink} href={`/product/${item._id._id}`}>
-                        
-                        <div className="ml-2">{item._id.name}</div>
+                        <div className="ml-2 text-xs xm:text-sm sm:text-base">{item._id.name}</div>
+
                       </Link>
                     </TableCell>
-                    <TableCell>
-                      <Chip
-                        className="capitalize"
-                        color="success"
-                        size="sm"
-                        variant="flat"
-                      >
-                        {order.status}
-                      </Chip>
-                    </TableCell>
-                    <TableCell>
-                      {order.mpStatus !== "approved" ? (
-                        <Link
-                          href={`https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=${order.mpId}`}
-                        >
-                          <Chip
-                            className="capitalize"
-                            color="primary"
-                            size="sm"
-                            variant="solid"
-                          >
-                            {order.mpStatus}
-                          </Chip>
-                        </Link>
-                      ) : (
-                        <Chip
-                          className="capitalize"
-                          color="primary"
-                          size="sm"
-                          variant="bordered"
-                        >
-                          {order.mpStatus}
-                        </Chip>
-                      )}
-                    </TableCell>
-                    <TableCell>${item.unit_price}</TableCell>
-                    <TableCell>{item.quantity}</TableCell>
+
+                    <TableCell >{`${item.quantity} x $${item.unit_price}`}</TableCell>
+                    
                     <TableCell>
                       <PurchasedModalReview
+                        className="sm"
                         clerkId={clerkId}
                         itemId={item._id._id}
                         itemReviews={item._id.reviews}

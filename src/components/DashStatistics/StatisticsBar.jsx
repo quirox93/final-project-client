@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React from "react";
 import { Tabs, Tab, RadioGroup, Radio } from "@nextui-org/react";
 import { BsFillBarChartFill } from "react-icons/bs";
 import { HiOutlineChartPie } from "react-icons/hi";
@@ -20,14 +20,14 @@ const StatisticsBar = ({ orders }) => {
     if (selected === "month") {
       return month[item.date - 1];
     }
-    
+
     return item.date;
   });
-  
+
   const value = arrayDate.map((item) => {
     return item.total;
   });
-  
+
   return (
     <div className="w-full md:col-span-2 relative lg:h-[70vh] h-[50vh] m-auto p-6 border rounded-lg bg-white">
       <div className="pb-4">
@@ -77,7 +77,8 @@ const StatisticsBar = ({ orders }) => {
             }
           >
             <div className=" lg:h-[51vh] h-[35vh]  flex justify-center pb-5">
-              <Linechart date={date}
+              <Linechart
+                date={date}
                 title={
                   selected === "day"
                     ? "Daily Revenue"
@@ -85,7 +86,8 @@ const StatisticsBar = ({ orders }) => {
                     ? "Monthly Income"
                     : "Annual Revenues"
                 }
-                value={value}/>
+                value={value}
+              />
             </div>
           </Tab>
           <Tab
@@ -98,7 +100,8 @@ const StatisticsBar = ({ orders }) => {
             }
           >
             <div className=" lg:h-[51vh] h-[35vh]  flex justify-center pb-5">
-              <PieChart date={date}
+              <PieChart
+                date={date}
                 title={
                   selected === "day"
                     ? "Daily Revenue"
@@ -106,7 +109,8 @@ const StatisticsBar = ({ orders }) => {
                     ? "Monthly Income"
                     : "Annual Revenues"
                 }
-                value={value}/>
+                value={value}
+              />
             </div>
           </Tab>
         </Tabs>

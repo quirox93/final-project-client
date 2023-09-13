@@ -1,7 +1,6 @@
 import Sidebar from "@/components/Sidebar";
 
 const DashboardLayout = ({ children }) => {
-
   return (
     <div>
       <div className="flex">

@@ -25,9 +25,14 @@ export async function GET(_, { params }) {
         .exec();
     }
 
-    if (!order) return NextResponse.json({ message: "Order not found " }, { status: 404 });
+    if (!order)
+      return NextResponse.json(
+        { message: "Order not found " },
+        { status: 404 }
+      );
     return NextResponse.json(order);
   } catch (error) {
+    console.log({ error: error.message });
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
@@ -38,14 +43,20 @@ export async function PATCH(req, { params }) {
     const { id } = params;
     const values = await req.json();
 
-    const updatedOrder = await Order.findOneAndUpdate({ mpId: id }, values, { new: true });
+    const updatedOrder = await Order.findOneAndUpdate({ mpId: id }, values, {
+      new: true,
+    });
 
     if (!updatedOrder) {
-      return NextResponse.json({ error: "Order not found in the database" }, { status: 404 });
+      return NextResponse.json(
+        { error: "Order not found in the database" },
+        { status: 404 }
+      );
     }
 
     return NextResponse.json(updatedOrder);
   } catch (error) {
+    console.log({ error: error.message });
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
